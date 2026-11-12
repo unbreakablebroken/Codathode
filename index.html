@@ -68,21 +68,31 @@
       font-weight: 700;
     }
 
-    .header-meta {
+    .header-nav {
       display: flex;
       align-items: center;
-      gap: 24px;
+      gap: 28px;
       font-size: 0.75rem;
       font-weight: 600;
       letter-spacing: 0.14em;
-      color: #86A99A;
       text-transform: uppercase;
+    }
+
+    .header-nav a {
+      color: #86A99A;
+      text-decoration: none;
+      transition: color 0.15s ease;
+    }
+
+    .header-nav a:hover, .header-nav a.active {
+      color: #D8F2DE;
     }
 
     .header-badge {
       display: inline-flex;
       align-items: center;
       gap: 8px;
+      color: #86A99A;
     }
 
     .header-badge::before {
@@ -304,7 +314,7 @@
       text-transform: uppercase;
       background-color: #041E1D;
       flex-wrap: wrap;
-      gap: 16px;
+      gap: 20px;
     }
 
     .footer-brand {
@@ -314,11 +324,25 @@
       letter-spacing: -0.01em;
     }
 
-    .footer-brand .faded {
-      color: #86A99A;
+    .footer-brand .faded { color: #86A99A; }
+
+    .footer-links {
+      display: flex;
+      align-items: center;
+      gap: 24px;
     }
 
-    .footer-note {
+    .footer-links a {
+      color: #86A99A;
+      text-decoration: none;
+      transition: color 0.15s ease;
+    }
+
+    .footer-links a:hover {
+      color: #D8F2DE;
+    }
+
+    .footer-copy {
       color: #86A99A;
       font-weight: 500;
     }
@@ -344,6 +368,10 @@
         letter-spacing: -0.035em;
         line-height: 0.98;
       }
+      .header-nav {
+        gap: 16px;
+        font-size: 0.6875rem;
+      }
       .tools-grid {
         grid-template-columns: 1fr;
       }
@@ -363,10 +391,12 @@
     <a href="index.html" class="brand">
       CODA<span class="faded">THODE.</span>
     </a>
-    <div class="header-meta">
-      <span>WEB UTILITIES</span>
+    <nav class="header-nav">
+      <a href="index.html" class="active">UTILITIES</a>
+      <a href="about.html">ABOUT</a>
+      <a href="privacy.html">PRIVACY</a>
       <span class="header-badge">16 TOOLS</span>
-    </div>
+    </nav>
   </header>
 
   <main>
@@ -707,8 +737,12 @@
     <a href="index.html" class="footer-brand">
       CODA<span class="faded">THODE.</span>
     </a>
-    <span class="footer-note">ALL UTILITIES RUN LOCALLY IN YOUR BROWSER</span>
-    <span>CODATHODE &copy; 2026</span>
+    <div class="footer-links">
+      <a href="index.html">UTILITIES</a>
+      <a href="about.html">ABOUT</a>
+      <a href="privacy.html">PRIVACY POLICY</a>
+    </div>
+    <span class="footer-copy">ALL UTILITIES RUN LOCALLY IN YOUR BROWSER &copy; 2026</span>
   </footer>
 </body>
 </html>

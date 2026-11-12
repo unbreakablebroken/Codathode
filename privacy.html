@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Privacy Policy — CODATHODE.</title>
+  <meta name="description" content="Codathode Privacy Policy. 100% client-side execution, zero data collection, zero personal tracking." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    /* CODATHODE DESIGN SYSTEM */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: #041E1D;
+      color: #D8F2DE;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      line-height: 1.6;
+    }
+
+    /* HEADER */
+    header {
+      width: 100%;
+      border-bottom: 1px solid rgba(216, 242, 222, 0.13);
+      padding: 24px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background-color: #041E1D;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .brand {
+      font-size: 1.125rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      text-decoration: none;
+      color: #D8F2DE;
+      display: inline-flex;
+      align-items: center;
+      transition: opacity 0.15s ease;
+    }
+
+    .brand:hover { opacity: 0.9; }
+    .brand .faded { color: #86A99A; font-weight: 700; }
+
+    .header-nav {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    .header-nav a {
+      color: #86A99A;
+      text-decoration: none;
+      transition: color 0.15s ease;
+    }
+
+    .header-nav a:hover, .header-nav a.active {
+      color: #D8F2DE;
+    }
+
+    .header-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: #86A99A;
+    }
+
+    .header-badge::before {
+      content: '';
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background-color: #D8F2DE;
+    }
+
+    /* MAIN CONTAINER */
+    main {
+      flex: 1;
+      max-width: 960px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 64px 48px 96px 48px;
+    }
+
+    .hero-kicker {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      color: #86A99A;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .hero-kicker a { color: #86A99A; text-decoration: none; }
+    .hero-kicker a:hover { color: #D8F2DE; }
+    .hero-kicker span.sep { opacity: 0.4; }
+
+    .hero-heading {
+      font-size: clamp(2.75rem, 6vw, 5rem);
+      font-weight: 900;
+      line-height: 0.94;
+      letter-spacing: -0.05em;
+      color: #D8F2DE;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+
+    .meta-timestamp {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      color: #86A99A;
+      text-transform: uppercase;
+      margin-bottom: 48px;
+      display: inline-block;
+    }
+
+    /* PRIVACY CONTENT CARD */
+    .policy-container {
+      background-color: #0C2D24;
+      border: 1px solid rgba(216, 242, 222, 0.13);
+      border-radius: 6px;
+      padding: 48px 44px;
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+    }
+
+    .policy-section {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .policy-section:not(:last-child) {
+      border-bottom: 1px solid rgba(216, 242, 222, 0.08);
+      padding-bottom: 36px;
+    }
+
+    .section-kicker {
+      font-size: 0.6875rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      color: #86A99A;
+      text-transform: uppercase;
+    }
+
+    .section-title {
+      font-size: 1.375rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: #D8F2DE;
+    }
+
+    .policy-text {
+      color: #86A99A;
+      font-size: 0.9375rem;
+      line-height: 1.7;
+    }
+
+    .policy-text p + p {
+      margin-top: 14px;
+    }
+
+    .policy-text strong {
+      color: #D8F2DE;
+      font-weight: 600;
+    }
+
+    .policy-list {
+      margin-left: 20px;
+      margin-top: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .policy-list li {
+      color: #86A99A;
+      font-size: 0.9375rem;
+    }
+
+    .policy-list li strong {
+      color: #D8F2DE;
+    }
+
+    .highlight-box {
+      background-color: #041E1D;
+      border: 1px solid rgba(216, 242, 222, 0.15);
+      border-radius: 4px;
+      padding: 20px 24px;
+      margin-top: 12px;
+      font-size: 0.875rem;
+      color: #D8F2DE;
+      line-height: 1.6;
+    }
+
+    /* FOOTER */
+    footer {
+      border-top: 1px solid rgba(216, 242, 222, 0.13);
+      padding: 32px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: #86A99A;
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      background-color: #041E1D;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .footer-brand {
+      color: #D8F2DE;
+      font-weight: 800;
+      text-decoration: none;
+      letter-spacing: -0.01em;
+    }
+
+    .footer-brand .faded { color: #86A99A; }
+
+    .footer-links {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .footer-links a {
+      color: #86A99A;
+      text-decoration: none;
+      transition: color 0.15s ease;
+    }
+
+    .footer-links a:hover {
+      color: #D8F2DE;
+    }
+
+    .footer-copy {
+      color: #86A99A;
+      font-weight: 500;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 900px) {
+      header { padding: 20px 24px; }
+      main { padding: 48px 24px 64px 24px; }
+      .policy-container { padding: 32px 24px; }
+      footer { padding: 24px; flex-direction: column; align-items: flex-start; }
+    }
+
+    @media (max-width: 640px) {
+      .hero-heading { letter-spacing: -0.035em; line-height: 0.98; }
+      .header-nav { gap: 16px; font-size: 0.6875rem; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="index.html" class="brand">
+      CODA<span class="faded">THODE.</span>
+    </a>
+    <nav class="header-nav">
+      <a href="index.html">UTILITIES</a>
+      <a href="about.html">ABOUT</a>
+      <a href="privacy.html" class="active">PRIVACY</a>
+      <span class="header-badge">16 TOOLS</span>
+    </nav>
+  </header>
+
+  <main>
+    <div class="hero-kicker">
+      <a href="index.html">CODATHODE</a>
+      <span class="sep">/</span>
+      <span>LEGAL &amp; PRIVACY</span>
+    </div>
+
+    <h1 class="hero-heading">
+      ZERO TRACKING.<br />
+      COMPLETE PRIVACY.
+    </h1>
+
+    <span class="meta-timestamp">EFFECTIVE DATE: NOVEMBER 2026 · VERSION 1.1</span>
+
+    <div class="policy-container">
+      <!-- 01 LOCAL EXECUTION -->
+      <div class="policy-section">
+        <span class="section-kicker">01 / ARCHITECTURE</span>
+        <h2 class="section-title">100% Local Browser Execution</h2>
+        <div class="policy-text">
+          <p>
+            At Codathode, we believe user privacy is an architectural requirement, not an optional marketing bullet point. Every single utility provided on this site—including the <strong>QR Code Generator, Password Generator, JSON Formatter, Base64 Converter, Text Diff Checker, and Grade Calculators</strong>—operates entirely within your local device's web browser.
+          </p>
+          <div class="highlight-box">
+            <strong>Key Architecture Rule:</strong> When you input passwords, text, URLs, JSON payloads, or uploaded images, those inputs never leave your computer or mobile device. They are processed using client-side JavaScript in your device's temporary memory and are immediately cleared when you close or refresh the page.
+          </div>
+        </div>
+      </div>
+
+      <!-- 02 DATA COLLECTION -->
+      <div class="policy-section">
+        <span class="section-kicker">02 / DATA COLLECTION</span>
+        <h2 class="section-title">Information We Do Not Collect</h2>
+        <div class="policy-text">
+          <p>Because Codathode operates with zero backend data storage, we do not collect, store, sell, or share:</p>
+          <ul class="policy-list">
+            <li><strong>Personal Identifiable Information:</strong> No names, email addresses, phone numbers, or passwords.</li>
+            <li><strong>Payload Data:</strong> No text, files, images, or strings entered into any tool.</li>
+            <li><strong>Keystroke Telemetry:</strong> No analytics recording your typing velocity or interactions.</li>
+            <li><strong>User Accounts:</strong> No registration, login, or credentials exist on our platform.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 03 COOKIES & THIRD-PARTY -->
+      <div class="policy-section">
+        <span class="section-kicker">03 / THIRD PARTIES &amp; ADVERTISING</span>
+        <h2 class="section-title">Cookies and Third-Party Advertising</h2>
+        <div class="policy-text">
+          <p>
+            Codathode does not set any first-party tracking cookies or employ persistent session fingerprinting.
+          </p>
+          <p>
+            To keep this suite completely free for all users worldwide without subscriptions or paywalls, third-party advertising partners (such as <strong>Google AdSense</strong>) may be utilized in the future to display advertisements. These third-party vendors may use standard web cookies, web beacons, or similar technologies to serve ads based on your prior visits to this or other websites across the Internet.
+          </p>
+          <p>
+            Users may opt out of personalized advertising by visiting <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener noreferrer" style="color:#D8F2DE; text-decoration:underline;">Google Ads Settings</a> or through the <a href="https://optout.aboutads.info/" target="_blank" rel="noopener noreferrer" style="color:#D8F2DE; text-decoration:underline;">Digital Advertising Alliance Consumer Choice tool</a>.
+          </p>
+        </div>
+      </div>
+
+      <!-- 04 EXTERNAL CDNS -->
+      <div class="policy-section">
+        <span class="section-kicker">04 / ASSETS &amp; CDNS</span>
+        <h2 class="section-title">Third-Party Content Delivery Networks</h2>
+        <div class="policy-text">
+          <p>
+            To deliver rapid load times and font rendering, Codathode references static assets from trusted public content delivery networks (Google Fonts and Cloudflare CDN for specific parsing utilities like <code>qrcode.js</code> and <code>marked.js</code>). These requests are standard HTTP requests strictly limited to fetching public script and font files.
+          </p>
+        </div>
+      </div>
+
+      <!-- 05 POLICY CHANGES -->
+      <div class="policy-section">
+        <span class="section-kicker">05 / REVISIONS</span>
+        <h2 class="section-title">Updates to This Policy</h2>
+        <div class="policy-text">
+          <p>
+            We may occasionally update this Privacy Policy to reflect technical enhancements or advertising compliance requirements. Any revisions will be reflected immediately on this page with an updated effective date.
+          </p>
+        </div>
+      </div>
+
+      <!-- 06 CONTACT -->
+      <div class="policy-section">
+        <span class="section-kicker">06 / CONTACT</span>
+        <h2 class="section-title">Questions &amp; Inquiries</h2>
+        <div class="policy-text">
+          <p>
+            If you have any questions or feedback regarding the privacy practices of Codathode, please review our <a href="about.html" style="color:#D8F2DE; text-decoration:underline;">About Manifesto</a> or connect with us directly.
+          </p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <a href="index.html" class="footer-brand">
+      CODA<span class="faded">THODE.</span>
+    </a>
+    <div class="footer-links">
+      <a href="index.html">UTILITIES</a>
+      <a href="about.html">ABOUT</a>
+      <a href="privacy.html">PRIVACY POLICY</a>
+    </div>
+    <span class="footer-copy">ALL UTILITIES RUN LOCALLY IN YOUR BROWSER &copy; 2026</span>
+  </footer>
+</body>
+</html>
