@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Word & Character Counter — CODATHODE.</title>
+  <meta name="description" content="Accurate, real-time text analysis for words, characters with/without spaces, sentences, and reading duration." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    /* CODATHODE DESIGN SYSTEM */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: #041E1D;
+      color: #D8F2DE;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      line-height: 1.5;
+    }
+
+    /* HEADER */
+    header {
+      width: 100%;
+      border-bottom: 1px solid rgba(216, 242, 222, 0.13);
+      padding: 24px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background-color: #041E1D;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .brand {
+      font-size: 1.125rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      text-decoration: none;
+      color: #D8F2DE;
+      display: inline-flex;
+      align-items: center;
+      transition: opacity 0.15s ease;
+    }
+
+    .brand:hover {
+      opacity: 0.9;
+    }
+
+    .brand .faded {
+      color: #86A99A;
+      font-weight: 700;
+    }
+
+    .header-meta {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      color: #86A99A;
+      text-transform: uppercase;
+    }
+
+    /* MAIN CONTAINER */
+    main {
+      flex: 1;
+      max-width: 1360px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 56px 48px 80px 48px;
+    }
+
+    /* HERO */
+    .hero-kicker {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      color: #86A99A;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .hero-kicker a {
+      color: #86A99A;
+      text-decoration: none;
+      transition: color 0.15s ease;
+    }
+
+    .hero-kicker a:hover {
+      color: #D8F2DE;
+    }
+
+    .hero-kicker span.sep {
+      opacity: 0.4;
+    }
+
+    .hero-split {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 40px;
+      margin-bottom: 56px;
+      flex-wrap: wrap;
+    }
+
+    .hero-heading {
+      font-size: clamp(2.75rem, 6.5vw, 5.25rem);
+      font-weight: 900;
+      line-height: 0.92;
+      letter-spacing: -0.05em;
+      color: #D8F2DE;
+      max-width: 780px;
+      text-transform: uppercase;
+    }
+
+    .hero-sub {
+      color: #86A99A;
+      font-size: 1.0625rem;
+      line-height: 1.6;
+      max-width: 380px;
+      margin-bottom: 8px;
+    }
+
+    /* CENTRAL TOOL CARD */
+    .tool-canvas {
+      background-color: #0C2D24;
+      border: 1px solid rgba(216, 242, 222, 0.13);
+      border-radius: 6px;
+      padding: 44px;
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+    }
+
+    .tool-header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .step-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      color: #86A99A;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .tool-inner-title {
+      font-size: 1.625rem;
+      font-weight: 800;
+      letter-spacing: -0.025em;
+      color: #D8F2DE;
+    }
+
+    .quick-actions {
+      display: flex;
+      gap: 12px;
+    }
+
+    .app-textarea {
+      width: 100%;
+      min-height: 240px;
+      background-color: #041E1D;
+      border: 1px solid rgba(216, 242, 222, 0.18);
+      border-radius: 4px;
+      padding: 20px;
+      color: #D8F2DE;
+      font-family: 'Inter', sans-serif;
+      font-size: 1rem;
+      line-height: 1.6;
+      resize: vertical;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .app-textarea:focus {
+      outline: none;
+      border-color: #D8F2DE;
+      box-shadow: 0 0 0 1px rgba(216, 242, 222, 0.2);
+    }
+
+    .app-textarea::placeholder {
+      color: rgba(134, 169, 154, 0.45);
+    }
+
+    /* METRICS STRIP */
+    .metrics-title {
+      font-size: 0.6875rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      color: #86A99A;
+      text-transform: uppercase;
+    }
+
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    .metric-card {
+      background-color: #041E1D;
+      border: 1px solid rgba(216, 242, 222, 0.12);
+      border-radius: 4px;
+      padding: 20px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .metric-val {
+      font-size: 2.25rem;
+      font-weight: 900;
+      letter-spacing: -0.03em;
+      color: #D8F2DE;
+      font-variant-numeric: tabular-nums;
+      line-height: 1.1;
+    }
+
+    .metric-label {
+      font-size: 0.6875rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      color: #86A99A;
+      text-transform: uppercase;
+    }
+
+    .secondary-metrics-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .secondary-metric-card {
+      background-color: rgba(4, 30, 29, 0.6);
+      border: 1px solid rgba(216, 242, 222, 0.08);
+      border-radius: 4px;
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .sec-label {
+      font-size: 0.75rem;
+      color: #86A99A;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .sec-val {
+      font-size: 1rem;
+      color: #D8F2DE;
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* BUTTONS */
+    .btn-primary {
+      background-color: #165448;
+      color: #D8F2DE;
+      border: 1px solid rgba(216, 242, 222, 0.2);
+      border-radius: 4px;
+      padding: 12px 20px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.15s ease;
+    }
+
+    .btn-primary:hover {
+      background-color: #1c6859;
+      border-color: rgba(216, 242, 222, 0.4);
+    }
+
+    .btn-outline {
+      background-color: transparent;
+      color: #D8F2DE;
+      border: 1px solid rgba(216, 242, 222, 0.25);
+      border-radius: 4px;
+      padding: 10px 18px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.15s ease;
+    }
+
+    .btn-outline:hover {
+      background-color: rgba(216, 242, 222, 0.08);
+      border-color: #D8F2DE;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 32px;
+      right: 32px;
+      background-color: #165448;
+      color: #D8F2DE;
+      padding: 14px 24px;
+      border-radius: 4px;
+      font-size: 0.8125rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      border: 1px solid rgba(216, 242, 222, 0.3);
+      display: none;
+      z-index: 100;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    }
+
+    /* FOOTER */
+    footer {
+      border-top: 1px solid rgba(216, 242, 222, 0.13);
+      padding: 32px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: #86A99A;
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      background-color: #041E1D;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .footer-brand {
+      color: #D8F2DE;
+      font-weight: 800;
+      text-decoration: none;
+      letter-spacing: -0.01em;
+    }
+
+    .footer-brand .faded {
+      color: #86A99A;
+    }
+
+    .footer-note {
+      color: #86A99A;
+      font-weight: 500;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 900px) {
+      .metrics-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .secondary-metrics-row {
+        grid-template-columns: 1fr;
+      }
+      .tool-canvas {
+        padding: 32px 24px;
+      }
+    }
+
+    @media (max-width: 640px) {
+      header {
+        padding: 20px 24px;
+      }
+      main {
+        padding: 40px 24px 64px 24px;
+      }
+      .hero-heading {
+        letter-spacing: -0.035em;
+        line-height: 0.98;
+      }
+      .metrics-grid {
+        grid-template-columns: 1fr;
+      }
+      footer {
+        padding: 24px;
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="index.html" class="brand">
+      CODA<span class="faded">THODE.</span>
+    </a>
+    <div class="header-meta">
+      <span>WEB UTILITIES</span>
+      <span>004 / 006</span>
+    </div>
+  </header>
+
+  <main>
+    <div class="hero-kicker">
+      <a href="index.html">DIGITAL UTILITIES</a>
+      <span class="sep">/</span>
+      <span>TOOL 004</span>
+    </div>
+
+    <div class="hero-split">
+      <h1 class="hero-heading">
+        COUNT EVERY<br />
+        SYLLABLE.
+      </h1>
+      <p class="hero-sub">
+        Forensic live text metrics: character density with and without whitespace, word counts, sentence structures, and reading duration.
+      </p>
+    </div>
+
+    <div class="tool-canvas">
+      <div class="tool-header-row">
+        <div>
+          <div class="step-label">01 — LIVE INPUT & ANALYSIS</div>
+          <h2 class="tool-inner-title">Word &amp; Character Counter</h2>
+        </div>
+        <div class="quick-actions">
+          <button id="sampleBtn" class="btn-outline" type="button">SAMPLE TEXT</button>
+          <button id="copyBtn" class="btn-primary" type="button">COPY TEXT</button>
+          <button id="clearBtn" class="btn-outline" type="button">CLEAR</button>
+        </div>
+      </div>
+
+      <textarea
+        id="textInput"
+        class="app-textarea"
+        placeholder="Type or paste text here to see real-time character, word, sentence, and paragraph counts..."
+        autofocus
+      ></textarea>
+
+      <div>
+        <div class="metrics-title" style="margin-bottom: 12px;">PRIMARY METRICS</div>
+        <div class="metrics-grid">
+          <!-- Characters with spaces -->
+          <div class="metric-card">
+            <span id="charWithSpaces" class="metric-val">0</span>
+            <span class="metric-label">Characters (With Spaces)</span>
+          </div>
+
+          <!-- Characters without spaces -->
+          <div class="metric-card">
+            <span id="charNoSpaces" class="metric-val">0</span>
+            <span class="metric-label">Characters (No Spaces)</span>
+          </div>
+
+          <!-- Words -->
+          <div class="metric-card">
+            <span id="wordCount" class="metric-val">0</span>
+            <span class="metric-label">Total Words</span>
+          </div>
+
+          <!-- Sentences -->
+          <div class="metric-card">
+            <span id="sentenceCount" class="metric-val">0</span>
+            <span class="metric-label">Sentences</span>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="metrics-title" style="margin-bottom: 12px;">STRUCTURAL &amp; DURATION ESTIMATES</div>
+        <div class="secondary-metrics-row">
+          <div class="secondary-metric-card">
+            <span class="sec-label">PARAGRAPHS</span>
+            <span id="paragraphCount" class="sec-val">0</span>
+          </div>
+          <div class="secondary-metric-card">
+            <span class="sec-label">READING TIME (~200 WPM)</span>
+            <span id="readingTime" class="sec-val">0 min</span>
+          </div>
+          <div class="secondary-metric-card">
+            <span class="sec-label">SPEAKING TIME (~130 WPM)</span>
+            <span id="speakingTime" class="sec-val">0 min</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <div id="toast" class="toast">Text copied to clipboard</div>
+
+  <footer>
+    <a href="index.html" class="footer-brand">
+      CODA<span class="faded">THODE.</span>
+    </a>
+    <span class="footer-note">ALL UTILITIES RUN LOCALLY IN YOUR BROWSER</span>
+    <span>CODATHODE &copy; 2026</span>
+  </footer>
+
+  <script>
+    const textInput = document.getElementById('textInput');
+    const charWithSpaces = document.getElementById('charWithSpaces');
+    const charNoSpaces = document.getElementById('charNoSpaces');
+    const wordCount = document.getElementById('wordCount');
+    const sentenceCount = document.getElementById('sentenceCount');
+    const paragraphCount = document.getElementById('paragraphCount');
+    const readingTime = document.getElementById('readingTime');
+    const speakingTime = document.getElementById('speakingTime');
+
+    const copyBtn = document.getElementById('copyBtn');
+    const clearBtn = document.getElementById('clearBtn');
+    const sampleBtn = document.getElementById('sampleBtn');
+    const toast = document.getElementById('toast');
+
+    function updateCounts() {
+      const text = textInput.value;
+
+      // Characters with spaces
+      const charsTotal = text.length;
+      charWithSpaces.textContent = charsTotal.toLocaleString();
+
+      // Characters without spaces
+      const charsNoSpace = text.replace(/\s/g, '').length;
+      charNoSpaces.textContent = charsNoSpace.toLocaleString();
+
+      // Words
+      const trimmed = text.trim();
+      const words = trimmed ? trimmed.split(/\s+/).length : 0;
+      wordCount.textContent = words.toLocaleString();
+
+      // Sentences
+      const sentences = trimmed
+        ? (text.match(/[^.!?]+[.!?]+(\s|$)/g) || []).length || (trimmed.length > 0 ? 1 : 0)
+        : 0;
+      sentenceCount.textContent = sentences.toLocaleString();
+
+      // Paragraphs
+      const paragraphs = trimmed
+        ? text.split(/\n+/).filter(p => p.trim().length > 0).length
+        : 0;
+      paragraphCount.textContent = paragraphs.toLocaleString();
+
+      // Reading duration (200 wpm)
+      const readMinutes = words / 200;
+      if (readMinutes < 0.1 && words > 0) {
+        readingTime.textContent = '< 10 sec';
+      } else if (readMinutes < 1) {
+        readingTime.textContent = Math.round(readMinutes * 60) + ' sec';
+      } else {
+        readingTime.textContent = readMinutes.toFixed(1) + ' min';
+      }
+
+      // Speaking duration (130 wpm)
+      const speakMinutes = words / 130;
+      if (speakMinutes < 0.1 && words > 0) {
+        speakingTime.textContent = '< 10 sec';
+      } else if (speakMinutes < 1) {
+        speakingTime.textContent = Math.round(speakMinutes * 60) + ' sec';
+      } else {
+        speakingTime.textContent = speakMinutes.toFixed(1) + ' min';
+      }
+    }
+
+    function showToast(msg) {
+      toast.textContent = msg;
+      toast.style.display = 'block';
+      setTimeout(() => {
+        toast.style.display = 'none';
+      }, 2000);
+    }
+
+    textInput.addEventListener('input', updateCounts);
+
+    copyBtn.addEventListener('click', () => {
+      if (!textInput.value) {
+        showToast('Textarea is empty');
+        return;
+      }
+      navigator.clipboard.writeText(textInput.value).then(() => {
+        showToast('Text copied to clipboard');
+      }).catch(() => {
+        textInput.select();
+        document.execCommand('copy');
+        showToast('Text copied to clipboard');
+      });
+    });
+
+    clearBtn.addEventListener('click', () => {
+      textInput.value = '';
+      updateCounts();
+      textInput.focus();
+    });
+
+    sampleBtn.addEventListener('click', () => {
+      textInput.value = `Codathode is engineered with deliberate simplicity. In an age of bloated web applications and endless trackers, utility should remain pure, transparent, and direct.\n\nEvery tool in this collection executes strictly inside your local browser memory. No tokens leave your machine; no telemetry observes your keystrokes.\n\nPrecision is not added by what remains to be built, but by what can be stripped away until only clarity remains.`;
+      updateCounts();
+      showToast('Sample text loaded');
+    });
+
+    // Run initial counts
+    updateCounts();
+  </script>
+</body>
+</html>

@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Color Palette Generator — CODATHODE.</title>
+  <meta name="description" content="Generate harmonious, production-grade 5-color palettes. Click any hex to copy instantly." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    /* CODATHODE DESIGN SYSTEM */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: #041E1D;
+      color: #D8F2DE;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      line-height: 1.5;
+    }
+
+    header {
+      width: 100%;
+      border-bottom: 1px solid rgba(216, 242, 222, 0.13);
+      padding: 24px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background-color: #041E1D;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .brand {
+      font-size: 1.125rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      text-decoration: none;
+      color: #D8F2DE;
+      display: inline-flex;
+      align-items: center;
+      transition: opacity 0.15s ease;
+    }
+
+    .brand:hover { opacity: 0.9; }
+    .brand .faded { color: #86A99A; font-weight: 700; }
+
+    .header-meta {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      color: #86A99A;
+      text-transform: uppercase;
+    }
+
+    main {
+      flex: 1;
+      max-width: 1360px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 56px 48px 80px 48px;
+    }
+
+    .hero-kicker {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      color: #86A99A;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .hero-kicker a { color: #86A99A; text-decoration: none; }
+    .hero-kicker a:hover { color: #D8F2DE; }
+    .hero-kicker span.sep { opacity: 0.4; }
+
+    .hero-split {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 40px;
+      margin-bottom: 56px;
+      flex-wrap: wrap;
+    }
+
+    .hero-heading {
+      font-size: clamp(2.75rem, 6.5vw, 5.25rem);
+      font-weight: 900;
+      line-height: 0.92;
+      letter-spacing: -0.05em;
+      color: #D8F2DE;
+      max-width: 780px;
+      text-transform: uppercase;
+    }
+
+    .hero-sub {
+      color: #86A99A;
+      font-size: 1.0625rem;
+      line-height: 1.6;
+      max-width: 380px;
+      margin-bottom: 8px;
+    }
+
+    .tool-canvas {
+      background-color: #0C2D24;
+      border: 1px solid rgba(216, 242, 222, 0.13);
+      border-radius: 6px;
+      padding: 44px;
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+    }
+
+    .tool-header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .step-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      color: #86A99A;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .tool-inner-title {
+      font-size: 1.625rem;
+      font-weight: 800;
+      letter-spacing: -0.025em;
+      color: #D8F2DE;
+    }
+
+    .btn-primary {
+      background-color: #165448;
+      color: #D8F2DE;
+      border: 1px solid rgba(216, 242, 222, 0.2);
+      border-radius: 4px;
+      padding: 14px 28px;
+      font-size: 0.8125rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      transition: all 0.15s ease;
+    }
+
+    .btn-primary:hover {
+      background-color: #1c6859;
+      border-color: rgba(216, 242, 222, 0.4);
+    }
+
+    /* 5 PALETTE BLOCKS */
+    .palette-strip {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      border-radius: 6px;
+      overflow: hidden;
+      min-height: 380px;
+      border: 1px solid rgba(216, 242, 222, 0.18);
+    }
+
+    .color-block {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 24px 20px;
+      cursor: pointer;
+      position: relative;
+      transition: flex-grow 0.2s ease, filter 0.15s ease;
+      user-select: none;
+    }
+
+    .color-block:hover {
+      filter: brightness(1.06);
+    }
+
+    .color-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .lock-btn {
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 4px;
+      color: inherit;
+      padding: 6px 10px;
+      font-size: 0.6875rem;
+      cursor: pointer;
+      backdrop-filter: blur(4px);
+      font-weight: 700;
+    }
+
+    .color-bottom {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .hex-label {
+      font-family: 'SFMono-Regular', Consolas, monospace;
+      font-size: 1.25rem;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+    }
+
+    .click-hint {
+      font-size: 0.6875rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      opacity: 0.75;
+    }
+
+    .instructions-bar {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.75rem;
+      color: #86A99A;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      border-top: 1px solid rgba(216, 242, 222, 0.08);
+      padding-top: 20px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 32px;
+      right: 32px;
+      background-color: #165448;
+      color: #D8F2DE;
+      padding: 14px 24px;
+      border-radius: 4px;
+      font-size: 0.8125rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      border: 1px solid rgba(216, 242, 222, 0.3);
+      display: none;
+      z-index: 100;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    }
+
+    footer {
+      border-top: 1px solid rgba(216, 242, 222, 0.13);
+      padding: 32px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: #86A99A;
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      background-color: #041E1D;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .footer-brand { color: #D8F2DE; font-weight: 800; text-decoration: none; }
+    .footer-brand .faded { color: #86A99A; }
+
+    @media (max-width: 900px) {
+      .palette-strip { grid-template-columns: 1fr; min-height: 540px; }
+      .color-block { min-height: 110px; }
+      .tool-canvas { padding: 32px 24px; }
+    }
+
+    @media (max-width: 640px) {
+      header { padding: 20px 24px; }
+      main { padding: 40px 24px 64px 24px; }
+      .hero-heading { letter-spacing: -0.035em; line-height: 0.98; }
+      footer { padding: 24px; flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="index.html" class="brand">
+      CODA<span class="faded">THODE.</span>
+    </a>
+    <div class="header-meta">
+      <span>WEB UTILITIES</span>
+      <span>011 / 016</span>
+    </div>
+  </header>
+
+  <main>
+    <div class="hero-kicker">
+      <a href="index.html">DIGITAL UTILITIES</a>
+      <span class="sep">/</span>
+      <span>TOOL 011</span>
+    </div>
+
+    <div class="hero-split">
+      <h1 class="hero-heading">
+        CURATE FIVE<br />
+        HARMONIES.
+      </h1>
+      <p class="hero-sub">
+        Generate balanced, high-contrast 5-color aesthetic schemes. Press Spacebar or click Generate to re-roll.
+      </p>
+    </div>
+
+    <div class="tool-canvas">
+      <div class="tool-header-row">
+        <div>
+          <div class="step-label">01 — PALETTE MATRIX</div>
+          <h2 class="tool-inner-title">Color Palette Generator</h2>
+        </div>
+        <button id="generateBtn" class="btn-primary" type="button">
+          GENERATE NEW PALETTE ↻
+        </button>
+      </div>
+
+      <div class="palette-strip" id="paletteStrip">
+        <!-- 5 Color Blocks generated by JS -->
+      </div>
+
+      <div class="instructions-bar">
+        <span>TIP: CLICK ANY HEX TO COPY TO CLIPBOARD</span>
+        <span>SPACEBAR RE-ROLLS UNLOCKED SWATCHES</span>
+      </div>
+    </div>
+  </main>
+
+  <div id="toast" class="toast">Hex copied to clipboard</div>
+
+  <footer>
+    <a href="index.html" class="footer-brand">
+      CODA<span class="faded">THODE.</span>
+    </a>
+    <span class="footer-note">ALL UTILITIES RUN LOCALLY IN YOUR BROWSER</span>
+    <span>CODATHODE &copy; 2026</span>
+  </footer>
+
+  <script>
+    const paletteStrip = document.getElementById('paletteStrip');
+    const generateBtn = document.getElementById('generateBtn');
+    const toast = document.getElementById('toast');
+
+    let palette = [
+      { hex: '#041E1D', locked: false },
+      { hex: '#0C2D24', locked: false },
+      { hex: '#165448', locked: false },
+      { hex: '#D8F2DE', locked: false },
+      { hex: '#86A99A', locked: false }
+    ];
+
+    function showToast(msg) {
+      toast.textContent = msg;
+      toast.style.display = 'block';
+      setTimeout(() => { toast.style.display = 'none'; }, 2000);
+    }
+
+    function hslToHex(h, s, l) {
+      l /= 100;
+      const a = s * Math.min(l, 1 - l) / 100;
+      const f = n => {
+        const k = (n + h / 30) % 12;
+        const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
+        return Math.round(255 * color).toString(16).padStart(2, '0');
+      };
+      return `#${f(0)}${f(8)}${f(4)}`.toUpperCase();
+    }
+
+    function getLuminance(hex) {
+      const c = hex.replace('#', '');
+      const num = parseInt(c, 16);
+      const r = (num >> 16) & 255;
+      const g = (num >> 8) & 255;
+      const b = num & 255;
+      return (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+    }
+
+    function generateHarmoniousPalette() {
+      const baseHue = Math.floor(Math.random() * 360);
+      const schemeType = Math.floor(Math.random() * 3); // 0: analogous, 1: monochromatic, 2: split-complementary
+
+      palette.forEach((item, index) => {
+        if (item.locked) return;
+
+        let h = baseHue;
+        let s = Math.floor(Math.random() * 35) + 40;
+        let l = 20;
+
+        if (index === 0) {
+          l = Math.floor(Math.random() * 15) + 8; // deep dark
+        } else if (index === 1) {
+          l = Math.floor(Math.random() * 18) + 16;
+          h = (baseHue + 15) % 360;
+        } else if (index === 2) {
+          l = Math.floor(Math.random() * 25) + 30; // accent
+          h = (baseHue + (schemeType === 2 ? 180 : 30)) % 360;
+        } else if (index === 3) {
+          l = Math.floor(Math.random() * 15) + 75; // light highlight
+          s = 40;
+        } else {
+          l = Math.floor(Math.random() * 20) + 55; // muted
+          s = 25;
+        }
+
+        item.hex = hslToHex(h, s, l);
+      });
+
+      renderPalette();
+    }
+
+    function renderPalette() {
+      paletteStrip.innerHTML = '';
+      palette.forEach((item, i) => {
+        const isDark = getLuminance(item.hex) < 0.55;
+        const textColor = isDark ? '#D8F2DE' : '#041E1D';
+
+        const block = document.createElement('div');
+        block.className = 'color-block';
+        block.style.backgroundColor = item.hex;
+        block.style.color = textColor;
+
+        block.innerHTML = `
+          <div class="color-top">
+            <span style="font-size:0.6875rem; font-weight:700; letter-spacing:0.1em; opacity:0.8;">0${i + 1}</span>
+            <button class="lock-btn" data-index="${i}" type="button">${item.locked ? 'LOCKED 🔒' : 'LOCK 🔓'}</button>
+          </div>
+          <div class="color-bottom">
+            <span class="hex-label">${item.hex}</span>
+            <span class="click-hint">CLICK TO COPY</span>
+          </div>
+        `;
+
+        block.querySelector('.lock-btn').addEventListener('click', (e) => {
+          e.stopPropagation();
+          palette[i].locked = !palette[i].locked;
+          renderPalette();
+        });
+
+        block.addEventListener('click', () => {
+          navigator.clipboard.writeText(item.hex).then(() => {
+            showToast(`Copied ${item.hex}`);
+          });
+        });
+
+        paletteStrip.appendChild(block);
+      });
+    }
+
+    generateBtn.addEventListener('click', generateHarmoniousPalette);
+
+    window.addEventListener('keydown', (e) => {
+      if (e.code === 'Space' && e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA') {
+        e.preventDefault();
+        generateHarmoniousPalette();
+      }
+    });
+
+    renderPalette();
+  </script>
+</body>
+</html>

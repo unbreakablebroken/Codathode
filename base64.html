@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Base64 Encoder / Decoder — CODATHODE.</title>
+  <meta name="description" content="Encode and decode text to and from Base64 RFC 4648 format with full Unicode UTF-8 support." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    /* CODATHODE DESIGN SYSTEM */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: #041E1D;
+      color: #D8F2DE;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      line-height: 1.5;
+    }
+
+    /* HEADER */
+    header {
+      width: 100%;
+      border-bottom: 1px solid rgba(216, 242, 222, 0.13);
+      padding: 24px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background-color: #041E1D;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .brand {
+      font-size: 1.125rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      text-decoration: none;
+      color: #D8F2DE;
+      display: inline-flex;
+      align-items: center;
+      transition: opacity 0.15s ease;
+    }
+
+    .brand:hover {
+      opacity: 0.9;
+    }
+
+    .brand .faded {
+      color: #86A99A;
+      font-weight: 700;
+    }
+
+    .header-meta {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      color: #86A99A;
+      text-transform: uppercase;
+    }
+
+    /* MAIN CONTAINER */
+    main {
+      flex: 1;
+      max-width: 1360px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 56px 48px 80px 48px;
+    }
+
+    /* HERO */
+    .hero-kicker {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      color: #86A99A;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .hero-kicker a {
+      color: #86A99A;
+      text-decoration: none;
+      transition: color 0.15s ease;
+    }
+
+    .hero-kicker a:hover {
+      color: #D8F2DE;
+    }
+
+    .hero-kicker span.sep {
+      opacity: 0.4;
+    }
+
+    .hero-split {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 40px;
+      margin-bottom: 56px;
+      flex-wrap: wrap;
+    }
+
+    .hero-heading {
+      font-size: clamp(2.75rem, 6.5vw, 5.25rem);
+      font-weight: 900;
+      line-height: 0.92;
+      letter-spacing: -0.05em;
+      color: #D8F2DE;
+      max-width: 780px;
+      text-transform: uppercase;
+    }
+
+    .hero-sub {
+      color: #86A99A;
+      font-size: 1.0625rem;
+      line-height: 1.6;
+      max-width: 380px;
+      margin-bottom: 8px;
+    }
+
+    /* CENTRAL TOOL CARD */
+    .tool-canvas {
+      background-color: #0C2D24;
+      border: 1px solid rgba(216, 242, 222, 0.13);
+      border-radius: 6px;
+      padding: 44px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      position: relative;
+    }
+
+    .panel-col {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .step-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      color: #86A99A;
+      text-transform: uppercase;
+    }
+
+    .meta-tag {
+      font-size: 0.6875rem;
+      color: #86A99A;
+      letter-spacing: 0.08em;
+    }
+
+    .app-textarea {
+      width: 100%;
+      min-height: 240px;
+      background-color: #041E1D;
+      border: 1px solid rgba(216, 242, 222, 0.18);
+      border-radius: 4px;
+      padding: 16px;
+      color: #D8F2DE;
+      font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+      font-size: 0.875rem;
+      line-height: 1.6;
+      resize: vertical;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .app-textarea:focus {
+      outline: none;
+      border-color: #D8F2DE;
+      box-shadow: 0 0 0 1px rgba(216, 242, 222, 0.2);
+    }
+
+    .app-textarea::placeholder {
+      color: rgba(134, 169, 154, 0.45);
+      font-family: 'Inter', sans-serif;
+    }
+
+    .panel-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      background-color: #165448;
+      color: #D8F2DE;
+      border: 1px solid rgba(216, 242, 222, 0.2);
+      border-radius: 4px;
+      padding: 14px 22px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: background-color 0.15s ease, transform 0.15s ease, border-color 0.15s ease;
+    }
+
+    .btn-primary:hover {
+      background-color: #1c6859;
+      border-color: rgba(216, 242, 222, 0.4);
+    }
+
+    .btn-outline {
+      background-color: transparent;
+      color: #D8F2DE;
+      border: 1px solid rgba(216, 242, 222, 0.25);
+      border-radius: 4px;
+      padding: 14px 20px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.15s ease;
+    }
+
+    .btn-outline:hover {
+      background-color: rgba(216, 242, 222, 0.08);
+      border-color: #D8F2DE;
+    }
+
+    .error-box {
+      display: none;
+      background-color: rgba(220, 60, 60, 0.15);
+      border: 1px solid rgba(255, 120, 120, 0.3);
+      border-radius: 4px;
+      padding: 12px 16px;
+      color: #ff9b9b;
+      font-size: 0.8125rem;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 32px;
+      right: 32px;
+      background-color: #165448;
+      color: #D8F2DE;
+      padding: 14px 24px;
+      border-radius: 4px;
+      font-size: 0.8125rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      border: 1px solid rgba(216, 242, 222, 0.3);
+      display: none;
+      z-index: 100;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    }
+
+    /* FOOTER */
+    footer {
+      border-top: 1px solid rgba(216, 242, 222, 0.13);
+      padding: 32px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: #86A99A;
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      background-color: #041E1D;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .footer-brand {
+      color: #D8F2DE;
+      font-weight: 800;
+      text-decoration: none;
+      letter-spacing: -0.01em;
+    }
+
+    .footer-brand .faded {
+      color: #86A99A;
+    }
+
+    .footer-note {
+      color: #86A99A;
+      font-weight: 500;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 900px) {
+      .tool-canvas {
+        grid-template-columns: 1fr;
+        padding: 32px 24px;
+      }
+    }
+
+    @media (max-width: 640px) {
+      header {
+        padding: 20px 24px;
+      }
+      main {
+        padding: 40px 24px 64px 24px;
+      }
+      .hero-heading {
+        letter-spacing: -0.035em;
+        line-height: 0.98;
+      }
+      footer {
+        padding: 24px;
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="index.html" class="brand">
+      CODA<span class="faded">THODE.</span>
+    </a>
+    <div class="header-meta">
+      <span>WEB UTILITIES</span>
+      <span>005 / 006</span>
+    </div>
+  </header>
+
+  <main>
+    <div class="hero-kicker">
+      <a href="index.html">DIGITAL UTILITIES</a>
+      <span class="sep">/</span>
+      <span>TOOL 005</span>
+    </div>
+
+    <div class="hero-split">
+      <h1 class="hero-heading">
+        ENCODE &amp;<br />
+        DECODE.
+      </h1>
+      <p class="hero-sub">
+        Lossless binary-to-text ASCII encoding and RFC 4648 decoding with full UTF-8 Unicode character support.
+      </p>
+    </div>
+
+    <div class="tool-canvas">
+      <!-- INPUT PANEL -->
+      <div class="panel-col">
+        <div class="panel-header">
+          <span class="step-label">01 — SOURCE INPUT</span>
+          <span id="inputBytes" class="meta-tag">0 BYTES</span>
+        </div>
+        <textarea
+          id="sourceInput"
+          class="app-textarea"
+          placeholder="Enter text or raw data to encode, or paste Base64 string to decode..."
+          autofocus
+        ></textarea>
+        <div class="panel-actions">
+          <button id="encodeBtn" class="btn-primary" type="button">
+            ENCODE TO BASE64 →
+          </button>
+          <button id="decodeBtn" class="btn-primary" type="button">
+            DECODE FROM BASE64 ←
+          </button>
+          <button id="clearBtn" class="btn-outline" type="button">
+            CLEAR
+          </button>
+        </div>
+      </div>
+
+      <!-- OUTPUT PANEL -->
+      <div class="panel-col">
+        <div class="panel-header">
+          <span class="step-label">02 — RESULT BUFFER</span>
+          <span id="outputBytes" class="meta-tag">0 BYTES</span>
+        </div>
+        <textarea
+          id="resultOutput"
+          class="app-textarea"
+          placeholder="Encoded or decoded output will render here..."
+          readonly
+        ></textarea>
+
+        <div id="errorBox" class="error-box">
+          Invalid Base64 sequence. Please ensure input contains only valid RFC 4648 characters.
+        </div>
+
+        <div class="panel-actions">
+          <button id="copyResultBtn" class="btn-primary" type="button">
+            COPY RESULT
+          </button>
+          <button id="swapBtn" class="btn-outline" type="button">
+            SWAP TO INPUT ⇄
+          </button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <div id="toast" class="toast">Result copied to clipboard</div>
+
+  <footer>
+    <a href="index.html" class="footer-brand">
+      CODA<span class="faded">THODE.</span>
+    </a>
+    <span class="footer-note">ALL UTILITIES RUN LOCALLY IN YOUR BROWSER</span>
+    <span>CODATHODE &copy; 2026</span>
+  </footer>
+
+  <script>
+    const sourceInput = document.getElementById('sourceInput');
+    const resultOutput = document.getElementById('resultOutput');
+    const inputBytes = document.getElementById('inputBytes');
+    const outputBytes = document.getElementById('outputBytes');
+    const encodeBtn = document.getElementById('encodeBtn');
+    const decodeBtn = document.getElementById('decodeBtn');
+    const clearBtn = document.getElementById('clearBtn');
+    const copyResultBtn = document.getElementById('copyResultBtn');
+    const swapBtn = document.getElementById('swapBtn');
+    const errorBox = document.getElementById('errorBox');
+    const toast = document.getElementById('toast');
+
+    // UTF-8 Safe Base64 Encoding
+    function utf8ToBase64(str) {
+      const bytes = new TextEncoder().encode(str);
+      const binString = Array.from(bytes, (byte) => String.fromCharCode(byte)).join('');
+      return btoa(binString);
+    }
+
+    // UTF-8 Safe Base64 Decoding
+    function base64ToUtf8(base64) {
+      // Strip whitespace / newlines
+      const cleaned = base64.trim().replace(/\s+/g, '');
+      const binString = atob(cleaned);
+      const bytes = Uint8Array.from(binString, (m) => m.charCodeAt(0));
+      return new TextDecoder().decode(bytes);
+    }
+
+    function updateByteCounts() {
+      const inLen = new TextEncoder().encode(sourceInput.value).length;
+      inputBytes.textContent = inLen.toLocaleString() + ' BYTES';
+
+      const outLen = new TextEncoder().encode(resultOutput.value).length;
+      outputBytes.textContent = outLen.toLocaleString() + ' BYTES';
+    }
+
+    function showToast(msg) {
+      toast.textContent = msg;
+      toast.style.display = 'block';
+      setTimeout(() => {
+        toast.style.display = 'none';
+      }, 2000);
+    }
+
+    sourceInput.addEventListener('input', () => {
+      errorBox.style.display = 'none';
+      updateByteCounts();
+    });
+
+    // Encode
+    encodeBtn.addEventListener('click', () => {
+      errorBox.style.display = 'none';
+      const val = sourceInput.value;
+      if (!val) {
+        showToast('Please enter text to encode');
+        return;
+      }
+      try {
+        resultOutput.value = utf8ToBase64(val);
+        updateByteCounts();
+        showToast('Encoded to Base64');
+      } catch (err) {
+        errorBox.textContent = 'Encoding error: ' + err.message;
+        errorBox.style.display = 'block';
+      }
+    });
+
+    // Decode
+    decodeBtn.addEventListener('click', () => {
+      errorBox.style.display = 'none';
+      const val = sourceInput.value.trim();
+      if (!val) {
+        showToast('Please enter Base64 string to decode');
+        return;
+      }
+      try {
+        resultOutput.value = base64ToUtf8(val);
+        updateByteCounts();
+        showToast('Decoded successfully');
+      } catch (err) {
+        errorBox.textContent = 'Invalid Base64 sequence: Unable to decode string.';
+        errorBox.style.display = 'block';
+      }
+    });
+
+    // Copy Result
+    copyResultBtn.addEventListener('click', () => {
+      if (!resultOutput.value) {
+        showToast('No result to copy');
+        return;
+      }
+      navigator.clipboard.writeText(resultOutput.value).then(() => {
+        showToast('Result copied to clipboard');
+      }).catch(() => {
+        resultOutput.select();
+        document.execCommand('copy');
+        showToast('Result copied to clipboard');
+      });
+    });
+
+    // Swap
+    swapBtn.addEventListener('click', () => {
+      const temp = resultOutput.value;
+      if (!temp) {
+        showToast('Result buffer is empty');
+        return;
+      }
+      sourceInput.value = temp;
+      resultOutput.value = '';
+      errorBox.style.display = 'none';
+      updateByteCounts();
+      showToast('Swapped result to input');
+    });
+
+    // Clear
+    clearBtn.addEventListener('click', () => {
+      sourceInput.value = '';
+      resultOutput.value = '';
+      errorBox.style.display = 'none';
+      updateByteCounts();
+      sourceInput.focus();
+    });
+
+    updateByteCounts();
+  </script>
+</body>
+</html>

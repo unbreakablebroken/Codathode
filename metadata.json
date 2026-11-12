@@ -1,0 +1,8 @@
+{
+  "name": "Codathode - Digital Utilities",
+  "description": "Premium multi-page web utilities engineered with intention, featuring QR generator, IGCSE calculator, case converter, word counter, Base64 converter, and color inspector.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
