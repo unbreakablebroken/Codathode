@@ -144,7 +144,7 @@
       justify-content: space-between;
       align-items: flex-end;
       gap: 40px;
-      margin-bottom: 64px;
+      margin-bottom: 52px;
       flex-wrap: wrap;
     }
 
@@ -166,13 +166,13 @@
       margin-bottom: 8px;
     }
 
-    /* SECTION TITLE BAR */
+    /* SECTION TITLE BAR & CATEGORY JUMP NAV */
     .section-bar {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding-bottom: 16px;
-      margin-bottom: 32px;
+      padding-bottom: 14px;
+      margin-bottom: 16px;
       border-bottom: 1px solid rgba(216, 242, 222, 0.13);
       font-size: 0.75rem;
       font-weight: 600;
@@ -181,34 +181,129 @@
       text-transform: uppercase;
     }
 
-    /* TOOLS GRID */
-    .tools-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 24px;
+    .category-jumpbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 22px;
+      margin-bottom: 44px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid rgba(216, 242, 222, 0.08);
     }
 
-    /* TOOL CARD */
+    .jump-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #86A99A;
+      text-decoration: none;
+      padding: 4px 0;
+      border-bottom: 1px solid transparent;
+      transition: color 0.15s ease, border-color 0.15s ease;
+    }
+
+    .jump-link:hover {
+      color: #D8F2DE;
+      border-bottom-color: rgba(216, 242, 222, 0.45);
+    }
+
+    .jump-num {
+      font-size: 0.6875rem;
+      color: #86A99A;
+      opacity: 0.65;
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* CATEGORY GROUP */
+    .tool-group {
+      margin-bottom: 48px;
+      scroll-margin-top: 96px;
+    }
+
+    .tool-group:last-of-type {
+      margin-bottom: 0;
+    }
+
+    .group-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px 20px;
+      padding-bottom: 12px;
+      margin-bottom: 18px;
+      border-bottom: 1px solid rgba(216, 242, 222, 0.13);
+    }
+
+    .group-heading-wrap {
+      display: flex;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: 10px 14px;
+    }
+
+    .group-index {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      color: #86A99A;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .group-title {
+      font-size: clamp(1.25rem, 2.2vw, 1.5625rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      color: #D8F2DE;
+      line-height: 1.15;
+    }
+
+    .group-subtitle {
+      font-size: 0.8125rem;
+      color: #86A99A;
+      font-weight: 400;
+    }
+
+    .group-count {
+      font-size: 0.6875rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #86A99A;
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* TOOLS GRID (COMPACT 4-COL) */
+    .tools-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+    }
+
+    /* COMPACT TOOL CARD */
     .tool-card {
       background-color: #0C2D24;
       border: 1px solid rgba(216, 242, 222, 0.13);
-      border-radius: 6px;
-      padding: 32px 28px;
+      border-radius: 5px;
+      padding: 18px 20px;
       text-decoration: none;
       color: inherit;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      min-height: 280px;
-      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
-                  border-color 0.2s cubic-bezier(0.16, 1, 0.3, 1),
-                  background-color 0.2s ease;
+      min-height: 164px;
+      transition: transform 0.18s cubic-bezier(0.16, 1, 0.3, 1),
+                  border-color 0.18s cubic-bezier(0.16, 1, 0.3, 1),
+                  background-color 0.18s ease;
       position: relative;
       cursor: pointer;
     }
 
     .tool-card:hover {
-      transform: translateY(-4px);
+      transform: translateY(-3px);
       border-color: rgba(216, 242, 222, 0.38);
       background-color: #0e352b;
     }
@@ -217,38 +312,44 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 20px;
-      font-size: 0.75rem;
+      margin-bottom: 10px;
+      font-size: 0.6875rem;
       font-weight: 600;
-      letter-spacing: 0.14em;
+      letter-spacing: 0.12em;
       color: #86A99A;
       text-transform: uppercase;
     }
 
     .tool-number {
       color: #86A99A;
+      font-variant-numeric: tabular-nums;
     }
 
     .tool-category {
-      font-size: 0.6875rem;
+      font-size: 0.625rem;
       letter-spacing: 0.12em;
       color: #86A99A;
+      opacity: 0.85;
     }
 
     .tool-title {
-      font-size: 1.375rem;
+      font-size: 1.0625rem;
       font-weight: 800;
       letter-spacing: -0.025em;
       color: #D8F2DE;
-      margin-bottom: 10px;
-      line-height: 1.25;
+      margin-bottom: 6px;
+      line-height: 1.22;
     }
 
     .tool-desc {
       color: #86A99A;
-      font-size: 0.875rem;
-      line-height: 1.55;
-      margin-bottom: 24px;
+      font-size: 0.8rem;
+      line-height: 1.45;
+      margin-bottom: 14px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
     }
 
     .tool-card-bottom {
@@ -256,8 +357,8 @@
       align-items: center;
       justify-content: space-between;
       border-top: 1px solid rgba(216, 242, 222, 0.08);
-      padding-top: 18px;
-      font-size: 0.75rem;
+      padding-top: 10px;
+      font-size: 0.6875rem;
       font-weight: 700;
       letter-spacing: 0.1em;
       text-transform: uppercase;
@@ -273,7 +374,7 @@
       display: inline-block;
       transition: transform 0.2s ease;
       color: #86A99A;
-      font-size: 1.125rem;
+      font-size: 1rem;
       font-weight: 400;
     }
 
@@ -357,7 +458,13 @@
     }
 
     /* RESPONSIVE */
-    @media (max-width: 1100px) {
+    @media (max-width: 1180px) {
+      .tools-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    @media (max-width: 900px) {
       .tools-grid {
         grid-template-columns: repeat(2, 1fr);
       }
@@ -380,6 +487,10 @@
       .header-nav {
         gap: 16px;
         font-size: 0.6875rem;
+      }
+      .category-jumpbar {
+        gap: 6px 16px;
+        margin-bottom: 32px;
       }
       .tools-grid {
         grid-template-columns: 1fr;
@@ -859,7 +970,7 @@
     <div class="splash-chrome">
       <div class="splash-topbar">
         <span class="splash-wordmark">CODA<span class="faded">THODE.</span></span>
-        <span class="splash-meta">16 CLIENT-SIDE UTILITIES</span>
+        <span class="splash-meta">31 CLIENT-SIDE UTILITIES</span>
       </div>
 
       <div class="splash-center">
@@ -905,7 +1016,7 @@
           <div class="splash-progress-track-wrap">
             <div class="splash-status-row">
               <span class="splash-tool-ticker" id="splash-ticker">QR CODE GENERATOR</span>
-              <span id="splash-count">01 / 16</span>
+              <span id="splash-count">01 / 31</span>
             </div>
             <div class="splash-track">
               <div class="splash-track-fill" id="splash-track-fill"></div>
@@ -926,7 +1037,7 @@
       <a href="index.html" class="active">UTILITIES</a>
       <a href="about.html">ABOUT</a>
       <a href="privacy.html">PRIVACY</a>
-      <span class="header-badge">16 TOOLS</span>
+      <span class="header-badge">31 TOOLS</span>
     </nav>
   </header>
 
@@ -944,310 +1055,590 @@
         INTENTION.
       </h1>
       <p class="hero-sub">
-        A bespoke collection of sixteen focused, high-precision web utilities. Zero tracking, zero telemetry, zero latency. Built strictly for local client-side execution.
+        A bespoke collection of thirty-one focused, high-precision web utilities. Zero tracking, zero telemetry, zero latency. Built strictly for local client-side execution.
       </p>
     </div>
 
     <div class="section-bar">
-      <span>INDEXED UTILITIES</span>
-      <span>001 — 016</span>
+      <span>ORGANIZED BY USE CASE</span>
+      <span>6 CATEGORIES · 31 TOOLS</span>
     </div>
 
-    <div class="tools-grid">
-      <!-- TOOL 001 -->
-      <a href="qr-generator.html" class="tool-card">
-        <div>
-          <div class="tool-card-top">
-            <span class="tool-number">TOOL / 001</span>
-            <span class="tool-category">ENCODING</span>
-          </div>
-          <h2 class="tool-title">QR Code Generator</h2>
-          <p class="tool-desc">
-            Instantly turn any URL or plain text into a crisp, high-contrast scannable QR matrix with instant PNG image export.
-          </p>
-        </div>
-        <div class="tool-card-bottom">
-          <span>LAUNCH TOOL</span>
-          <span class="tool-arrow">→</span>
-        </div>
-      </a>
+    <nav class="category-jumpbar" aria-label="Tool categories">
+      <a href="#cat-text" class="jump-link"><span class="jump-num">01</span> Text &amp; Writing</a>
+      <a href="#cat-calc" class="jump-link"><span class="jump-num">02</span> Calculators &amp; Finance</a>
+      <a href="#cat-dev" class="jump-link"><span class="jump-num">03</span> Developer &amp; Code</a>
+      <a href="#cat-design" class="jump-link"><span class="jump-num">04</span> Design &amp; Color</a>
+      <a href="#cat-media" class="jump-link"><span class="jump-num">05</span> Image, Audio &amp; PDF</a>
+      <a href="#cat-everyday" class="jump-link"><span class="jump-num">06</span> Security &amp; Everyday</a>
+    </nav>
 
-      <!-- TOOL 002 -->
-      <a href="igcse-calculator.html" class="tool-card">
-        <div>
-          <div class="tool-card-top">
-            <span class="tool-number">TOOL / 002</span>
-            <span class="tool-category">ACADEMICS</span>
-          </div>
-          <h2 class="tool-title">IGCSE Grade Calculator</h2>
-          <p class="tool-desc">
-            Calculate the exact percentage mark required on your final Cambridge or Edexcel component to secure your target grade.
-          </p>
+    <!-- ============================================================
+         01 — TEXT & WRITING
+         ============================================================ -->
+    <section class="tool-group" id="cat-text">
+      <div class="group-header">
+        <div class="group-heading-wrap">
+          <span class="group-index">01 /</span>
+          <h2 class="group-title">Text &amp; Writing</h2>
+          <span class="group-subtitle">Case formatting, analysis, cleanup, and placeholder text</span>
         </div>
-        <div class="tool-card-bottom">
-          <span>LAUNCH TOOL</span>
-          <span class="tool-arrow">→</span>
-        </div>
-      </a>
+        <span class="group-count">06 TOOLS</span>
+      </div>
 
-      <!-- TOOL 003 -->
-      <a href="case-converter.html" class="tool-card">
-        <div>
-          <div class="tool-card-top">
-            <span class="tool-number">TOOL / 003</span>
-            <span class="tool-category">TEXT TRANSFORM</span>
+      <div class="tools-grid">
+        <a href="case-converter.html" class="tool-card">
+          <div>
+            <div class="tool-card-top">
+              <span class="tool-number">TOOL / 003</span>
+              <span class="tool-category">FORMAT</span>
+            </div>
+            <h3 class="tool-title">Case Converter</h3>
+            <p class="tool-desc">Switch text between UPPERCASE, lowercase, Title, camelCase, and snake_case instantly.</p>
           </div>
-          <h2 class="tool-title">Case Converter</h2>
-          <p class="tool-desc">
-            Convert strings seamlessly across UPPERCASE, lowercase, Title Case, Sentence case, camelCase, and snake_case with 1-click copy.
-          </p>
-        </div>
-        <div class="tool-card-bottom">
-          <span>LAUNCH TOOL</span>
-          <span class="tool-arrow">→</span>
-        </div>
-      </a>
+          <div class="tool-card-bottom">
+            <span>LAUNCH</span>
+            <span class="tool-arrow">→</span>
+          </div>
+        </a>
 
-      <!-- TOOL 004 -->
-      <a href="word-counter.html" class="tool-card">
-        <div>
-          <div class="tool-card-top">
-            <span class="tool-number">TOOL / 004</span>
-            <span class="tool-category">ANALYTICS</span>
+        <a href="word-counter.html" class="tool-card">
+          <div>
+            <div class="tool-card-top">
+              <span class="tool-number">TOOL / 004</span>
+              <span class="tool-category">METRICS</span>
+            </div>
+            <h3 class="tool-title">Word &amp; Character Counter</h3>
+            <p class="tool-desc">Live character, word, sentence, and reading time analysis as you type.</p>
           </div>
-          <h2 class="tool-title">Word & Character Counter</h2>
-          <p class="tool-desc">
-            Forensic live text metrics: characters with and without whitespace, word counts, sentence structures, and reading duration.
-          </p>
-        </div>
-        <div class="tool-card-bottom">
-          <span>LAUNCH TOOL</span>
-          <span class="tool-arrow">→</span>
-        </div>
-      </a>
+          <div class="tool-card-bottom">
+            <span>LAUNCH</span>
+            <span class="tool-arrow">→</span>
+          </div>
+        </a>
 
-      <!-- TOOL 005 -->
-      <a href="base64.html" class="tool-card">
-        <div>
-          <div class="tool-card-top">
-            <span class="tool-number">TOOL / 005</span>
-            <span class="tool-category">ENCODING</span>
+        <a href="reverse-text.html" class="tool-card">
+          <div>
+            <div class="tool-card-top">
+              <span class="tool-number">TOOL / 026</span>
+              <span class="tool-category">TRANSFORM</span>
+            </div>
+            <h3 class="tool-title">Reverse Text</h3>
+            <p class="tool-desc">Flip characters, word order, or full line lists with Unicode safety.</p>
           </div>
-          <h2 class="tool-title">Base64 Encoder / Decoder</h2>
-          <p class="tool-desc">
-            Lossless binary-to-text ASCII encoding and RFC 4648 decoding with full UTF-8 Unicode character support and byte verification.
-          </p>
-        </div>
-        <div class="tool-card-bottom">
-          <span>LAUNCH TOOL</span>
-          <span class="tool-arrow">→</span>
-        </div>
-      </a>
+          <div class="tool-card-bottom">
+            <span>LAUNCH</span>
+            <span class="tool-arrow">→</span>
+          </div>
+        </a>
 
-      <!-- TOOL 006 -->
-      <a href="color-picker.html" class="tool-card">
-        <div>
-          <div class="tool-card-top">
-            <span class="tool-number">TOOL / 006</span>
-            <span class="tool-category">COLOR & DESIGN</span>
+        <a href="remove-duplicates.html" class="tool-card">
+          <div>
+            <div class="tool-card-top">
+              <span class="tool-number">TOOL / 027</span>
+              <span class="tool-category">CLEANUP</span>
+            </div>
+            <h3 class="tool-title">Remove Duplicate Lines</h3>
+            <p class="tool-desc">Deduplicate lists and logs with case, trim, and blank-line toggles.</p>
           </div>
-          <h2 class="tool-title">Color Picker & Inspector</h2>
-          <p class="tool-desc">
-            Sample colors with interactive native eyedropper, live HEX / RGB / HSL synchronized values, and instant clipboard export.
-          </p>
-        </div>
-        <div class="tool-card-bottom">
-          <span>LAUNCH TOOL</span>
-          <span class="tool-arrow">→</span>
-        </div>
-      </a>
+          <div class="tool-card-bottom">
+            <span>LAUNCH</span>
+            <span class="tool-arrow">→</span>
+          </div>
+        </a>
 
-      <!-- TOOL 007 -->
-      <a href="password-generator.html" class="tool-card">
-        <div>
-          <div class="tool-card-top">
-            <span class="tool-number">TOOL / 007</span>
-            <span class="tool-category">SECURITY</span>
+        <a href="diff-checker.html" class="tool-card">
+          <div>
+            <div class="tool-card-top">
+              <span class="tool-number">TOOL / 013</span>
+              <span class="tool-category">COMPARE</span>
+            </div>
+            <h3 class="tool-title">Text Diff Checker</h3>
+            <p class="tool-desc">Compare two text blocks and highlight word-level additions and removals.</p>
           </div>
-          <h2 class="tool-title">Password Generator</h2>
-          <p class="tool-desc">
-            Generate cryptographically strong, high-entropy passwords with custom length, uppercase, numbers, and symbol parameters.
-          </p>
-        </div>
-        <div class="tool-card-bottom">
-          <span>LAUNCH TOOL</span>
-          <span class="tool-arrow">→</span>
-        </div>
-      </a>
+          <div class="tool-card-bottom">
+            <span>LAUNCH</span>
+            <span class="tool-arrow">→</span>
+          </div>
+        </a>
 
-      <!-- TOOL 008 -->
-      <a href="image-to-base64.html" class="tool-card">
-        <div>
-          <div class="tool-card-top">
-            <span class="tool-number">TOOL / 008</span>
-            <span class="tool-category">ENCODING</span>
+        <a href="lorem-ipsum.html" class="tool-card">
+          <div>
+            <div class="tool-card-top">
+              <span class="tool-number">TOOL / 010</span>
+              <span class="tool-category">GENERATOR</span>
+            </div>
+            <h3 class="tool-title">Lorem Ipsum Generator</h3>
+            <p class="tool-desc">Generate structured placeholder paragraphs with classic or random openings.</p>
           </div>
-          <h2 class="tool-title">Image to Base64</h2>
-          <p class="tool-desc">
-            Drag and drop any local image file to generate an instant Data URI Base64 payload with visual thumbnail inspection.
-          </p>
-        </div>
-        <div class="tool-card-bottom">
-          <span>LAUNCH TOOL</span>
-          <span class="tool-arrow">→</span>
-        </div>
-      </a>
+          <div class="tool-card-bottom">
+            <span>LAUNCH</span>
+            <span class="tool-arrow">→</span>
+          </div>
+        </a>
+      </div>
+    </section>
 
-      <!-- TOOL 009 -->
-      <a href="json-formatter.html" class="tool-card">
-        <div>
-          <div class="tool-card-top">
-            <span class="tool-number">TOOL / 009</span>
-            <span class="tool-category">DEVELOPER</span>
-          </div>
-          <h2 class="tool-title">JSON Formatter & Validator</h2>
-          <p class="tool-desc">
-            Parse, beautify, and validate JSON payloads with syntax error reporting, 2-space indentation, and compact minification.
-          </p>
+    <!-- ============================================================
+         02 — CALCULATORS & FINANCE
+         ============================================================ -->
+    <section class="tool-group" id="cat-calc">
+      <div class="group-header">
+        <div class="group-heading-wrap">
+          <span class="group-index">02 /</span>
+          <h2 class="group-title">Calculators &amp; Finance</h2>
+          <span class="group-subtitle">Everyday math, loans, savings, dates, and health metrics</span>
         </div>
-        <div class="tool-card-bottom">
-          <span>LAUNCH TOOL</span>
-          <span class="tool-arrow">→</span>
-        </div>
-      </a>
+        <span class="group-count">06 TOOLS</span>
+      </div>
 
-      <!-- TOOL 010 -->
-      <a href="lorem-ipsum.html" class="tool-card">
-        <div>
-          <div class="tool-card-top">
-            <span class="tool-number">TOOL / 010</span>
-            <span class="tool-category">TEXT GENERATOR</span>
+      <div class="tools-grid">
+        <a href="percentage-calculator.html" class="tool-card">
+          <div>
+            <div class="tool-card-top">
+              <span class="tool-number">TOOL / 018</span>
+              <span class="tool-category">ARITHMETIC</span>
+            </div>
+            <h3 class="tool-title">Percentage Calculator</h3>
+            <p class="tool-desc">Solve percentage-of values, proportion ratios, and directional changes.</p>
           </div>
-          <h2 class="tool-title">Lorem Ipsum Generator</h2>
-          <p class="tool-desc">
-            Produce classical Cicero Latin dummy text with custom paragraph counts, classic opening toggles, and instant clipboard export.
-          </p>
-        </div>
-        <div class="tool-card-bottom">
-          <span>LAUNCH TOOL</span>
-          <span class="tool-arrow">→</span>
-        </div>
-      </a>
+          <div class="tool-card-bottom">
+            <span>LAUNCH</span>
+            <span class="tool-arrow">→</span>
+          </div>
+        </a>
 
-      <!-- TOOL 011 -->
-      <a href="palette-generator.html" class="tool-card">
-        <div>
-          <div class="tool-card-top">
-            <span class="tool-number">TOOL / 011</span>
-            <span class="tool-category">COLOR & DESIGN</span>
+        <a href="age-calculator.html" class="tool-card">
+          <div>
+            <div class="tool-card-top">
+              <span class="tool-number">TOOL / 017</span>
+              <span class="tool-category">CHRONOLOGY</span>
+            </div>
+            <h3 class="tool-title">Age Calculator</h3>
+            <p class="tool-desc">Exact age in years, months, and days plus next-birthday countdown.</p>
           </div>
-          <h2 class="tool-title">Color Palette Generator</h2>
-          <p class="tool-desc">
-            Generate 5-swatch cohesive harmonic color palettes with spacebar cycling, single-swatch locks, and one-click HEX copy.
-          </p>
-        </div>
-        <div class="tool-card-bottom">
-          <span>LAUNCH TOOL</span>
-          <span class="tool-arrow">→</span>
-        </div>
-      </a>
+          <div class="tool-card-bottom">
+            <span>LAUNCH</span>
+            <span class="tool-arrow">→</span>
+          </div>
+        </a>
 
-      <!-- TOOL 012 -->
-      <a href="markdown-previewer.html" class="tool-card">
-        <div>
-          <div class="tool-card-top">
-            <span class="tool-number">TOOL / 012</span>
-            <span class="tool-category">DEVELOPER</span>
+        <a href="bmi-calculator.html" class="tool-card">
+          <div>
+            <div class="tool-card-top">
+              <span class="tool-number">TOOL / 019</span>
+              <span class="tool-category">BIOMETRICS</span>
+            </div>
+            <h3 class="tool-title">BMI Calculator</h3>
+            <p class="tool-desc">Compute Body Mass Index across Metric and Imperial units with range bar.</p>
           </div>
-          <h2 class="tool-title">Markdown Previewer</h2>
-          <p class="tool-desc">
-            Live split-pane Markdown editor with real-time typography preview, GitHub Flavored table support, and HTML export.
-          </p>
-        </div>
-        <div class="tool-card-bottom">
-          <span>LAUNCH TOOL</span>
-          <span class="tool-arrow">→</span>
-        </div>
-      </a>
+          <div class="tool-card-bottom">
+            <span>LAUNCH</span>
+            <span class="tool-arrow">→</span>
+          </div>
+        </a>
 
-      <!-- TOOL 013 -->
-      <a href="diff-checker.html" class="tool-card">
-        <div>
-          <div class="tool-card-top">
-            <span class="tool-number">TOOL / 013</span>
-            <span class="tool-category">ANALYTICS</span>
+        <a href="compound-interest.html" class="tool-card">
+          <div>
+            <div class="tool-card-top">
+              <span class="tool-number">TOOL / 014</span>
+              <span class="tool-category">GROWTH</span>
+            </div>
+            <h3 class="tool-title">Compound Interest</h3>
+            <p class="tool-desc">Project investment growth with monthly contributions and annual yields.</p>
           </div>
-          <h2 class="tool-title">Text Diff Checker</h2>
-          <p class="tool-desc">
-            Compare two text buffers and highlight exact additions in green and deletions in red using word-level diffing algorithms.
-          </p>
-        </div>
-        <div class="tool-card-bottom">
-          <span>LAUNCH TOOL</span>
-          <span class="tool-arrow">→</span>
-        </div>
-      </a>
+          <div class="tool-card-bottom">
+            <span>LAUNCH</span>
+            <span class="tool-arrow">→</span>
+          </div>
+        </a>
 
-      <!-- TOOL 014 -->
-      <a href="compound-interest.html" class="tool-card">
-        <div>
-          <div class="tool-card-top">
-            <span class="tool-number">TOOL / 014</span>
-            <span class="tool-category">FINANCIAL</span>
+        <a href="emi-calculator.html" class="tool-card">
+          <div>
+            <div class="tool-card-top">
+              <span class="tool-number">TOOL / 020</span>
+              <span class="tool-category">LOANS</span>
+            </div>
+            <h3 class="tool-title">EMI Calculator</h3>
+            <p class="tool-desc">Calculate monthly loan installments, total interest, and principal split.</p>
           </div>
-          <h2 class="tool-title">Compound Interest Calculator</h2>
-          <p class="tool-desc">
-            Simulate investment accumulation with starting principal, recurring monthly contributions, and compound annual yields.
-          </p>
-        </div>
-        <div class="tool-card-bottom">
-          <span>LAUNCH TOOL</span>
-          <span class="tool-arrow">→</span>
-        </div>
-      </a>
+          <div class="tool-card-bottom">
+            <span>LAUNCH</span>
+            <span class="tool-arrow">→</span>
+          </div>
+        </a>
 
-      <!-- TOOL 015 -->
-      <a href="name-picker.html" class="tool-card">
-        <div>
-          <div class="tool-card-top">
-            <span class="tool-number">TOOL / 015</span>
-            <span class="tool-category">UTILITY</span>
+        <a href="discount-calculator.html" class="tool-card">
+          <div>
+            <div class="tool-card-top">
+              <span class="tool-number">TOOL / 021</span>
+              <span class="tool-category">PRICING</span>
+            </div>
+            <h3 class="tool-title">Discount Calculator</h3>
+            <p class="tool-desc">Find final sale prices, net savings, and optional sales tax totals.</p>
           </div>
-          <h2 class="tool-title">Random Name Picker</h2>
-          <p class="tool-desc">
-            Cryptographically randomized name selector with 2-second rapid cycling animation, winner tracking, and zero bias.
-          </p>
-        </div>
-        <div class="tool-card-bottom">
-          <span>LAUNCH TOOL</span>
-          <span class="tool-arrow">→</span>
-        </div>
-      </a>
+          <div class="tool-card-bottom">
+            <span>LAUNCH</span>
+            <span class="tool-arrow">→</span>
+          </div>
+        </a>
+      </div>
+    </section>
 
-      <!-- TOOL 016 -->
-      <a href="typing-test.html" class="tool-card">
-        <div>
-          <div class="tool-card-top">
-            <span class="tool-number">TOOL / 016</span>
-            <span class="tool-category">BENCHMARK</span>
+    <!-- ============================================================
+         03 — DEVELOPER & CODE
+         ============================================================ -->
+    <section class="tool-group" id="cat-dev">
+      <div class="group-header">
+        <div class="group-heading-wrap">
+          <span class="group-index">03 /</span>
+          <h2 class="group-title">Developer &amp; Code</h2>
+          <span class="group-subtitle">Data serialization, markup escaping, and binary encoding</span>
+        </div>
+        <span class="group-count">05 TOOLS</span>
+      </div>
+
+      <div class="tools-grid">
+        <a href="json-formatter.html" class="tool-card">
+          <div>
+            <div class="tool-card-top">
+              <span class="tool-number">TOOL / 009</span>
+              <span class="tool-category">PARSER</span>
+            </div>
+            <h3 class="tool-title">JSON Formatter</h3>
+            <p class="tool-desc">Beautify, minify, and validate JSON payloads with clear syntax errors.</p>
           </div>
-          <h2 class="tool-title">Typing Speed Test</h2>
-          <p class="tool-desc">
-            Measure keystroke velocity with real-time Words Per Minute tracking, accuracy scoring, and dynamic error highlighting.
-          </p>
+          <div class="tool-card-bottom">
+            <span>LAUNCH</span>
+            <span class="tool-arrow">→</span>
+          </div>
+        </a>
+
+        <a href="markdown-previewer.html" class="tool-card">
+          <div>
+            <div class="tool-card-top">
+              <span class="tool-number">TOOL / 012</span>
+              <span class="tool-category">MARKUP</span>
+            </div>
+            <h3 class="tool-title">Markdown Previewer</h3>
+            <p class="tool-desc">Split-pane Markdown editor with live rendered preview and HTML copy.</p>
+          </div>
+          <div class="tool-card-bottom">
+            <span>LAUNCH</span>
+            <span class="tool-arrow">→</span>
+          </div>
+        </a>
+
+        <a href="html-entity.html" class="tool-card">
+          <div>
+            <div class="tool-card-top">
+              <span class="tool-number">TOOL / 031</span>
+              <span class="tool-category">ESCAPING</span>
+            </div>
+            <h3 class="tool-title">HTML Entity Converter</h3>
+            <p class="tool-desc">Bidirectionally encode raw HTML markup into safe entities and back.</p>
+          </div>
+          <div class="tool-card-bottom">
+            <span>LAUNCH</span>
+            <span class="tool-arrow">→</span>
+          </div>
+        </a>
+
+        <a href="base64.html" class="tool-card">
+          <div>
+            <div class="tool-card-top">
+              <span class="tool-number">TOOL / 005</span>
+              <span class="tool-category">ENCODING</span>
+            </div>
+            <h3 class="tool-title">Base64 Encoder / Decoder</h3>
+            <p class="tool-desc">UTF-8 safe Base64 ASCII encoding and decoding with byte metrics.</p>
+          </div>
+          <div class="tool-card-bottom">
+            <span>LAUNCH</span>
+            <span class="tool-arrow">→</span>
+          </div>
+        </a>
+
+        <a href="text-to-binary.html" class="tool-card">
+          <div>
+            <div class="tool-card-top">
+              <span class="tool-number">TOOL / 029</span>
+              <span class="tool-category">BINARY</span>
+            </div>
+            <h3 class="tool-title">Text to Binary</h3>
+            <p class="tool-desc">Translate UTF-8 strings into 8-bit binary sequences and decode back.</p>
+          </div>
+          <div class="tool-card-bottom">
+            <span>LAUNCH</span>
+            <span class="tool-arrow">→</span>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         04 — DESIGN, COLOR & CSS
+         ============================================================ -->
+    <section class="tool-group" id="cat-design">
+      <div class="group-header">
+        <div class="group-heading-wrap">
+          <span class="group-index">04 /</span>
+          <h2 class="group-title">Design &amp; Color</h2>
+          <span class="group-subtitle">Palettes, eyedropping, CSS shadows, and site icons</span>
         </div>
-        <div class="tool-card-bottom">
-          <span>LAUNCH TOOL</span>
-          <span class="tool-arrow">→</span>
+        <span class="group-count">04 TOOLS</span>
+      </div>
+
+      <div class="tools-grid">
+        <a href="color-picker.html" class="tool-card">
+          <div>
+            <div class="tool-card-top">
+              <span class="tool-number">TOOL / 006</span>
+              <span class="tool-category">INSPECTOR</span>
+            </div>
+            <h3 class="tool-title">Color Picker</h3>
+            <p class="tool-desc">Sample colors with native eyedropper and synced HEX, RGB, and HSL values.</p>
+          </div>
+          <div class="tool-card-bottom">
+            <span>LAUNCH</span>
+            <span class="tool-arrow">→</span>
+          </div>
+        </a>
+
+        <a href="palette-generator.html" class="tool-card">
+          <div>
+            <div class="tool-card-top">
+              <span class="tool-number">TOOL / 011</span>
+              <span class="tool-category">HARMONY</span>
+            </div>
+            <h3 class="tool-title">Palette Generator</h3>
+            <p class="tool-desc">Generate 5-swatch cohesive palettes with swatch locks and HEX copy.</p>
+          </div>
+          <div class="tool-card-bottom">
+            <span>LAUNCH</span>
+            <span class="tool-arrow">→</span>
+          </div>
+        </a>
+
+        <a href="text-shadow.html" class="tool-card">
+          <div>
+            <div class="tool-card-top">
+              <span class="tool-number">TOOL / 022</span>
+              <span class="tool-category">CSS</span>
+            </div>
+            <h3 class="tool-title">Text Shadow Generator</h3>
+            <p class="tool-desc">Tune X/Y offset, blur, opacity, and color with live preview and CSS copy.</p>
+          </div>
+          <div class="tool-card-bottom">
+            <span>LAUNCH</span>
+            <span class="tool-arrow">→</span>
+          </div>
+        </a>
+
+        <a href="favicon-maker.html" class="tool-card">
+          <div>
+            <div class="tool-card-top">
+              <span class="tool-number">TOOL / 024</span>
+              <span class="tool-category">ICON</span>
+            </div>
+            <h3 class="tool-title">Favicon Maker</h3>
+            <p class="tool-desc">Resize any uploaded image to 64×64 on HTML5 Canvas and export PNG.</p>
+          </div>
+          <div class="tool-card-bottom">
+            <span>LAUNCH</span>
+            <span class="tool-arrow">→</span>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         05 — IMAGE, AUDIO & DOCUMENT
+         ============================================================ -->
+    <section class="tool-group" id="cat-media">
+      <div class="group-header">
+        <div class="group-heading-wrap">
+          <span class="group-index">05 /</span>
+          <h2 class="group-title">Image, Audio &amp; PDF</h2>
+          <span class="group-subtitle">QR generation, image payloads, voice synthesis, and print export</span>
         </div>
-      </a>
-    </div>
+        <span class="group-count">05 TOOLS</span>
+      </div>
+
+      <div class="tools-grid">
+        <a href="qr-generator.html" class="tool-card">
+          <div>
+            <div class="tool-card-top">
+              <span class="tool-number">TOOL / 001</span>
+              <span class="tool-category">MATRIX</span>
+            </div>
+            <h3 class="tool-title">QR Code Generator</h3>
+            <p class="tool-desc">Turn any URL or text into a crisp scannable QR code with PNG export.</p>
+          </div>
+          <div class="tool-card-bottom">
+            <span>LAUNCH</span>
+            <span class="tool-arrow">→</span>
+          </div>
+        </a>
+
+        <a href="image-to-base64.html" class="tool-card">
+          <div>
+            <div class="tool-card-top">
+              <span class="tool-number">TOOL / 008</span>
+              <span class="tool-category">ENCODE</span>
+            </div>
+            <h3 class="tool-title">Image to Base64</h3>
+            <p class="tool-desc">Convert local image files into copyable Data URI Base64 payloads.</p>
+          </div>
+          <div class="tool-card-bottom">
+            <span>LAUNCH</span>
+            <span class="tool-arrow">→</span>
+          </div>
+        </a>
+
+        <a href="base64-to-image.html" class="tool-card">
+          <div>
+            <div class="tool-card-top">
+              <span class="tool-number">TOOL / 023</span>
+              <span class="tool-category">DECODE</span>
+            </div>
+            <h3 class="tool-title">Base64 to Image</h3>
+            <p class="tool-desc">Render raw Base64 strings or Data URIs back into downloadable images.</p>
+          </div>
+          <div class="tool-card-bottom">
+            <span>LAUNCH</span>
+            <span class="tool-arrow">→</span>
+          </div>
+        </a>
+
+        <a href="text-to-speech.html" class="tool-card">
+          <div>
+            <div class="tool-card-top">
+              <span class="tool-number">TOOL / 025</span>
+              <span class="tool-category">AUDIO</span>
+            </div>
+            <h3 class="tool-title">Text to Speech</h3>
+            <p class="tool-desc">Read text aloud via Web Speech API with voice, rate, and pitch controls.</p>
+          </div>
+          <div class="tool-card-bottom">
+            <span>LAUNCH</span>
+            <span class="tool-arrow">→</span>
+          </div>
+        </a>
+
+        <a href="text-to-pdf.html" class="tool-card">
+          <div>
+            <div class="tool-card-top">
+              <span class="tool-number">TOOL / 030</span>
+              <span class="tool-category">DOCUMENT</span>
+            </div>
+            <h3 class="tool-title">Text to PDF</h3>
+            <p class="tool-desc">Print or save plain text directly onto clean white PDF pages.</p>
+          </div>
+          <div class="tool-card-bottom">
+            <span>LAUNCH</span>
+            <span class="tool-arrow">→</span>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         06 — SECURITY, STUDY & EVERYDAY
+         ============================================================ -->
+    <section class="tool-group" id="cat-everyday">
+      <div class="group-header">
+        <div class="group-heading-wrap">
+          <span class="group-index">06 /</span>
+          <h2 class="group-title">Security &amp; Everyday</h2>
+          <span class="group-subtitle">Passwords, cryptographic randomness, typing speed, and grades</span>
+        </div>
+        <span class="group-count">05 TOOLS</span>
+      </div>
+
+      <div class="tools-grid">
+        <a href="password-generator.html" class="tool-card">
+          <div>
+            <div class="tool-card-top">
+              <span class="tool-number">TOOL / 007</span>
+              <span class="tool-category">SECURITY</span>
+            </div>
+            <h3 class="tool-title">Password Generator</h3>
+            <p class="tool-desc">Create high-entropy passwords with custom length and character rules.</p>
+          </div>
+          <div class="tool-card-bottom">
+            <span>LAUNCH</span>
+            <span class="tool-arrow">→</span>
+          </div>
+        </a>
+
+        <a href="random-number.html" class="tool-card">
+          <div>
+            <div class="tool-card-top">
+              <span class="tool-number">TOOL / 028</span>
+              <span class="tool-category">RNG</span>
+            </div>
+            <h3 class="tool-title">Random Number Generator</h3>
+            <p class="tool-desc">Draw unbiased integers between Min and Max using Web Crypto.</p>
+          </div>
+          <div class="tool-card-bottom">
+            <span>LAUNCH</span>
+            <span class="tool-arrow">→</span>
+          </div>
+        </a>
+
+        <a href="name-picker.html" class="tool-card">
+          <div>
+            <div class="tool-card-top">
+              <span class="tool-number">TOOL / 015</span>
+              <span class="tool-category">SELECTION</span>
+            </div>
+            <h3 class="tool-title">Random Name Picker</h3>
+            <p class="tool-desc">Fair cryptographic name draw with rapid cycling reveal animation.</p>
+          </div>
+          <div class="tool-card-bottom">
+            <span>LAUNCH</span>
+            <span class="tool-arrow">→</span>
+          </div>
+        </a>
+
+        <a href="typing-test.html" class="tool-card">
+          <div>
+            <div class="tool-card-top">
+              <span class="tool-number">TOOL / 016</span>
+              <span class="tool-category">BENCHMARK</span>
+            </div>
+            <h3 class="tool-title">Typing Speed Test</h3>
+            <p class="tool-desc">Track real-time WPM velocity, accuracy percentage, and error highlights.</p>
+          </div>
+          <div class="tool-card-bottom">
+            <span>LAUNCH</span>
+            <span class="tool-arrow">→</span>
+          </div>
+        </a>
+
+        <a href="igcse-calculator.html" class="tool-card">
+          <div>
+            <div class="tool-card-top">
+              <span class="tool-number">TOOL / 002</span>
+              <span class="tool-category">ACADEMICS</span>
+            </div>
+            <h3 class="tool-title">IGCSE Grade Calculator</h3>
+            <p class="tool-desc">Find the exact component score needed to hit your target IGCSE grade.</p>
+          </div>
+          <div class="tool-card-bottom">
+            <span>LAUNCH</span>
+            <span class="tool-arrow">→</span>
+          </div>
+        </a>
+      </div>
+    </section>
 
     <!-- SPECS STRIP -->
     <div class="specs-strip">
       <div class="spec-item">
         <span class="spec-label">SUITE CAPACITY</span>
-        <span class="spec-val">16 Focused Tools</span>
+        <span class="spec-val">31 Focused Tools</span>
       </div>
       <div class="spec-item">
         <span class="spec-label">EXECUTION ENGINE</span>
@@ -1318,7 +1709,22 @@
         'TEXT DIFF CHECKER',
         'COMPOUND INTEREST CALCULATOR',
         'RANDOM NAME PICKER',
-        'TYPING SPEED TEST'
+        'TYPING SPEED TEST',
+        'AGE CALCULATOR',
+        'PERCENTAGE CALCULATOR',
+        'BMI CALCULATOR',
+        'EMI CALCULATOR',
+        'DISCOUNT CALCULATOR',
+        'TEXT SHADOW GENERATOR',
+        'BASE64 TO IMAGE',
+        'FAVICON MAKER',
+        'TEXT TO SPEECH',
+        'REVERSE TEXT',
+        'REMOVE DUPLICATE LINES',
+        'RANDOM NUMBER GENERATOR',
+        'TEXT TO BINARY',
+        'TEXT TO PDF',
+        'HTML ENTITY CONVERTER'
       ];
 
       const circumference = 2 * Math.PI * 152;
@@ -1378,7 +1784,7 @@
 
         const toolIdx = Math.min(utilities.length - 1, Math.floor(eased * utilities.length));
         if (tickerEl) tickerEl.textContent = utilities[toolIdx];
-        if (countEl) countEl.textContent = String(toolIdx + 1).padStart(2, '0') + ' / 16';
+        if (countEl) countEl.textContent = String(toolIdx + 1).padStart(2, '0') + ' / 31';
 
         for (let i = 0; i < ticks.length; i++) {
           if (ticks[i] && pct >= (i + 1) * 25) {

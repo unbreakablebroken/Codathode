@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Favicon Maker — CODATHODE.</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon.png" />
+  <link rel="apple-touch-icon" href="favicon.png" />
+  <meta name="description" content="Resize any uploaded image into a crisp 64x64 square PNG favicon using HTML5 Canvas locally in your browser." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    /* CODATHODE DESIGN SYSTEM */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: #041E1D;
+      color: #D8F2DE;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      line-height: 1.5;
+    }
+
+    header {
+      width: 100%;
+      border-bottom: 1px solid rgba(216, 242, 222, 0.13);
+      padding: 24px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background-color: #041E1D;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .brand {
+      font-size: 1.125rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      text-decoration: none;
+      color: #D8F2DE;
+      display: inline-flex;
+      align-items: center;
+      transition: opacity 0.15s ease;
+    }
+
+    .brand:hover { opacity: 0.9; }
+    .brand .faded { color: #86A99A; font-weight: 700; }
+
+    .header-meta {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      color: #86A99A;
+      text-transform: uppercase;
+    }
+
+    main {
+      flex: 1;
+      max-width: 1360px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 56px 48px 80px 48px;
+    }
+
+    .hero-kicker {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      color: #86A99A;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .hero-kicker a { color: #86A99A; text-decoration: none; transition: color 0.15s ease; }
+    .hero-kicker a:hover { color: #D8F2DE; }
+    .hero-kicker span.sep { opacity: 0.4; }
+
+    .hero-split {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 40px;
+      margin-bottom: 56px;
+      flex-wrap: wrap;
+    }
+
+    .hero-heading {
+      font-size: clamp(2.75rem, 6.5vw, 5.25rem);
+      font-weight: 900;
+      line-height: 0.92;
+      letter-spacing: -0.05em;
+      color: #D8F2DE;
+      max-width: 780px;
+      text-transform: uppercase;
+    }
+
+    .hero-sub {
+      color: #86A99A;
+      font-size: 1.0625rem;
+      line-height: 1.6;
+      max-width: 380px;
+      margin-bottom: 8px;
+    }
+
+    .tool-canvas {
+      background-color: #0C2D24;
+      border: 1px solid rgba(216, 242, 222, 0.13);
+      border-radius: 6px;
+      padding: 44px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+    }
+
+    .col-input {
+      display: flex;
+      flex-direction: column;
+      border-right: 1px solid rgba(216, 242, 222, 0.13);
+      padding-right: 48px;
+    }
+
+    .step-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      color: #86A99A;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+
+    .tool-inner-title {
+      font-size: 1.625rem;
+      font-weight: 800;
+      letter-spacing: -0.025em;
+      color: #D8F2DE;
+      margin-bottom: 8px;
+    }
+
+    .tool-inner-desc {
+      font-size: 0.9375rem;
+      color: #86A99A;
+      line-height: 1.5;
+      margin-bottom: 24px;
+    }
+
+    .dropzone {
+      border: 2px dashed rgba(216, 242, 222, 0.25);
+      border-radius: 6px;
+      background-color: #041E1D;
+      padding: 40px 24px;
+      text-align: center;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 24px;
+      transition: all 0.2s ease;
+    }
+
+    .dropzone:hover, .dropzone.dragover {
+      border-color: #D8F2DE;
+      background-color: rgba(22, 84, 72, 0.25);
+    }
+
+    .drop-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #D8F2DE;
+    }
+
+    .drop-sub {
+      font-size: 0.8125rem;
+      color: #86A99A;
+    }
+
+    .mode-toggle {
+      display: flex;
+      background-color: #041E1D;
+      border: 1px solid rgba(216, 242, 222, 0.13);
+      border-radius: 4px;
+      padding: 5px;
+      gap: 6px;
+      margin-bottom: 24px;
+    }
+
+    .mode-btn {
+      flex: 1;
+      height: 40px;
+      background: transparent;
+      border: 1px solid transparent;
+      border-radius: 3px;
+      color: #86A99A;
+      font-family: inherit;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .mode-btn.active {
+      background-color: #165448;
+      border-color: rgba(216, 242, 222, 0.25);
+      color: #D8F2DE;
+    }
+
+    .btn-primary {
+      background-color: #165448;
+      color: #D8F2DE;
+      border: 1px solid rgba(216, 242, 222, 0.2);
+      border-radius: 4px;
+      padding: 16px 24px;
+      font-family: inherit;
+      font-size: 0.8125rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      cursor: pointer;
+      width: 100%;
+      margin-top: auto;
+      transition: all 0.15s ease;
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      background-color: #1c6859;
+      border-color: rgba(216, 242, 222, 0.4);
+    }
+
+    .btn-primary:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+
+    .col-output {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .preview-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      flex: 1;
+    }
+
+    .size-card {
+      background-color: #041E1D;
+      border: 1px solid rgba(216, 242, 222, 0.14);
+      border-radius: 4px;
+      padding: 24px 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+    }
+
+    .canvas-frame {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px dashed rgba(216, 242, 222, 0.2);
+      border-radius: 4px;
+      padding: 8px;
+      background-image: linear-gradient(45deg, rgba(216,242,222,0.04) 25%, transparent 25%),
+                        linear-gradient(-45deg, rgba(216,242,222,0.04) 25%, transparent 25%),
+                        linear-gradient(45deg, transparent 75%, rgba(216,242,222,0.04) 75%),
+                        linear-gradient(-45deg, transparent 75%, rgba(216,242,222,0.04) 75%);
+      background-size: 12px 12px;
+      background-position: 0 0, 0 6px, 6px -6px, -6px 0;
+    }
+
+    .size-label {
+      font-size: 0.6875rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: #86A99A;
+      text-transform: uppercase;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .file-meta-row {
+      display: flex;
+      justify-content: space-between;
+      border-top: 1px solid rgba(216, 242, 222, 0.1);
+      padding-top: 14px;
+      font-size: 0.8125rem;
+    }
+
+    .file-meta-row span { color: #86A99A; }
+    .file-meta-row strong { color: #D8F2DE; font-variant-numeric: tabular-nums; }
+
+    footer {
+      border-top: 1px solid rgba(216, 242, 222, 0.13);
+      padding: 32px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: #86A99A;
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      background-color: #041E1D;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .footer-brand { color: #D8F2DE; font-weight: 800; text-decoration: none; letter-spacing: -0.01em; }
+    .footer-brand .faded { color: #86A99A; }
+    .footer-links { display: flex; align-items: center; gap: 24px; }
+    .footer-links a { color: #86A99A; text-decoration: none; transition: color 0.15s ease; }
+    .footer-links a:hover { color: #D8F2DE; }
+
+    @media (max-width: 900px) {
+      .tool-canvas { grid-template-columns: 1fr; padding: 32px 24px; }
+      .col-input { border-right: none; border-bottom: 1px solid rgba(216, 242, 222, 0.13); padding-right: 0; padding-bottom: 36px; }
+    }
+
+    @media (max-width: 640px) {
+      header { padding: 20px 24px; }
+      main { padding: 40px 24px 64px 24px; }
+      .hero-heading { letter-spacing: -0.035em; line-height: 0.98; }
+      .preview-grid { grid-template-columns: 1fr; }
+      footer { padding: 24px; flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="index.html" class="brand">
+      CODA<span class="faded">THODE.</span>
+    </a>
+    <div class="header-meta">
+      <span>WEB UTILITIES</span>
+      <span>024 / 031</span>
+    </div>
+  </header>
+
+  <main>
+    <div class="hero-kicker">
+      <a href="index.html">DIGITAL UTILITIES</a>
+      <span class="sep">/</span>
+      <span>TOOL 024</span>
+    </div>
+
+    <div class="hero-split">
+      <h1 class="hero-heading">
+        FORGE SHARP<br />
+        FAVICONS.
+      </h1>
+      <p class="hero-sub">
+        Resize any uploaded logo or artwork into a clean 64×64 PNG favicon using HTML5 Canvas with zero server uploads.
+      </p>
+    </div>
+
+    <div class="tool-canvas">
+      <div class="col-input">
+        <div class="step-label">01 — SOURCE IMAGE</div>
+        <h2 class="tool-inner-title">Favicon Maker</h2>
+        <p class="tool-inner-desc">
+          Upload a PNG, SVG, WEBP, or JPEG file. Choose center-cover cropping or contain scaling, then export at 64×64.
+        </p>
+
+        <div id="dropzone" class="dropzone" tabindex="0" role="button" aria-label="Upload image to create favicon">
+          <span class="drop-title">Drop Image File or Click to Browse</span>
+          <span class="drop-sub">PNG, SVG, JPG, WEBP — Processed 100% in browser memory</span>
+          <input type="file" id="fileInput" accept="image/*" hidden />
+        </div>
+
+        <div class="mode-toggle" role="tablist" aria-label="Canvas fit mode">
+          <button type="button" class="mode-btn active" data-fit="contain">CONTAIN (FIT ALL)</button>
+          <button type="button" class="mode-btn" data-fit="cover">COVER (SQUARE CROP)</button>
+        </div>
+
+        <button id="downloadBtn" class="btn-primary" type="button" disabled>
+          DOWNLOAD FAVICON (64×64 PNG) ↓
+        </button>
+      </div>
+
+      <div class="col-output">
+        <div class="step-label">02 — CANVAS PREVIEWS</div>
+
+        <div class="preview-grid">
+          <div class="size-card">
+            <div class="canvas-frame">
+              <canvas id="canvas64" width="64" height="64"></canvas>
+            </div>
+            <span class="size-label">64 × 64 PX</span>
+          </div>
+          <div class="size-card">
+            <div class="canvas-frame">
+              <canvas id="canvas32" width="32" height="32"></canvas>
+            </div>
+            <span class="size-label">32 × 32 PX</span>
+          </div>
+          <div class="size-card">
+            <div class="canvas-frame">
+              <canvas id="canvas16" width="16" height="16"></canvas>
+            </div>
+            <span class="size-label">16 × 16 PX</span>
+          </div>
+        </div>
+
+        <div class="file-meta-row">
+          <span>Source File</span>
+          <strong id="sourceInfo">Awaiting image upload...</strong>
+        </div>
+        <div class="file-meta-row">
+          <span>Output Target</span>
+          <strong>64×64 PNG (Transparent Alpha)</strong>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <a href="index.html" class="footer-brand">
+      CODA<span class="faded">THODE.</span>
+    </a>
+    <div class="footer-links">
+      <a href="index.html">UTILITIES</a>
+      <a href="about.html">ABOUT</a>
+      <a href="privacy.html">PRIVACY POLICY</a>
+    </div>
+    <span>ALL UTILITIES RUN LOCALLY IN YOUR BROWSER &copy; 2026</span>
+  </footer>
+
+  <script>
+    const dropzone = document.getElementById('dropzone');
+    const fileInput = document.getElementById('fileInput');
+    const fitBtns = document.querySelectorAll('.mode-btn');
+    const downloadBtn = document.getElementById('downloadBtn');
+    const sourceInfo = document.getElementById('sourceInfo');
+
+    const canvas64 = document.getElementById('canvas64');
+    const canvas32 = document.getElementById('canvas32');
+    const canvas16 = document.getElementById('canvas16');
+
+    let loadedImg = null;
+    let fitMode = 'contain';
+
+    function drawToCanvas(canvas, img) {
+      const ctx = canvas.getContext('2d');
+      const size = canvas.width;
+      ctx.clearRect(0, 0, size, size);
+      ctx.imageSmoothingEnabled = true;
+      ctx.imageSmoothingQuality = 'high';
+
+      const iw = img.naturalWidth || img.width;
+      const ih = img.naturalHeight || img.height;
+      if (!iw || !ih) return;
+
+      if (fitMode === 'contain') {
+        const scale = Math.min(size / iw, size / ih);
+        const w = iw * scale;
+        const h = ih * scale;
+        ctx.drawImage(img, (size - w) / 2, (size - h) / 2, w, h);
+      } else {
+        const scale = Math.max(size / iw, size / ih);
+        const sw = size / scale;
+        const sh = size / scale;
+        const sx = (iw - sw) / 2;
+        const sy = (ih - sh) / 2;
+        ctx.drawImage(img, sx, sy, sw, sh, 0, 0, size, size);
+      }
+    }
+
+    function renderAll() {
+      if (!loadedImg) return;
+      drawToCanvas(canvas64, loadedImg);
+      drawToCanvas(canvas32, loadedImg);
+      drawToCanvas(canvas16, loadedImg);
+    }
+
+    function handleFile(file) {
+      if (!file || !file.type.startsWith('image/')) return;
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        const img = new Image();
+        img.onload = function () {
+          loadedImg = img;
+          sourceInfo.textContent = `${file.name} (${img.naturalWidth}×${img.naturalHeight})`;
+          downloadBtn.disabled = false;
+          renderAll();
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    dropzone.addEventListener('click', () => fileInput.click());
+    dropzone.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        fileInput.click();
+      }
+    });
+
+    fileInput.addEventListener('change', (e) => handleFile(e.target.files[0]));
+
+    dropzone.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      dropzone.classList.add('dragover');
+    });
+    dropzone.addEventListener('dragleave', () => dropzone.classList.remove('dragover'));
+    dropzone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      dropzone.classList.remove('dragover');
+      handleFile(e.dataTransfer.files[0]);
+    });
+
+    fitBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        fitBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        fitMode = btn.getAttribute('data-fit');
+        renderAll();
+      });
+    });
+
+    downloadBtn.addEventListener('click', () => {
+      if (!loadedImg) return;
+      const url = canvas64.toDataURL('image/png');
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'favicon.png';
+      a.click();
+    });
+  </script>
+</body>
+</html>

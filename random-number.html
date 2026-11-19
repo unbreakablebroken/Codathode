@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Random Number Generator — CODATHODE.</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon.png" />
+  <link rel="apple-touch-icon" href="favicon.png" />
+  <meta name="description" content="Generate cryptographically unbiased random integers within any inclusive range locally using Web Crypto." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    /* CODATHODE DESIGN SYSTEM */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: #041E1D;
+      color: #D8F2DE;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      line-height: 1.5;
+    }
+
+    header {
+      width: 100%;
+      border-bottom: 1px solid rgba(216, 242, 222, 0.13);
+      padding: 24px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background-color: #041E1D;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .brand {
+      font-size: 1.125rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      text-decoration: none;
+      color: #D8F2DE;
+      display: inline-flex;
+      align-items: center;
+      transition: opacity 0.15s ease;
+    }
+
+    .brand:hover { opacity: 0.9; }
+    .brand .faded { color: #86A99A; font-weight: 700; }
+
+    .header-meta {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      color: #86A99A;
+      text-transform: uppercase;
+    }
+
+    main {
+      flex: 1;
+      max-width: 1360px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 56px 48px 80px 48px;
+    }
+
+    .hero-kicker {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      color: #86A99A;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .hero-kicker a { color: #86A99A; text-decoration: none; transition: color 0.15s ease; }
+    .hero-kicker a:hover { color: #D8F2DE; }
+    .hero-kicker span.sep { opacity: 0.4; }
+
+    .hero-split {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 40px;
+      margin-bottom: 56px;
+      flex-wrap: wrap;
+    }
+
+    .hero-heading {
+      font-size: clamp(2.75rem, 6.5vw, 5.25rem);
+      font-weight: 900;
+      line-height: 0.92;
+      letter-spacing: -0.05em;
+      color: #D8F2DE;
+      max-width: 780px;
+      text-transform: uppercase;
+    }
+
+    .hero-sub {
+      color: #86A99A;
+      font-size: 1.0625rem;
+      line-height: 1.6;
+      max-width: 380px;
+      margin-bottom: 8px;
+    }
+
+    .tool-canvas {
+      background-color: #0C2D24;
+      border: 1px solid rgba(216, 242, 222, 0.13);
+      border-radius: 6px;
+      padding: 44px;
+      display: grid;
+      grid-template-columns: 1fr 1.15fr;
+      gap: 48px;
+    }
+
+    .col-input {
+      display: flex;
+      flex-direction: column;
+      border-right: 1px solid rgba(216, 242, 222, 0.13);
+      padding-right: 48px;
+    }
+
+    .step-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      color: #86A99A;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+
+    .tool-inner-title {
+      font-size: 1.625rem;
+      font-weight: 800;
+      letter-spacing: -0.025em;
+      color: #D8F2DE;
+      margin-bottom: 8px;
+    }
+
+    .tool-inner-desc {
+      font-size: 0.9375rem;
+      color: #86A99A;
+      line-height: 1.5;
+      margin-bottom: 24px;
+    }
+
+    .split-inputs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 18px;
+    }
+
+    .field-label {
+      font-size: 0.6875rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      color: #86A99A;
+      text-transform: uppercase;
+    }
+
+    .app-input {
+      width: 100%;
+      height: 50px;
+      background-color: #041E1D;
+      border: 1px solid rgba(216, 242, 222, 0.18);
+      border-radius: 4px;
+      padding: 0 16px;
+      color: #D8F2DE;
+      font-family: 'Inter', sans-serif;
+      font-size: 1.0625rem;
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+      outline: none;
+      transition: border-color 0.15s ease;
+    }
+
+    .app-input:focus { border-color: #D8F2DE; }
+
+    .preset-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 24px;
+    }
+
+    .preset-chip {
+      background-color: rgba(216, 242, 222, 0.05);
+      border: 1px solid rgba(216, 242, 222, 0.15);
+      border-radius: 3px;
+      color: #86A99A;
+      padding: 7px 11px;
+      font-family: inherit;
+      font-size: 0.75rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .preset-chip:hover {
+      background-color: rgba(216, 242, 222, 0.12);
+      color: #D8F2DE;
+    }
+
+    .btn-primary {
+      background-color: #165448;
+      color: #D8F2DE;
+      border: 1px solid rgba(216, 242, 222, 0.22);
+      border-radius: 4px;
+      padding: 18px 24px;
+      font-family: inherit;
+      font-size: 0.875rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      cursor: pointer;
+      width: 100%;
+      margin-top: auto;
+      transition: all 0.15s ease;
+    }
+
+    .btn-primary:hover {
+      background-color: #1c6859;
+      border-color: rgba(216, 242, 222, 0.45);
+    }
+
+    .col-output {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .hero-stat-card {
+      flex: 1;
+      min-height: 220px;
+      background-color: #041E1D;
+      border: 1px solid rgba(216, 242, 222, 0.15);
+      border-radius: 4px;
+      padding: 36px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: 12px;
+    }
+
+    .stat-kicker {
+      font-size: 0.6875rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      color: #86A99A;
+      text-transform: uppercase;
+    }
+
+    .stat-main-number {
+      font-size: clamp(3.5rem, 7vw, 5.5rem);
+      font-weight: 900;
+      letter-spacing: -0.05em;
+      color: #D8F2DE;
+      font-variant-numeric: tabular-nums;
+      line-height: 1;
+    }
+
+    .history-bar {
+      background-color: rgba(4, 30, 29, 0.5);
+      border: 1px solid rgba(216, 242, 222, 0.1);
+      border-radius: 4px;
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .history-list {
+      font-size: 0.875rem;
+      font-weight: 700;
+      color: #D8F2DE;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .btn-secondary {
+      background-color: transparent;
+      color: #D8F2DE;
+      border: 1px solid rgba(216, 242, 222, 0.25);
+      border-radius: 4px;
+      padding: 10px 16px;
+      font-family: inherit;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.15s ease;
+    }
+
+    .btn-secondary:hover {
+      border-color: #D8F2DE;
+      background-color: rgba(216, 242, 222, 0.06);
+    }
+
+    footer {
+      border-top: 1px solid rgba(216, 242, 222, 0.13);
+      padding: 32px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: #86A99A;
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      background-color: #041E1D;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .footer-brand { color: #D8F2DE; font-weight: 800; text-decoration: none; letter-spacing: -0.01em; }
+    .footer-brand .faded { color: #86A99A; }
+    .footer-links { display: flex; align-items: center; gap: 24px; }
+    .footer-links a { color: #86A99A; text-decoration: none; transition: color 0.15s ease; }
+    .footer-links a:hover { color: #D8F2DE; }
+
+    @media (max-width: 900px) {
+      .tool-canvas { grid-template-columns: 1fr; padding: 32px 24px; }
+      .col-input { border-right: none; border-bottom: 1px solid rgba(216, 242, 222, 0.13); padding-right: 0; padding-bottom: 36px; }
+    }
+
+    @media (max-width: 640px) {
+      header { padding: 20px 24px; }
+      main { padding: 40px 24px 64px 24px; }
+      .split-inputs { grid-template-columns: 1fr; }
+      .hero-heading { letter-spacing: -0.035em; line-height: 0.98; }
+      footer { padding: 24px; flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="index.html" class="brand">
+      CODA<span class="faded">THODE.</span>
+    </a>
+    <div class="header-meta">
+      <span>WEB UTILITIES</span>
+      <span>028 / 031</span>
+    </div>
+  </header>
+
+  <main>
+    <div class="hero-kicker">
+      <a href="index.html">DIGITAL UTILITIES</a>
+      <span class="sep">/</span>
+      <span>TOOL 028</span>
+    </div>
+
+    <div class="hero-split">
+      <h1 class="hero-heading">
+        TRUE CRYPTO<br />
+        ENTROPY.
+      </h1>
+      <p class="hero-sub">
+        Generate cryptographically unbiased random integers between any inclusive minimum and maximum bounds locally.
+      </p>
+    </div>
+
+    <div class="tool-canvas">
+      <div class="col-input">
+        <div class="step-label">01 — INTEGER BOUNDS</div>
+        <h2 class="tool-inner-title">Random Number Generator</h2>
+        <p class="tool-inner-desc">
+          Define your lower and upper inclusive integer boundaries and draw using Web Crypto unbiased sampling.
+        </p>
+
+        <div class="split-inputs">
+          <div class="form-group">
+            <label for="minVal" class="field-label">MINIMUM (INCLUSIVE)</label>
+            <input type="number" id="minVal" class="app-input" value="1" step="1" />
+          </div>
+          <div class="form-group">
+            <label for="maxVal" class="field-label">MAXIMUM (INCLUSIVE)</label>
+            <input type="number" id="maxVal" class="app-input" value="100" step="1" />
+          </div>
+        </div>
+
+        <div class="preset-row">
+          <button type="button" class="preset-chip" data-min="1" data-max="6">D6 (1–6)</button>
+          <button type="button" class="preset-chip" data-min="1" data-max="20">D20 (1–20)</button>
+          <button type="button" class="preset-chip" data-min="1" data-max="100">1 – 100</button>
+          <button type="button" class="preset-chip" data-min="1000" data-max="9999">4-DIGIT PIN</button>
+        </div>
+
+        <button id="generateBtn" class="btn-primary" type="button">
+          GENERATE NUMBER →
+        </button>
+      </div>
+
+      <div class="col-output">
+        <div class="step-label">02 — DRAWN INTEGER</div>
+
+        <div class="hero-stat-card">
+          <span id="rangeLabel" class="stat-kicker">RANGE: 1 — 100</span>
+          <div id="resultNumber" class="stat-main-number">42</div>
+        </div>
+
+        <div class="history-bar">
+          <div>
+            <span class="stat-kicker" style="display:block; margin-bottom:2px;">RECENT DRAWS</span>
+            <span id="historyList" class="history-list">42</span>
+          </div>
+          <button id="copyBtn" class="btn-secondary" type="button">COPY</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <a href="index.html" class="footer-brand">
+      CODA<span class="faded">THODE.</span>
+    </a>
+    <div class="footer-links">
+      <a href="index.html">UTILITIES</a>
+      <a href="about.html">ABOUT</a>
+      <a href="privacy.html">PRIVACY POLICY</a>
+    </div>
+    <span>ALL UTILITIES RUN LOCALLY IN YOUR BROWSER &copy; 2026</span>
+  </footer>
+
+  <script>
+    const minVal = document.getElementById('minVal');
+    const maxVal = document.getElementById('maxVal');
+    const generateBtn = document.getElementById('generateBtn');
+    const resultNumber = document.getElementById('resultNumber');
+    const rangeLabel = document.getElementById('rangeLabel');
+    const historyList = document.getElementById('historyList');
+    const copyBtn = document.getElementById('copyBtn');
+    const presetChips = document.querySelectorAll('.preset-chip');
+
+    const history = [];
+
+    function secureRandomInt(min, max) {
+      const range = max - min + 1;
+      if (range <= 1) return min;
+      const maxUint32 = 0xffffffff;
+      const limit = maxUint32 - (maxUint32 % range);
+      const buf = new Uint32Array(1);
+      let rand;
+      do {
+        crypto.getRandomValues(buf);
+        rand = buf[0];
+      } while (rand >= limit);
+      return min + (rand % range);
+    }
+
+    function drawNumber() {
+      let a = Math.trunc(parseInt(minVal.value, 10));
+      let b = Math.trunc(parseInt(maxVal.value, 10));
+      if (isNaN(a)) a = 1;
+      if (isNaN(b)) b = 100;
+
+      const low = Math.min(a, b);
+      const high = Math.max(a, b);
+
+      const n = secureRandomInt(low, high);
+      resultNumber.textContent = n.toLocaleString();
+      rangeLabel.textContent = `RANGE: ${low.toLocaleString()} — ${high.toLocaleString()}`;
+
+      history.unshift(n.toLocaleString());
+      if (history.length > 6) history.pop();
+      historyList.textContent = history.join(' · ');
+    }
+
+    presetChips.forEach(chip => {
+      chip.addEventListener('click', () => {
+        minVal.value = chip.getAttribute('data-min');
+        maxVal.value = chip.getAttribute('data-max');
+        drawNumber();
+      });
+    });
+
+    generateBtn.addEventListener('click', drawNumber);
+
+    copyBtn.addEventListener('click', () => {
+      const raw = resultNumber.textContent.replace(/,/g, '');
+      navigator.clipboard.writeText(raw).then(() => {
+        const orig = copyBtn.textContent;
+        copyBtn.textContent = 'COPIED ✓';
+        setTimeout(() => { copyBtn.textContent = orig; }, 1400);
+      });
+    });
+
+    drawNumber();
+  </script>
+</body>
+</html>

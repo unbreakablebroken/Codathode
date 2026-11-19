@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HTML Entity Converter — CODATHODE.</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon.png" />
+  <link rel="apple-touch-icon" href="favicon.png" />
+  <meta name="description" content="Encode raw HTML markup into safe HTML entities and decode named or numeric entities back into HTML locally." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    /* CODATHODE DESIGN SYSTEM */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: #041E1D;
+      color: #D8F2DE;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      line-height: 1.5;
+    }
+
+    header {
+      width: 100%;
+      border-bottom: 1px solid rgba(216, 242, 222, 0.13);
+      padding: 24px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background-color: #041E1D;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .brand {
+      font-size: 1.125rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      text-decoration: none;
+      color: #D8F2DE;
+      display: inline-flex;
+      align-items: center;
+      transition: opacity 0.15s ease;
+    }
+
+    .brand:hover { opacity: 0.9; }
+    .brand .faded { color: #86A99A; font-weight: 700; }
+
+    .header-meta {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      color: #86A99A;
+      text-transform: uppercase;
+    }
+
+    main {
+      flex: 1;
+      max-width: 1360px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 56px 48px 80px 48px;
+    }
+
+    .hero-kicker {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      color: #86A99A;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .hero-kicker a { color: #86A99A; text-decoration: none; transition: color 0.15s ease; }
+    .hero-kicker a:hover { color: #D8F2DE; }
+    .hero-kicker span.sep { opacity: 0.4; }
+
+    .hero-split {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 40px;
+      margin-bottom: 56px;
+      flex-wrap: wrap;
+    }
+
+    .hero-heading {
+      font-size: clamp(2.75rem, 6.5vw, 5.25rem);
+      font-weight: 900;
+      line-height: 0.92;
+      letter-spacing: -0.05em;
+      color: #D8F2DE;
+      max-width: 780px;
+      text-transform: uppercase;
+    }
+
+    .hero-sub {
+      color: #86A99A;
+      font-size: 1.0625rem;
+      line-height: 1.6;
+      max-width: 380px;
+      margin-bottom: 8px;
+    }
+
+    .tool-canvas {
+      background-color: #0C2D24;
+      border: 1px solid rgba(216, 242, 222, 0.13);
+      border-radius: 6px;
+      padding: 40px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .mode-toggle {
+      display: inline-flex;
+      background-color: #041E1D;
+      border: 1px solid rgba(216, 242, 222, 0.13);
+      border-radius: 4px;
+      padding: 5px;
+      gap: 6px;
+    }
+
+    .mode-btn {
+      background: transparent;
+      border: 1px solid transparent;
+      border-radius: 3px;
+      color: #86A99A;
+      font-family: inherit;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 10px 16px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .mode-btn.active {
+      background-color: #165448;
+      border-color: rgba(216, 242, 222, 0.25);
+      color: #D8F2DE;
+    }
+
+    .split-panes {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px;
+    }
+
+    .pane {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .pane-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: #86A99A;
+      text-transform: uppercase;
+    }
+
+    .app-textarea {
+      width: 100%;
+      min-height: 280px;
+      background-color: #041E1D;
+      border: 1px solid rgba(216, 242, 222, 0.18);
+      border-radius: 4px;
+      padding: 18px;
+      color: #D8F2DE;
+      font-family: 'SFMono-Regular', Consolas, monospace;
+      font-size: 0.875rem;
+      line-height: 1.65;
+      resize: vertical;
+      outline: none;
+      transition: border-color 0.15s ease;
+    }
+
+    .app-textarea:focus { border-color: #D8F2DE; }
+    .app-textarea::placeholder { color: rgba(134, 169, 154, 0.55); }
+
+    .actions-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      border-top: 1px solid rgba(216, 242, 222, 0.12);
+      padding-top: 20px;
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      background-color: #165448;
+      color: #D8F2DE;
+      border: 1px solid rgba(216, 242, 222, 0.2);
+      border-radius: 4px;
+      padding: 14px 24px;
+      font-family: inherit;
+      font-size: 0.8125rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .btn-primary:hover {
+      background-color: #1c6859;
+      border-color: rgba(216, 242, 222, 0.4);
+    }
+
+    .btn-secondary {
+      background-color: transparent;
+      color: #D8F2DE;
+      border: 1px solid rgba(216, 242, 222, 0.25);
+      border-radius: 4px;
+      padding: 14px 18px;
+      font-family: inherit;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .btn-secondary:hover {
+      border-color: #D8F2DE;
+      background-color: rgba(216, 242, 222, 0.06);
+    }
+
+    footer {
+      border-top: 1px solid rgba(216, 242, 222, 0.13);
+      padding: 32px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: #86A99A;
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      background-color: #041E1D;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .footer-brand { color: #D8F2DE; font-weight: 800; text-decoration: none; letter-spacing: -0.01em; }
+    .footer-brand .faded { color: #86A99A; }
+    .footer-links { display: flex; align-items: center; gap: 24px; }
+    .footer-links a { color: #86A99A; text-decoration: none; transition: color 0.15s ease; }
+    .footer-links a:hover { color: #D8F2DE; }
+
+    @media (max-width: 900px) {
+      .split-panes { grid-template-columns: 1fr; }
+      .tool-canvas { padding: 28px 20px; }
+    }
+
+    @media (max-width: 640px) {
+      header { padding: 20px 24px; }
+      main { padding: 40px 24px 64px 24px; }
+      .hero-heading { letter-spacing: -0.035em; line-height: 0.98; }
+      footer { padding: 24px; flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="index.html" class="brand">
+      CODA<span class="faded">THODE.</span>
+    </a>
+    <div class="header-meta">
+      <span>WEB UTILITIES</span>
+      <span>031 / 031</span>
+    </div>
+  </header>
+
+  <main>
+    <div class="hero-kicker">
+      <a href="index.html">DIGITAL UTILITIES</a>
+      <span class="sep">/</span>
+      <span>TOOL 031</span>
+    </div>
+
+    <div class="hero-split">
+      <h1 class="hero-heading">
+        ESCAPE &amp; PARSE<br />
+        ENTITIES.
+      </h1>
+      <p class="hero-sub">
+        Convert raw HTML tags and reserved symbols into safe character entities or decode escaped markup back cleanly.
+      </p>
+    </div>
+
+    <div class="tool-canvas">
+      <div class="top-bar">
+        <div class="mode-toggle" role="tablist" aria-label="Entity conversion mode">
+          <button type="button" class="mode-btn active" data-mode="encode">ENCODE HTML → ENTITIES</button>
+          <button type="button" class="mode-btn" data-mode="decode">DECODE ENTITIES → HTML</button>
+        </div>
+        <button id="swapBtn" class="btn-secondary" type="button">SWAP PANES ⇄</button>
+      </div>
+
+      <div class="split-panes">
+        <div class="pane">
+          <div class="pane-header">
+            <label for="inputBox" id="inputLabel">01 — RAW INPUT</label>
+          </div>
+          <textarea id="inputBox" class="app-textarea" placeholder="Paste raw HTML or escaped entities..."><div class="card">&copy; 2026 "Codathode" &amp; Utilities</div></textarea>
+        </div>
+
+        <div class="pane">
+          <div class="pane-header">
+            <label for="outputBox" id="outputLabel">02 — CONVERTED OUTPUT</label>
+          </div>
+          <textarea id="outputBox" class="app-textarea" readonly placeholder="Converted entities or HTML will appear here..."></textarea>
+        </div>
+      </div>
+
+      <div class="actions-row">
+        <div class="btn-group">
+          <button id="encodeActionBtn" class="btn-primary" type="button">ENCODE ENTITIES →</button>
+          <button id="decodeActionBtn" class="btn-secondary" type="button">DECODE ENTITIES</button>
+          <button id="copyBtn" class="btn-secondary" type="button">COPY OUTPUT</button>
+          <button id="clearBtn" class="btn-secondary" type="button">CLEAR</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <a href="index.html" class="footer-brand">
+      CODA<span class="faded">THODE.</span>
+    </a>
+    <div class="footer-links">
+      <a href="index.html">UTILITIES</a>
+      <a href="about.html">ABOUT</a>
+      <a href="privacy.html">PRIVACY POLICY</a>
+    </div>
+    <span>ALL UTILITIES RUN LOCALLY IN YOUR BROWSER &copy; 2026</span>
+  </footer>
+
+  <script>
+    const inputBox = document.getElementById('inputBox');
+    const outputBox = document.getElementById('outputBox');
+    const inputLabel = document.getElementById('inputLabel');
+    const outputLabel = document.getElementById('outputLabel');
+    const modeBtns = document.querySelectorAll('.mode-btn');
+    const encodeActionBtn = document.getElementById('encodeActionBtn');
+    const decodeActionBtn = document.getElementById('decodeActionBtn');
+    const swapBtn = document.getElementById('swapBtn');
+    const copyBtn = document.getElementById('copyBtn');
+    const clearBtn = document.getElementById('clearBtn');
+
+    let mode = 'encode';
+
+    function encodeEntities(str) {
+      return str.replace(/[&<>"'\u00A0-\u9999]/g, function (ch) {
+        if (ch === '&') return '&amp;';
+        if (ch === '<') return '&lt;';
+        if (ch === '>') return '&gt;';
+        if (ch === '"') return '&quot;';
+        if (ch === "'") return '&#39;';
+        return '&#' + ch.charCodeAt(0) + ';';
+      });
+    }
+
+    function decodeEntities(str) {
+      const parser = document.createElement('textarea');
+      parser.innerHTML = str;
+      return parser.value;
+    }
+
+    function runConvert() {
+      const val = inputBox.value;
+      if (!val) {
+        outputBox.value = '';
+        return;
+      }
+      outputBox.value = mode === 'encode' ? encodeEntities(val) : decodeEntities(val);
+    }
+
+    function setMode(nextMode) {
+      mode = nextMode;
+      modeBtns.forEach(b => b.classList.toggle('active', b.getAttribute('data-mode') === mode));
+      if (mode === 'encode') {
+        inputLabel.textContent = '01 — RAW HTML INPUT';
+        outputLabel.textContent = '02 — SAFE ENTITIES OUTPUT';
+      } else {
+        inputLabel.textContent = '01 — ESCAPED ENTITIES INPUT';
+        outputLabel.textContent = '02 — DECODED HTML OUTPUT';
+      }
+      runConvert();
+    }
+
+    modeBtns.forEach(btn => {
+      btn.addEventListener('click', () => setMode(btn.getAttribute('data-mode')));
+    });
+
+    encodeActionBtn.addEventListener('click', () => setMode('encode'));
+    decodeActionBtn.addEventListener('click', () => setMode('decode'));
+
+    swapBtn.addEventListener('click', () => {
+      inputBox.value = outputBox.value;
+      setMode(mode === 'encode' ? 'decode' : 'encode');
+    });
+
+    copyBtn.addEventListener('click', () => {
+      if (!outputBox.value) return;
+      navigator.clipboard.writeText(outputBox.value).then(() => {
+        const orig = copyBtn.textContent;
+        copyBtn.textContent = 'COPIED ✓';
+        setTimeout(() => { copyBtn.textContent = orig; }, 1400);
+      });
+    });
+
+    clearBtn.addEventListener('click', () => {
+      inputBox.value = '';
+      outputBox.value = '';
+    });
+
+    inputBox.addEventListener('input', runConvert);
+    runConvert();
+  </script>
+</body>
+</html>
