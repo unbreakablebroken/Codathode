@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>UUID v4 Generator — CODATHODE.</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon.png" />
+  <link rel="apple-touch-icon" href="favicon.png" />
+  <meta name="description" content="Generate single or bulk RFC 4122 Version 4 UUIDs locally using hardware-backed Web Crypto randomness." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: #041E1D;
+      color: #D8F2DE;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      -webkit-font-smoothing: antialiased;
+      line-height: 1.5;
+    }
+    header {
+      width: 100%;
+      border-bottom: 1px solid rgba(216, 242, 222, 0.13);
+      padding: 24px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background-color: #041E1D;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+    .brand { font-size: 1.125rem; font-weight: 800; letter-spacing: -0.02em; text-decoration: none; color: #D8F2DE; display: inline-flex; align-items: center; }
+    .brand .faded { color: #86A99A; font-weight: 700; }
+    .header-meta { display: flex; align-items: center; gap: 24px; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.14em; color: #86A99A; text-transform: uppercase; }
+    main { flex: 1; max-width: 1120px; width: 100%; margin: 0 auto; padding: 56px 48px 80px 48px; }
+    .hero-kicker { font-size: 0.75rem; font-weight: 600; letter-spacing: 0.16em; color: #86A99A; text-transform: uppercase; margin-bottom: 20px; display: flex; align-items: center; gap: 12px; }
+    .hero-kicker a { color: #86A99A; text-decoration: none; transition: color 0.15s ease; }
+    .hero-kicker a:hover { color: #D8F2DE; }
+    .hero-kicker span.sep { opacity: 0.4; }
+    .hero-split { display: flex; justify-content: space-between; align-items: flex-end; gap: 40px; margin-bottom: 48px; flex-wrap: wrap; }
+    .hero-heading { font-size: clamp(2.5rem, 6vw, 4.75rem); font-weight: 900; line-height: 0.92; letter-spacing: -0.05em; color: #D8F2DE; text-transform: uppercase; }
+    .hero-sub { color: #86A99A; font-size: 1rem; line-height: 1.6; max-width: 390px; }
+    .tool-canvas { background-color: #0C2D24; border: 1px solid rgba(216, 242, 222, 0.13); border-radius: 6px; padding: 36px; display: flex; flex-direction: column; gap: 24px; }
+    .controls-bar { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
+    .options-left { display: flex; align-items: center; flex-wrap: wrap; gap: 20px; }
+    .count-wrap { display: flex; align-items: center; gap: 10px; }
+    .section-tag { font-size: 0.6875rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: #86A99A; }
+    .app-input { width: 92px; background-color: #041E1D; border: 1px solid rgba(216, 242, 222, 0.2); border-radius: 4px; padding: 10px 12px; font-family: inherit; font-size: 0.9375rem; font-weight: 800; color: #D8F2DE; outline: none; font-variant-numeric: tabular-nums; }
+    .app-input:focus { border-color: #D8F2DE; }
+    .check-label { display: inline-flex; align-items: center; gap: 8px; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #86A99A; cursor: pointer; }
+    .check-label input { accent-color: #D8F2DE; width: 16px; height: 16px; cursor: pointer; }
+    .btn-group { display: flex; gap: 10px; flex-wrap: wrap; }
+    .btn-primary { background-color: #165448; color: #D8F2DE; border: 1px solid rgba(216, 242, 222, 0.2); border-radius: 4px; padding: 13px 22px; font-family: inherit; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; cursor: pointer; transition: all 0.15s ease; }
+    .btn-primary:hover { background-color: #1c6859; border-color: rgba(216, 242, 222, 0.4); }
+    .btn-secondary { background-color: transparent; color: #D8F2DE; border: 1px solid rgba(216, 242, 222, 0.2); border-radius: 4px; padding: 13px 18px; font-family: inherit; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; transition: all 0.15s ease; }
+    .btn-secondary:hover { background-color: rgba(216, 242, 222, 0.08); border-color: rgba(216, 242, 222, 0.4); }
+    .app-textarea { width: 100%; min-height: 260px; background-color: #041E1D; border: 1px solid rgba(216, 242, 222, 0.18); border-radius: 4px; padding: 18px; font-family: 'SFMono-Regular', Consolas, monospace; font-size: 0.95rem; line-height: 1.75; color: #D8F2DE; resize: vertical; outline: none; }
+    footer { border-top: 1px solid rgba(216, 242, 222, 0.13); padding: 28px 48px; display: flex; align-items: center; justify-content: space-between; color: #86A99A; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; flex-wrap: wrap; gap: 20px; }
+    .footer-brand { color: #D8F2DE; font-weight: 800; text-decoration: none; }
+    .footer-brand .faded { color: #86A99A; }
+    .footer-links { display: flex; align-items: center; gap: 24px; }
+    .footer-links a { color: #86A99A; text-decoration: none; transition: color 0.15s ease; }
+    .footer-links a:hover { color: #D8F2DE; }
+    @media (max-width: 900px) { .tool-canvas { padding: 24px; } }
+    @media (max-width: 640px) { header { padding: 20px 24px; } main { padding: 40px 24px 64px 24px; } .hero-heading { letter-spacing: -0.035em; line-height: 0.98; } footer { padding: 24px; flex-direction: column; align-items: flex-start; } }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="index.html" class="brand">CODA<span class="faded">THODE.</span></a>
+    <div class="header-meta">
+      <span>WEB UTILITIES</span>
+      <span>047 / 050</span>
+    </div>
+  </header>
+
+  <main>
+    <div class="hero-kicker">
+      <a href="index.html">DIGITAL UTILITIES</a>
+      <span class="sep">/</span>
+      <span>TOOL 047</span>
+    </div>
+
+    <div class="hero-split">
+      <h1 class="hero-heading">CRYPTOGRAPHIC<br />UUID V4.</h1>
+      <p class="hero-sub">
+        Generate single or bulk RFC 4122 Version 4 UUIDs locally via Web Crypto with instant formatting toggles and one-click export.
+      </p>
+    </div>
+
+    <div class="tool-canvas">
+      <div class="controls-bar">
+        <div class="options-left">
+          <div class="count-wrap">
+            <label for="countInput" class="section-tag">QUANTITY (1–100)</label>
+            <input id="countInput" class="app-input" type="number" min="1" max="100" value="5" />
+          </div>
+          <label class="check-label"><input type="checkbox" id="upperCheck" /> UPPERCASE</label>
+          <label class="check-label"><input type="checkbox" id="hyphenCheck" checked /> HYPHENS</label>
+        </div>
+
+        <div class="btn-group">
+          <button id="genBtn" class="btn-primary" type="button">GENERATE UUIDS →</button>
+          <button id="copyBtn" class="btn-secondary" type="button">COPY ALL</button>
+        </div>
+      </div>
+
+      <textarea id="uuidOut" class="app-textarea" readonly aria-label="Generated UUID list"></textarea>
+    </div>
+  </main>
+
+  <footer>
+    <a href="index.html" class="footer-brand">CODA<span class="faded">THODE.</span></a>
+    <div class="footer-links">
+      <a href="index.html">UTILITIES</a>
+      <a href="about.html">ABOUT</a>
+      <a href="privacy.html">PRIVACY POLICY</a>
+    </div>
+    <span>ALL UTILITIES RUN LOCALLY IN YOUR BROWSER &copy; 2026</span>
+  </footer>
+
+  <script>
+    const countInput = document.getElementById('countInput');
+    const upperCheck = document.getElementById('upperCheck');
+    const hyphenCheck = document.getElementById('hyphenCheck');
+    const genBtn = document.getElementById('genBtn');
+    const copyBtn = document.getElementById('copyBtn');
+    const uuidOut = document.getElementById('uuidOut');
+
+    function makeUuidV4() {
+      if (typeof crypto.randomUUID === 'function') {
+        return crypto.randomUUID();
+      }
+      const bytes = new Uint8Array(16);
+      crypto.getRandomValues(bytes);
+      bytes[6] = (bytes[6] & 0x0f) | 0x40;
+      bytes[8] = (bytes[8] & 0x3f) | 0x80;
+      const hex = Array.from(bytes, b => b.toString(16).padStart(2, '0')).join('');
+      return hex.slice(0, 8) + '-' + hex.slice(8, 12) + '-' + hex.slice(12, 16) + '-' + hex.slice(16, 20) + '-' + hex.slice(20);
+    }
+
+    let rawList = [];
+
+    function generateNew() {
+      let n = parseInt(countInput.value, 10);
+      if (isNaN(n) || n < 1) n = 1;
+      if (n > 100) n = 100;
+      countInput.value = String(n);
+      rawList = Array.from({ length: n }, () => makeUuidV4());
+      formatOutput();
+    }
+
+    function formatOutput() {
+      const upper = upperCheck.checked;
+      const hyphens = hyphenCheck.checked;
+      uuidOut.value = rawList.map(id => {
+        let s = hyphens ? id : id.replace(/-/g, '');
+        return upper ? s.toUpperCase() : s.toLowerCase();
+      }).join('\n');
+    }
+
+    genBtn.addEventListener('click', generateNew);
+    countInput.addEventListener('change', generateNew);
+    upperCheck.addEventListener('change', formatOutput);
+    hyphenCheck.addEventListener('change', formatOutput);
+
+    copyBtn.addEventListener('click', async () => {
+      if (!uuidOut.value) return;
+      try {
+        await navigator.clipboard.writeText(uuidOut.value);
+        const orig = copyBtn.textContent;
+        copyBtn.textContent = 'COPIED';
+        setTimeout(() => { copyBtn.textContent = orig; }, 1400);
+      } catch (e) {}
+    });
+
+    generateNew();
+  </script>
+</body>
+</html>
