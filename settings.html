@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Settings &amp; Themes — CODATHODE.</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon.png" />
+  <link rel="apple-touch-icon" href="favicon.png" />
+  <meta name="description" content="Customize your Codathode appearance across Green, Dark (Black), and Light themes plus collapsible sidebar preferences." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <script>
+    (function(){try{var t=localStorage.getItem('codathode_theme');document.documentElement.setAttribute('data-theme',(t==='dark'||t==='light'||t==='green')?t:'green');if(localStorage.getItem('codathode_sidebar_collapsed')==='1')document.documentElement.setAttribute('data-sidebar','collapsed');}catch(e){}})();
+  </script>
+  <link rel="stylesheet" href="codathode-shell.css" />
+  <script src="codathode-shell.js" defer></script>
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--ct-bg, #041E1D);
+      color: var(--ct-text, #D8F2DE);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      line-height: 1.5;
+    }
+
+    header {
+      width: 100%;
+      border-bottom: 1px solid var(--ct-border, rgba(216, 242, 222, 0.13));
+      padding: 24px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background-color: var(--ct-bg, #041E1D);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .brand {
+      font-size: 1.125rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      text-decoration: none;
+      color: var(--ct-text, #D8F2DE);
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .brand .faded {
+      color: var(--ct-muted, #86A99A);
+      font-weight: 700;
+    }
+
+    .header-nav {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    .header-nav a {
+      color: var(--ct-muted, #86A99A);
+      text-decoration: none;
+      transition: color 0.15s ease;
+    }
+
+    .header-nav a:hover, .header-nav a.active {
+      color: var(--ct-text, #D8F2DE);
+    }
+
+    .header-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--ct-muted, #86A99A);
+    }
+
+    .header-badge::before {
+      content: '';
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background-color: var(--ct-text, #D8F2DE);
+    }
+
+    main {
+      flex: 1;
+      max-width: 1200px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 56px 48px 80px 48px;
+    }
+
+    .hero-kicker {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      color: var(--ct-muted, #86A99A);
+      text-transform: uppercase;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .hero-kicker a {
+      color: var(--ct-muted, #86A99A);
+      text-decoration: none;
+      transition: color 0.15s ease;
+    }
+
+    .hero-kicker a:hover {
+      color: var(--ct-text, #D8F2DE);
+    }
+
+    .hero-kicker span.sep {
+      opacity: 0.4;
+    }
+
+    .hero-split {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 40px;
+      margin-bottom: 48px;
+      flex-wrap: wrap;
+    }
+
+    .hero-heading {
+      font-size: clamp(2.5rem, 6vw, 4.75rem);
+      font-weight: 900;
+      line-height: 0.92;
+      letter-spacing: -0.05em;
+      color: var(--ct-text, #D8F2DE);
+      text-transform: uppercase;
+    }
+
+    .hero-sub {
+      color: var(--ct-muted, #86A99A);
+      font-size: 1rem;
+      line-height: 1.6;
+      max-width: 390px;
+    }
+
+    .settings-section {
+      background-color: var(--ct-card, #0C2D24);
+      border: 1px solid var(--ct-border, rgba(216, 242, 222, 0.13));
+      border-radius: 6px;
+      padding: 36px;
+      margin-bottom: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .section-head {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
+      padding-bottom: 18px;
+      border-bottom: 1px solid var(--ct-border, rgba(216, 242, 222, 0.13));
+    }
+
+    .section-kicker {
+      font-size: 0.6875rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--ct-muted, #86A99A);
+      margin-bottom: 6px;
+      display: block;
+    }
+
+    .section-title {
+      font-size: 1.375rem;
+      font-weight: 800;
+      letter-spacing: -0.025em;
+      color: var(--ct-text, #D8F2DE);
+    }
+
+    .section-meta {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ct-muted, #86A99A);
+    }
+
+    /* THEME CARDS GRID */
+    .themes-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .theme-card {
+      background-color: var(--ct-bg, #041E1D);
+      border: 1.5px solid var(--ct-border, rgba(216, 242, 222, 0.13));
+      border-radius: 6px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      cursor: pointer;
+      text-align: left;
+      font-family: inherit;
+      color: inherit;
+      transition: transform 0.15s ease, border-color 0.15s ease, background-color 0.15s ease;
+    }
+
+    .theme-card:hover {
+      border-color: var(--ct-border-strong, rgba(216, 242, 222, 0.28));
+      transform: translateY(-2px);
+    }
+
+    .theme-card.is-selected {
+      border-color: var(--ct-text, #D8F2DE);
+      background-color: var(--ct-surface-tint, rgba(216, 242, 222, 0.04));
+    }
+
+    /* MINI MOCKUP INSIDE THEME CARD */
+    .theme-mockup {
+      height: 120px;
+      border-radius: 5px;
+      padding: 12px;
+      display: flex;
+      gap: 10px;
+      border: 1px solid rgba(128, 128, 128, 0.22);
+      overflow: hidden;
+    }
+
+    .mock-sidebar {
+      width: 34px;
+      border-radius: 3px;
+      padding: 6px 5px;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .mock-line {
+      height: 4px;
+      border-radius: 2px;
+      opacity: 0.7;
+    }
+
+    .mock-main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .mock-bar {
+      height: 10px;
+      width: 55%;
+      border-radius: 2px;
+    }
+
+    .mock-card {
+      flex: 1;
+      border-radius: 4px;
+      padding: 8px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .mock-btn {
+      width: 56px;
+      height: 16px;
+      border-radius: 3px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.5rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+    }
+
+    /* Explicit literal swatches for each preview so previews stay accurate in every active theme */
+    .preview-green { background-color: #041E1D; }
+    .preview-green .mock-sidebar { background-color: #021211; border: 1px solid rgba(216,242,222,0.14); }
+    .preview-green .mock-line { background-color: #86A99A; }
+    .preview-green .mock-bar { background-color: #D8F2DE; }
+    .preview-green .mock-card { background-color: #0C2D24; border: 1px solid rgba(216,242,222,0.15); }
+    .preview-green .mock-btn { background-color: #165448; color: #D8F2DE; }
+
+    .preview-dark { background-color: #050505; }
+    .preview-dark .mock-sidebar { background-color: #000000; border: 1px solid rgba(255,255,255,0.14); }
+    .preview-dark .mock-line { background-color: #93939E; }
+    .preview-dark .mock-bar { background-color: #F4F4F5; }
+    .preview-dark .mock-card { background-color: #0E0E11; border: 1px solid rgba(255,255,255,0.14); }
+    .preview-dark .mock-btn { background-color: #27272E; color: #FAFAFA; }
+
+    .preview-light { background-color: #F3F6F4; }
+    .preview-light .mock-sidebar { background-color: #E7ECE9; border: 1px solid rgba(11,34,29,0.14); }
+    .preview-light .mock-line { background-color: #4D6B61; }
+    .preview-light .mock-bar { background-color: #0B221D; }
+    .preview-light .mock-card { background-color: #FFFFFF; border: 1px solid rgba(11,34,29,0.14); }
+    .preview-light .mock-btn { background-color: #165448; color: #FFFFFF; }
+
+    .theme-card-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .theme-name {
+      font-size: 1.05rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--ct-text, #D8F2DE);
+    }
+
+    .theme-status {
+      font-size: 0.625rem;
+      font-weight: 800;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      padding: 4px 8px;
+      border-radius: 3px;
+      border: 1px solid var(--ct-border, rgba(216, 242, 222, 0.13));
+      color: var(--ct-muted, #86A99A);
+    }
+
+    .theme-card.is-selected .theme-status {
+      background-color: var(--ct-accent, #165448);
+      color: var(--ct-on-accent, #D8F2DE);
+      border-color: transparent;
+    }
+
+    .theme-desc {
+      font-size: 0.84rem;
+      color: var(--ct-muted, #86A99A);
+      line-height: 1.5;
+    }
+
+    .swatch-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: auto;
+      padding-top: 6px;
+    }
+
+    .swatch-chip {
+      width: 18px;
+      height: 18px;
+      border-radius: 3px;
+      border: 1px solid rgba(128, 128, 128, 0.35);
+    }
+
+    .swatch-hex {
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      color: var(--ct-muted, #86A99A);
+      margin-left: 4px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* WORKSPACE PREFERENCES */
+    .pref-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
+      padding: 18px 20px;
+      background-color: var(--ct-bg, #041E1D);
+      border: 1px solid var(--ct-border, rgba(216, 242, 222, 0.13));
+      border-radius: 5px;
+    }
+
+    .pref-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--ct-text, #D8F2DE);
+      margin-bottom: 4px;
+    }
+
+    .pref-desc {
+      font-size: 0.82rem;
+      color: var(--ct-muted, #86A99A);
+    }
+
+    .mode-toggle {
+      display: inline-flex;
+      background-color: var(--ct-card, #0C2D24);
+      border: 1px solid var(--ct-border, rgba(216, 242, 222, 0.14));
+      border-radius: 4px;
+      padding: 4px;
+      gap: 4px;
+    }
+
+    .mode-btn {
+      background: transparent;
+      border: none;
+      color: var(--ct-muted, #86A99A);
+      font-family: inherit;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 9px 14px;
+      border-radius: 3px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .mode-btn.active {
+      background-color: var(--ct-accent, #165448);
+      color: var(--ct-on-accent, #D8F2DE);
+    }
+
+    .btn-secondary {
+      background-color: transparent;
+      color: var(--ct-text, #D8F2DE);
+      border: 1px solid var(--ct-border-strong, rgba(216, 242, 222, 0.25));
+      border-radius: 4px;
+      padding: 10px 18px;
+      font-family: inherit;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .btn-secondary:hover {
+      background-color: var(--ct-surface-hover, rgba(216, 242, 222, 0.08));
+      border-color: var(--ct-border-hover, rgba(216, 242, 222, 0.45));
+    }
+
+    .privacy-note {
+      font-size: 0.8125rem;
+      color: var(--ct-muted, #86A99A);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      padding-top: 4px;
+    }
+
+    footer {
+      border-top: 1px solid var(--ct-border, rgba(216, 242, 222, 0.13));
+      padding: 28px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: var(--ct-muted, #86A99A);
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .footer-brand {
+      color: var(--ct-text, #D8F2DE);
+      font-weight: 800;
+      text-decoration: none;
+    }
+
+    .footer-brand .faded {
+      color: var(--ct-muted, #86A99A);
+    }
+
+    .footer-links {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    .footer-links a {
+      color: var(--ct-muted, #86A99A);
+      text-decoration: none;
+      transition: color 0.15s ease;
+    }
+
+    .footer-links a:hover {
+      color: var(--ct-text, #D8F2DE);
+    }
+
+    @media (max-width: 960px) {
+      header { padding: 20px 24px; }
+      main { padding: 48px 24px 64px 24px; }
+      .themes-grid { grid-template-columns: 1fr; }
+      .settings-section { padding: 24px; }
+      footer { padding: 24px; flex-direction: column; align-items: flex-start; }
+    }
+
+    @media (max-width: 640px) {
+      .hero-heading { letter-spacing: -0.035em; line-height: 0.98; }
+      .header-nav { gap: 14px; font-size: 0.6875rem; }
+      .header-badge { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="index.html" class="brand">CODA<span class="faded">THODE.</span></a>
+    <nav class="header-nav">
+      <a href="index.html">UTILITIES</a>
+      <a href="about.html">ABOUT</a>
+      <a href="privacy.html">PRIVACY</a>
+      <a href="settings.html" class="active">SETTINGS</a>
+      <span class="header-badge">50 TOOLS</span>
+    </nav>
+  </header>
+
+  <main>
+    <div class="hero-kicker">
+      <a href="index.html">CODATHODE</a>
+      <span class="sep">/</span>
+      <span>PREFERENCES</span>
+    </div>
+
+    <div class="hero-split">
+      <h1 class="hero-heading">SETTINGS &amp;<br />THEMES.</h1>
+      <p class="hero-sub">
+        Switch seamlessly between Codathode Green, Dark (Black), and Light themes. Your appearance is stored strictly locally in your browser.
+      </p>
+    </div>
+
+    <section class="settings-section" aria-labelledby="theme-heading">
+      <div class="section-head">
+        <div>
+          <span class="section-kicker">01 / APPEARANCE</span>
+          <h2 class="section-title" id="theme-heading">Color Theme</h2>
+        </div>
+        <span class="section-meta" id="active-theme-label">CURRENT: GREEN</span>
+      </div>
+
+      <div class="themes-grid" role="radiogroup" aria-label="Select color theme">
+        <!-- GREEN THEME -->
+        <button type="button" class="theme-card" data-theme-choice="green" role="radio" aria-checked="true">
+          <div class="theme-mockup preview-green" aria-hidden="true">
+            <div class="mock-sidebar">
+              <div class="mock-line" style="width:100%;"></div>
+              <div class="mock-line" style="width:75%;"></div>
+              <div class="mock-line" style="width:85%;"></div>
+            </div>
+            <div class="mock-main">
+              <div class="mock-bar"></div>
+              <div class="mock-card">
+                <div class="mock-line" style="width:68%;"></div>
+                <div class="mock-btn">LAUNCH</div>
+              </div>
+            </div>
+          </div>
+          <div class="theme-card-top">
+            <span class="theme-name">Green Theme</span>
+            <span class="theme-status">DEFAULT</span>
+          </div>
+          <p class="theme-desc">
+            The signature Codathode botanical emerald palette engineered for low eye strain during long coding sessions.
+          </p>
+          <div class="swatch-row">
+            <span class="swatch-chip" style="background:#041E1D;"></span>
+            <span class="swatch-chip" style="background:#0C2D24;"></span>
+            <span class="swatch-chip" style="background:#165448;"></span>
+            <span class="swatch-chip" style="background:#D8F2DE;"></span>
+            <span class="swatch-hex">#041E1D · #D8F2DE</span>
+          </div>
+        </button>
+
+        <!-- DARK (BLACK) THEME -->
+        <button type="button" class="theme-card" data-theme-choice="dark" role="radio" aria-checked="false">
+          <div class="theme-mockup preview-dark" aria-hidden="true">
+            <div class="mock-sidebar">
+              <div class="mock-line" style="width:100%;"></div>
+              <div class="mock-line" style="width:75%;"></div>
+              <div class="mock-line" style="width:85%;"></div>
+            </div>
+            <div class="mock-main">
+              <div class="mock-bar"></div>
+              <div class="mock-card">
+                <div class="mock-line" style="width:68%;"></div>
+                <div class="mock-btn">LAUNCH</div>
+              </div>
+            </div>
+          </div>
+          <div class="theme-card-top">
+            <span class="theme-name">Dark (Black)</span>
+            <span class="theme-status">SELECT</span>
+          </div>
+          <p class="theme-desc">
+            Pure pitch-black obsidian canvas with elevated neutral graphite cards and sharp monochrome typography.
+          </p>
+          <div class="swatch-row">
+            <span class="swatch-chip" style="background:#050505;"></span>
+            <span class="swatch-chip" style="background:#0E0E11;"></span>
+            <span class="swatch-chip" style="background:#27272E;"></span>
+            <span class="swatch-chip" style="background:#F4F4F5;"></span>
+            <span class="swatch-hex">#050505 · #F4F4F5</span>
+          </div>
+        </button>
+
+        <!-- LIGHT THEME -->
+        <button type="button" class="theme-card" data-theme-choice="light" role="radio" aria-checked="false">
+          <div class="theme-mockup preview-light" aria-hidden="true">
+            <div class="mock-sidebar">
+              <div class="mock-line" style="width:100%;"></div>
+              <div class="mock-line" style="width:75%;"></div>
+              <div class="mock-line" style="width:85%;"></div>
+            </div>
+            <div class="mock-main">
+              <div class="mock-bar"></div>
+              <div class="mock-card">
+                <div class="mock-line" style="width:68%;"></div>
+                <div class="mock-btn">LAUNCH</div>
+              </div>
+            </div>
+          </div>
+          <div class="theme-card-top">
+            <span class="theme-name">Light Theme</span>
+            <span class="theme-status">SELECT</span>
+          </div>
+          <p class="theme-desc">
+            Crisp editorial paper background with bright white containers and deep forest-ink contrast for daylight work.
+          </p>
+          <div class="swatch-row">
+            <span class="swatch-chip" style="background:#F3F6F4;"></span>
+            <span class="swatch-chip" style="background:#FFFFFF;"></span>
+            <span class="swatch-chip" style="background:#165448;"></span>
+            <span class="swatch-chip" style="background:#0B221D;"></span>
+            <span class="swatch-hex">#F3F6F4 · #0B221D</span>
+          </div>
+        </button>
+      </div>
+    </section>
+
+    <section class="settings-section" aria-labelledby="workspace-heading">
+      <div class="section-head">
+        <div>
+          <span class="section-kicker">02 / NAVIGATION</span>
+          <h2 class="section-title" id="workspace-heading">Workspace Layout</h2>
+        </div>
+        <button type="button" id="resetPrefsBtn" class="btn-secondary">RESET DEFAULTS</button>
+      </div>
+
+      <div class="pref-row">
+        <div>
+          <div class="pref-title">Desktop Navigation Sidebar</div>
+          <div class="pref-desc">Choose whether the navigation sidebar starts expanded with category labels or collapsed to a compact icon rail.</div>
+        </div>
+        <div class="mode-toggle" role="group" aria-label="Sidebar layout">
+          <button type="button" class="mode-btn" data-sidebar-choice="expanded">EXPANDED</button>
+          <button type="button" class="mode-btn" data-sidebar-choice="collapsed">COLLAPSED</button>
+        </div>
+      </div>
+
+      <div class="privacy-note">
+        <span>ZERO TELEMETRY: Theme and sidebar settings persist solely in local browser storage across all 50 utilities.</span>
+        <a href="index.html" style="color:var(--ct-text, #D8F2DE);font-weight:700;text-decoration:none;">← RETURN TO ALL 50 UTILITIES</a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <a href="index.html" class="footer-brand">CODA<span class="faded">THODE.</span></a>
+    <div class="footer-links">
+      <a href="index.html">UTILITIES</a>
+      <a href="about.html">ABOUT</a>
+      <a href="privacy.html">PRIVACY POLICY</a>
+      <a href="settings.html">SETTINGS</a>
+    </div>
+    <span class="footer-copy">ALL UTILITIES RUN LOCALLY IN YOUR BROWSER &copy; 2026</span>
+  </footer>
+
+  <script>
+    (function () {
+      var cards = document.querySelectorAll('[data-theme-choice]');
+      var themeLabel = document.getElementById('active-theme-label');
+      var sidebarBtns = document.querySelectorAll('[data-sidebar-choice]');
+      var resetBtn = document.getElementById('resetPrefsBtn');
+
+      var THEME_LABELS = {
+        green: 'GREEN',
+        dark: 'DARK (BLACK)',
+        light: 'LIGHT'
+      };
+
+      function syncUI() {
+        var currentTheme = window.CodathodeShell
+          ? window.CodathodeShell.getTheme()
+          : (document.documentElement.getAttribute('data-theme') || 'green');
+        var collapsed = window.CodathodeShell
+          ? window.CodathodeShell.isSidebarCollapsed()
+          : (document.documentElement.getAttribute('data-sidebar') === 'collapsed');
+
+        if (themeLabel) {
+          themeLabel.textContent = 'CURRENT: ' + (THEME_LABELS[currentTheme] || 'GREEN');
+        }
+
+        cards.forEach(function (card) {
+          var choice = card.getAttribute('data-theme-choice');
+          var active = choice === currentTheme;
+          card.classList.toggle('is-selected', active);
+          card.setAttribute('aria-checked', active ? 'true' : 'false');
+          var statusEl = card.querySelector('.theme-status');
+          if (statusEl) {
+            statusEl.textContent = active ? 'ACTIVE' : (choice === 'green' ? 'DEFAULT' : 'SELECT');
+          }
+        });
+
+        sidebarBtns.forEach(function (btn) {
+          var mode = btn.getAttribute('data-sidebar-choice');
+          btn.classList.toggle('active', (collapsed && mode === 'collapsed') || (!collapsed && mode === 'expanded'));
+        });
+      }
+
+      cards.forEach(function (card) {
+        card.addEventListener('click', function () {
+          var theme = card.getAttribute('data-theme-choice');
+          if (window.CodathodeShell) {
+            window.CodathodeShell.setTheme(theme);
+          } else {
+            document.documentElement.setAttribute('data-theme', theme);
+            localStorage.setItem('codathode_theme', theme);
+          }
+          syncUI();
+        });
+      });
+
+      sidebarBtns.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var isCollapsed = btn.getAttribute('data-sidebar-choice') === 'collapsed';
+          if (window.CodathodeShell) {
+            window.CodathodeShell.setSidebarCollapsed(isCollapsed);
+          } else {
+            if (isCollapsed) document.documentElement.setAttribute('data-sidebar', 'collapsed');
+            else document.documentElement.removeAttribute('data-sidebar');
+            localStorage.setItem('codathode_sidebar_collapsed', isCollapsed ? '1' : '0');
+          }
+          syncUI();
+        });
+      });
+
+      if (resetBtn) {
+        resetBtn.addEventListener('click', function () {
+          if (window.CodathodeShell) {
+            window.CodathodeShell.setTheme('green');
+            window.CodathodeShell.setSidebarCollapsed(false);
+          } else {
+            document.documentElement.setAttribute('data-theme', 'green');
+            document.documentElement.removeAttribute('data-sidebar');
+            localStorage.setItem('codathode_theme', 'green');
+            localStorage.setItem('codathode_sidebar_collapsed', '0');
+          }
+          syncUI();
+        });
+      }
+
+      window.addEventListener('codathode:themechange', syncUI);
+      window.addEventListener('codathode:sidebarchange', syncUI);
+      window.addEventListener('DOMContentLoaded', syncUI);
+      syncUI();
+    })();
+  </script>
+</body>
+</html>

@@ -10,6 +10,11 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <script>
+    (function(){try{var t=localStorage.getItem('codathode_theme');document.documentElement.setAttribute('data-theme',(t==='dark'||t==='light'||t==='green')?t:'green');if(localStorage.getItem('codathode_sidebar_collapsed')==='1')document.documentElement.setAttribute('data-sidebar','collapsed');}catch(e){}})();
+  </script>
+  <link rel="stylesheet" href="codathode-shell.css" />
+  <script src="codathode-shell.js" defer></script>
   <style>
     /* CODATHODE DESIGN SYSTEM */
     *, *::before, *::after {
@@ -19,8 +24,8 @@
     }
 
     body {
-      background-color: #041E1D;
-      color: #D8F2DE;
+      background-color: var(--ct-bg, #041E1D);
+      color: var(--ct-text, #D8F2DE);
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
       min-height: 100vh;
       display: flex;
@@ -33,12 +38,12 @@
     /* HEADER */
     header {
       width: 100%;
-      border-bottom: 1px solid rgba(216, 242, 222, 0.13);
+      border-bottom: 1px solid var(--ct-border, rgba(216, 242, 222, 0.13));
       padding: 24px 48px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      background-color: #041E1D;
+      background-color: var(--ct-bg, #041E1D);
       position: sticky;
       top: 0;
       z-index: 50;
@@ -49,7 +54,7 @@
       font-weight: 800;
       letter-spacing: -0.02em;
       text-decoration: none;
-      color: #D8F2DE;
+      color: var(--ct-text, #D8F2DE);
       display: inline-flex;
       align-items: center;
       transition: opacity 0.15s ease;
@@ -60,7 +65,7 @@
     }
 
     .brand .faded {
-      color: #86A99A;
+      color: var(--ct-muted, #86A99A);
       font-weight: 700;
     }
 
@@ -71,7 +76,7 @@
       font-size: 0.75rem;
       font-weight: 600;
       letter-spacing: 0.14em;
-      color: #86A99A;
+      color: var(--ct-muted, #86A99A);
       text-transform: uppercase;
     }
 
@@ -89,7 +94,7 @@
       font-size: 0.75rem;
       font-weight: 600;
       letter-spacing: 0.16em;
-      color: #86A99A;
+      color: var(--ct-muted, #86A99A);
       text-transform: uppercase;
       margin-bottom: 24px;
       display: flex;
@@ -98,13 +103,13 @@
     }
 
     .hero-kicker a {
-      color: #86A99A;
+      color: var(--ct-muted, #86A99A);
       text-decoration: none;
       transition: color 0.15s ease;
     }
 
     .hero-kicker a:hover {
-      color: #D8F2DE;
+      color: var(--ct-text, #D8F2DE);
     }
 
     .hero-kicker span.sep {
@@ -125,13 +130,13 @@
       font-weight: 900;
       line-height: 0.92;
       letter-spacing: -0.05em;
-      color: #D8F2DE;
+      color: var(--ct-text, #D8F2DE);
       max-width: 780px;
       text-transform: uppercase;
     }
 
     .hero-sub {
-      color: #86A99A;
+      color: var(--ct-muted, #86A99A);
       font-size: 1.0625rem;
       line-height: 1.6;
       max-width: 380px;
@@ -140,8 +145,8 @@
 
     /* CENTRAL TOOL CARD */
     .tool-canvas {
-      background-color: #0C2D24;
-      border: 1px solid rgba(216, 242, 222, 0.13);
+      background-color: var(--ct-card, #0C2D24);
+      border: 1px solid var(--ct-border, rgba(216, 242, 222, 0.13));
       border-radius: 6px;
       padding: 44px;
       display: flex;
@@ -161,7 +166,7 @@
       font-size: 0.75rem;
       font-weight: 600;
       letter-spacing: 0.14em;
-      color: #86A99A;
+      color: var(--ct-muted, #86A99A);
       text-transform: uppercase;
       margin-bottom: 8px;
     }
@@ -170,7 +175,7 @@
       font-size: 1.625rem;
       font-weight: 800;
       letter-spacing: -0.025em;
-      color: #D8F2DE;
+      color: var(--ct-text, #D8F2DE);
     }
 
     .quick-actions {
@@ -181,11 +186,11 @@
     .app-textarea {
       width: 100%;
       min-height: 240px;
-      background-color: #041E1D;
-      border: 1px solid rgba(216, 242, 222, 0.18);
+      background-color: var(--ct-bg, #041E1D);
+      border: 1px solid var(--ct-border-medium, rgba(216, 242, 222, 0.18));
       border-radius: 4px;
       padding: 20px;
-      color: #D8F2DE;
+      color: var(--ct-text, #D8F2DE);
       font-family: 'Inter', sans-serif;
       font-size: 1rem;
       line-height: 1.6;
@@ -195,12 +200,12 @@
 
     .app-textarea:focus {
       outline: none;
-      border-color: #D8F2DE;
-      box-shadow: 0 0 0 1px rgba(216, 242, 222, 0.2);
+      border-color: var(--ct-text, #D8F2DE);
+      box-shadow: 0 0 0 1px var(--ct-border-medium, rgba(216, 242, 222, 0.18));
     }
 
     .app-textarea::placeholder {
-      color: rgba(134, 169, 154, 0.45);
+      color: var(--ct-border-strong, rgba(134, 169, 154, 0.4));
     }
 
     /* METRICS STRIP */
@@ -208,7 +213,7 @@
       font-size: 0.6875rem;
       font-weight: 700;
       letter-spacing: 0.14em;
-      color: #86A99A;
+      color: var(--ct-muted, #86A99A);
       text-transform: uppercase;
     }
 
@@ -219,8 +224,8 @@
     }
 
     .metric-card {
-      background-color: #041E1D;
-      border: 1px solid rgba(216, 242, 222, 0.12);
+      background-color: var(--ct-bg, #041E1D);
+      border: 1px solid var(--ct-border, rgba(216, 242, 222, 0.13));
       border-radius: 4px;
       padding: 20px 24px;
       display: flex;
@@ -232,7 +237,7 @@
       font-size: 2.25rem;
       font-weight: 900;
       letter-spacing: -0.03em;
-      color: #D8F2DE;
+      color: var(--ct-text, #D8F2DE);
       font-variant-numeric: tabular-nums;
       line-height: 1.1;
     }
@@ -241,7 +246,7 @@
       font-size: 0.6875rem;
       font-weight: 600;
       letter-spacing: 0.12em;
-      color: #86A99A;
+      color: var(--ct-muted, #86A99A);
       text-transform: uppercase;
     }
 
@@ -252,8 +257,8 @@
     }
 
     .secondary-metric-card {
-      background-color: rgba(4, 30, 29, 0.6);
-      border: 1px solid rgba(216, 242, 222, 0.08);
+      background-color: var(--ct-bg-glass-soft, rgba(4, 30, 29, 0.55));
+      border: 1px solid var(--ct-surface-hover, rgba(216, 242, 222, 0.09));
       border-radius: 4px;
       padding: 16px 20px;
       display: flex;
@@ -263,7 +268,7 @@
 
     .sec-label {
       font-size: 0.75rem;
-      color: #86A99A;
+      color: var(--ct-muted, #86A99A);
       font-weight: 600;
       letter-spacing: 0.06em;
       text-transform: uppercase;
@@ -271,16 +276,16 @@
 
     .sec-val {
       font-size: 1rem;
-      color: #D8F2DE;
+      color: var(--ct-text, #D8F2DE);
       font-weight: 700;
       font-variant-numeric: tabular-nums;
     }
 
     /* BUTTONS */
     .btn-primary {
-      background-color: #165448;
-      color: #D8F2DE;
-      border: 1px solid rgba(216, 242, 222, 0.2);
+      background-color: var(--ct-accent, #165448);
+      color: var(--ct-on-accent, var(--ct-text, #D8F2DE));
+      border: 1px solid var(--ct-border-medium, rgba(216, 242, 222, 0.18));
       border-radius: 4px;
       padding: 12px 20px;
       font-size: 0.75rem;
@@ -295,14 +300,14 @@
     }
 
     .btn-primary:hover {
-      background-color: #1c6859;
-      border-color: rgba(216, 242, 222, 0.4);
+      background-color: var(--ct-accent-hover, #1C6859);
+      border-color: var(--ct-border-hover, rgba(216, 242, 222, 0.42));
     }
 
     .btn-outline {
       background-color: transparent;
-      color: #D8F2DE;
-      border: 1px solid rgba(216, 242, 222, 0.25);
+      color: var(--ct-text, #D8F2DE);
+      border: 1px solid var(--ct-border-strong, rgba(216, 242, 222, 0.28));
       border-radius: 4px;
       padding: 10px 18px;
       font-size: 0.75rem;
@@ -317,22 +322,22 @@
     }
 
     .btn-outline:hover {
-      background-color: rgba(216, 242, 222, 0.08);
-      border-color: #D8F2DE;
+      background-color: var(--ct-surface-hover, rgba(216, 242, 222, 0.09));
+      border-color: var(--ct-text, #D8F2DE);
     }
 
     .toast {
       position: fixed;
       bottom: 32px;
       right: 32px;
-      background-color: #165448;
-      color: #D8F2DE;
+      background-color: var(--ct-accent, #165448);
+      color: var(--ct-on-accent, var(--ct-text, #D8F2DE));
       padding: 14px 24px;
       border-radius: 4px;
       font-size: 0.8125rem;
       font-weight: 700;
       letter-spacing: 0.08em;
-      border: 1px solid rgba(216, 242, 222, 0.3);
+      border: 1px solid var(--ct-border-strong, rgba(216, 242, 222, 0.28));
       display: none;
       z-index: 100;
       box-shadow: 0 10px 25px rgba(0,0,0,0.5);
@@ -340,33 +345,36 @@
 
     /* FOOTER */
     footer {
-      border-top: 1px solid rgba(216, 242, 222, 0.13);
+      border-top: 1px solid var(--ct-border, rgba(216, 242, 222, 0.13));
       padding: 32px 48px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      color: #86A99A;
+      color: var(--ct-muted, #86A99A);
       font-size: 0.75rem;
       letter-spacing: 0.1em;
       text-transform: uppercase;
-      background-color: #041E1D;
+      background-color: var(--ct-bg, #041E1D);
       flex-wrap: wrap;
       gap: 16px;
     }
+    .footer-links { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; }
+    .footer-links a { color: var(--ct-muted, #86A99A); text-decoration: none; transition: color 0.15s ease; }
+    .footer-links a:hover { color: var(--ct-text, #D8F2DE); }
 
     .footer-brand {
-      color: #D8F2DE;
+      color: var(--ct-text, #D8F2DE);
       font-weight: 800;
       text-decoration: none;
       letter-spacing: -0.01em;
     }
 
     .footer-brand .faded {
-      color: #86A99A;
+      color: var(--ct-muted, #86A99A);
     }
 
     .footer-note {
-      color: #86A99A;
+      color: var(--ct-muted, #86A99A);
       font-weight: 500;
     }
 
@@ -508,6 +516,12 @@
     <a href="index.html" class="footer-brand">
       CODA<span class="faded">THODE.</span>
     </a>
+    <div class="footer-links">
+      <a href="index.html">UTILITIES</a>
+      <a href="about.html">ABOUT</a>
+      <a href="privacy.html">PRIVACY POLICY</a>
+      <a href="settings.html">SETTINGS</a>
+    </div>
     <span class="footer-note">ALL UTILITIES RUN LOCALLY IN YOUR BROWSER</span>
     <span>CODATHODE &copy; 2026</span>
   </footer>

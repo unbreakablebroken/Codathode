@@ -11,6 +11,7 @@ export default defineConfig({
         main: path.resolve(__dirname, 'index.html'),
         about: path.resolve(__dirname, 'about.html'),
         privacy: path.resolve(__dirname, 'privacy.html'),
+        settings: path.resolve(__dirname, 'settings.html'),
         qr: path.resolve(__dirname, 'qr-generator.html'),
         igcse: path.resolve(__dirname, 'igcse-calculator.html'),
         case: path.resolve(__dirname, 'case-converter.html'),

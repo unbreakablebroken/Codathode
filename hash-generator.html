@@ -10,11 +10,16 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <script>
+    (function(){try{var t=localStorage.getItem('codathode_theme');document.documentElement.setAttribute('data-theme',(t==='dark'||t==='light'||t==='green')?t:'green');if(localStorage.getItem('codathode_sidebar_collapsed')==='1')document.documentElement.setAttribute('data-sidebar','collapsed');}catch(e){}})();
+  </script>
+  <link rel="stylesheet" href="codathode-shell.css" />
+  <script src="codathode-shell.js" defer></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      background-color: #041E1D;
-      color: #D8F2DE;
+      background-color: var(--ct-bg, #041E1D);
+      color: var(--ct-text, #D8F2DE);
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
       min-height: 100vh;
       display: flex;
@@ -24,12 +29,12 @@
     }
     header {
       width: 100%;
-      border-bottom: 1px solid rgba(216, 242, 222, 0.13);
+      border-bottom: 1px solid var(--ct-border, rgba(216, 242, 222, 0.13));
       padding: 24px 48px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      background-color: #041E1D;
+      background-color: var(--ct-bg, #041E1D);
       position: sticky;
       top: 0;
       z-index: 50;
@@ -39,11 +44,11 @@
       font-weight: 800;
       letter-spacing: -0.02em;
       text-decoration: none;
-      color: #D8F2DE;
+      color: var(--ct-text, #D8F2DE);
       display: inline-flex;
       align-items: center;
     }
-    .brand .faded { color: #86A99A; font-weight: 700; }
+    .brand .faded { color: var(--ct-muted, #86A99A); font-weight: 700; }
     .header-meta {
       display: flex;
       align-items: center;
@@ -51,7 +56,7 @@
       font-size: 0.75rem;
       font-weight: 600;
       letter-spacing: 0.14em;
-      color: #86A99A;
+      color: var(--ct-muted, #86A99A);
       text-transform: uppercase;
     }
     main {
@@ -65,15 +70,15 @@
       font-size: 0.75rem;
       font-weight: 600;
       letter-spacing: 0.16em;
-      color: #86A99A;
+      color: var(--ct-muted, #86A99A);
       text-transform: uppercase;
       margin-bottom: 20px;
       display: flex;
       align-items: center;
       gap: 12px;
     }
-    .hero-kicker a { color: #86A99A; text-decoration: none; transition: color 0.15s ease; }
-    .hero-kicker a:hover { color: #D8F2DE; }
+    .hero-kicker a { color: var(--ct-muted, #86A99A); text-decoration: none; transition: color 0.15s ease; }
+    .hero-kicker a:hover { color: var(--ct-text, #D8F2DE); }
     .hero-kicker span.sep { opacity: 0.4; }
     .hero-split {
       display: flex;
@@ -88,18 +93,18 @@
       font-weight: 900;
       line-height: 0.92;
       letter-spacing: -0.05em;
-      color: #D8F2DE;
+      color: var(--ct-text, #D8F2DE);
       text-transform: uppercase;
     }
     .hero-sub {
-      color: #86A99A;
+      color: var(--ct-muted, #86A99A);
       font-size: 1rem;
       line-height: 1.6;
       max-width: 380px;
     }
     .tool-canvas {
-      background-color: #0C2D24;
-      border: 1px solid rgba(216, 242, 222, 0.13);
+      background-color: var(--ct-card, #0C2D24);
+      border: 1px solid var(--ct-border, rgba(216, 242, 222, 0.13));
       border-radius: 6px;
       padding: 36px;
       display: flex;
@@ -118,24 +123,24 @@
       font-weight: 600;
       letter-spacing: 0.14em;
       text-transform: uppercase;
-      color: #86A99A;
+      color: var(--ct-muted, #86A99A);
     }
     .app-textarea {
       width: 100%;
       min-height: 140px;
-      background-color: #041E1D;
-      border: 1px solid rgba(216, 242, 222, 0.18);
+      background-color: var(--ct-bg, #041E1D);
+      border: 1px solid var(--ct-border-medium, rgba(216, 242, 222, 0.18));
       border-radius: 4px;
       padding: 16px;
       font-family: inherit;
       font-size: 0.9375rem;
       line-height: 1.6;
-      color: #D8F2DE;
+      color: var(--ct-text, #D8F2DE);
       resize: vertical;
       outline: none;
       transition: border-color 0.15s ease;
     }
-    .app-textarea:focus { border-color: #D8F2DE; }
+    .app-textarea:focus { border-color: var(--ct-text, #D8F2DE); }
     .controls-row {
       display: flex;
       align-items: center;
@@ -151,15 +156,15 @@
       font-weight: 600;
       letter-spacing: 0.08em;
       text-transform: uppercase;
-      color: #86A99A;
+      color: var(--ct-muted, #86A99A);
       cursor: pointer;
     }
-    .check-label input { accent-color: #D8F2DE; width: 16px; height: 16px; cursor: pointer; }
+    .check-label input { accent-color: var(--ct-text, #D8F2DE); width: 16px; height: 16px; cursor: pointer; }
     .btn-group { display: flex; gap: 10px; flex-wrap: wrap; }
     .btn-primary {
-      background-color: #165448;
-      color: #D8F2DE;
-      border: 1px solid rgba(216, 242, 222, 0.2);
+      background-color: var(--ct-accent, #165448);
+      color: var(--ct-on-accent, var(--ct-text, #D8F2DE));
+      border: 1px solid var(--ct-border-medium, rgba(216, 242, 222, 0.18));
       border-radius: 4px;
       padding: 13px 22px;
       font-family: inherit;
@@ -170,11 +175,11 @@
       cursor: pointer;
       transition: all 0.15s ease;
     }
-    .btn-primary:hover { background-color: #1c6859; border-color: rgba(216, 242, 222, 0.4); }
+    .btn-primary:hover { background-color: var(--ct-accent-hover, #1C6859); border-color: var(--ct-border-hover, rgba(216, 242, 222, 0.42)); }
     .btn-secondary {
       background-color: transparent;
-      color: #D8F2DE;
-      border: 1px solid rgba(216, 242, 222, 0.2);
+      color: var(--ct-text, #D8F2DE);
+      border: 1px solid var(--ct-border-medium, rgba(216, 242, 222, 0.18));
       border-radius: 4px;
       padding: 9px 14px;
       font-family: inherit;
@@ -185,15 +190,15 @@
       cursor: pointer;
       transition: all 0.15s ease;
     }
-    .btn-secondary:hover { background-color: rgba(216, 242, 222, 0.08); border-color: rgba(216, 242, 222, 0.4); }
+    .btn-secondary:hover { background-color: var(--ct-surface-hover, rgba(216, 242, 222, 0.09)); border-color: var(--ct-border-hover, rgba(216, 242, 222, 0.42)); }
     .hash-list {
       display: flex;
       flex-direction: column;
       gap: 14px;
     }
     .hash-card {
-      background-color: #041E1D;
-      border: 1px solid rgba(216, 242, 222, 0.14);
+      background-color: var(--ct-bg, #041E1D);
+      border: 1px solid var(--ct-border, rgba(216, 242, 222, 0.13));
       border-radius: 4px;
       padding: 16px 20px;
       display: flex;
@@ -207,33 +212,33 @@
       font-weight: 700;
       letter-spacing: 0.14em;
       text-transform: uppercase;
-      color: #86A99A;
+      color: var(--ct-muted, #86A99A);
     }
     .hash-value {
       font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
       font-size: 0.875rem;
-      color: #D8F2DE;
+      color: var(--ct-text, #D8F2DE);
       word-break: break-all;
       letter-spacing: 0.01em;
     }
     footer {
-      border-top: 1px solid rgba(216, 242, 222, 0.13);
+      border-top: 1px solid var(--ct-border, rgba(216, 242, 222, 0.13));
       padding: 28px 48px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      color: #86A99A;
+      color: var(--ct-muted, #86A99A);
       font-size: 0.75rem;
       letter-spacing: 0.1em;
       text-transform: uppercase;
       flex-wrap: wrap;
       gap: 20px;
     }
-    .footer-brand { color: #D8F2DE; font-weight: 800; text-decoration: none; }
-    .footer-brand .faded { color: #86A99A; }
+    .footer-brand { color: var(--ct-text, #D8F2DE); font-weight: 800; text-decoration: none; }
+    .footer-brand .faded { color: var(--ct-muted, #86A99A); }
     .footer-links { display: flex; align-items: center; gap: 24px; }
-    .footer-links a { color: #86A99A; text-decoration: none; transition: color 0.15s ease; }
-    .footer-links a:hover { color: #D8F2DE; }
+    .footer-links a { color: var(--ct-muted, #86A99A); text-decoration: none; transition: color 0.15s ease; }
+    .footer-links a:hover { color: var(--ct-text, #D8F2DE); }
     @media (max-width: 900px) {
       .tool-canvas { padding: 24px; }
     }
@@ -322,6 +327,7 @@
       <a href="index.html">UTILITIES</a>
       <a href="about.html">ABOUT</a>
       <a href="privacy.html">PRIVACY POLICY</a>
+      <a href="settings.html">SETTINGS</a>
     </div>
     <span>ALL UTILITIES RUN LOCALLY IN YOUR BROWSER &copy; 2026</span>
   </footer>

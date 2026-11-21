@@ -10,6 +10,11 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <script>
+    (function(){try{var t=localStorage.getItem('codathode_theme');document.documentElement.setAttribute('data-theme',(t==='dark'||t==='light'||t==='green')?t:'green');if(localStorage.getItem('codathode_sidebar_collapsed')==='1')document.documentElement.setAttribute('data-sidebar','collapsed');}catch(e){}})();
+  </script>
+  <link rel="stylesheet" href="codathode-shell.css" />
+  <script src="codathode-shell.js" defer></script>
   <style>
     /* CODATHODE DESIGN SYSTEM */
     *, *::before, *::after {
@@ -19,8 +24,8 @@
     }
 
     body {
-      background-color: #041E1D;
-      color: #D8F2DE;
+      background-color: var(--ct-bg, #041E1D);
+      color: var(--ct-text, #D8F2DE);
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
       min-height: 100vh;
       display: flex;
@@ -33,12 +38,12 @@
     /* HEADER */
     header {
       width: 100%;
-      border-bottom: 1px solid rgba(216, 242, 222, 0.13);
+      border-bottom: 1px solid var(--ct-border, rgba(216, 242, 222, 0.13));
       padding: 24px 48px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      background-color: #041E1D;
+      background-color: var(--ct-bg, #041E1D);
       position: sticky;
       top: 0;
       z-index: 50;
@@ -49,14 +54,14 @@
       font-weight: 800;
       letter-spacing: -0.02em;
       text-decoration: none;
-      color: #D8F2DE;
+      color: var(--ct-text, #D8F2DE);
       display: inline-flex;
       align-items: center;
       transition: opacity 0.15s ease;
     }
 
     .brand:hover { opacity: 0.9; }
-    .brand .faded { color: #86A99A; font-weight: 700; }
+    .brand .faded { color: var(--ct-muted, #86A99A); font-weight: 700; }
 
     .header-nav {
       display: flex;
@@ -69,20 +74,20 @@
     }
 
     .header-nav a {
-      color: #86A99A;
+      color: var(--ct-muted, #86A99A);
       text-decoration: none;
       transition: color 0.15s ease;
     }
 
     .header-nav a:hover, .header-nav a.active {
-      color: #D8F2DE;
+      color: var(--ct-text, #D8F2DE);
     }
 
     .header-badge {
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      color: #86A99A;
+      color: var(--ct-muted, #86A99A);
     }
 
     .header-badge::before {
@@ -91,7 +96,7 @@
       width: 6px;
       height: 6px;
       border-radius: 50%;
-      background-color: #D8F2DE;
+      background-color: var(--ct-text, #D8F2DE);
     }
 
     /* MAIN CONTAINER */
@@ -107,7 +112,7 @@
       font-size: 0.75rem;
       font-weight: 600;
       letter-spacing: 0.16em;
-      color: #86A99A;
+      color: var(--ct-muted, #86A99A);
       text-transform: uppercase;
       margin-bottom: 24px;
       display: flex;
@@ -115,8 +120,8 @@
       gap: 12px;
     }
 
-    .hero-kicker a { color: #86A99A; text-decoration: none; }
-    .hero-kicker a:hover { color: #D8F2DE; }
+    .hero-kicker a { color: var(--ct-muted, #86A99A); text-decoration: none; }
+    .hero-kicker a:hover { color: var(--ct-text, #D8F2DE); }
     .hero-kicker span.sep { opacity: 0.4; }
 
     .hero-heading {
@@ -124,7 +129,7 @@
       font-weight: 900;
       line-height: 0.94;
       letter-spacing: -0.05em;
-      color: #D8F2DE;
+      color: var(--ct-text, #D8F2DE);
       text-transform: uppercase;
       margin-bottom: 24px;
     }
@@ -133,7 +138,7 @@
       font-size: 0.75rem;
       font-weight: 600;
       letter-spacing: 0.12em;
-      color: #86A99A;
+      color: var(--ct-muted, #86A99A);
       text-transform: uppercase;
       margin-bottom: 48px;
       display: inline-block;
@@ -141,8 +146,8 @@
 
     /* PRIVACY CONTENT CARD */
     .policy-container {
-      background-color: #0C2D24;
-      border: 1px solid rgba(216, 242, 222, 0.13);
+      background-color: var(--ct-card, #0C2D24);
+      border: 1px solid var(--ct-border, rgba(216, 242, 222, 0.13));
       border-radius: 6px;
       padding: 48px 44px;
       display: flex;
@@ -157,7 +162,7 @@
     }
 
     .policy-section:not(:last-child) {
-      border-bottom: 1px solid rgba(216, 242, 222, 0.08);
+      border-bottom: 1px solid var(--ct-surface-hover, rgba(216, 242, 222, 0.09));
       padding-bottom: 36px;
     }
 
@@ -165,7 +170,7 @@
       font-size: 0.6875rem;
       font-weight: 700;
       letter-spacing: 0.14em;
-      color: #86A99A;
+      color: var(--ct-muted, #86A99A);
       text-transform: uppercase;
     }
 
@@ -173,11 +178,11 @@
       font-size: 1.375rem;
       font-weight: 800;
       letter-spacing: -0.02em;
-      color: #D8F2DE;
+      color: var(--ct-text, #D8F2DE);
     }
 
     .policy-text {
-      color: #86A99A;
+      color: var(--ct-muted, #86A99A);
       font-size: 0.9375rem;
       line-height: 1.7;
     }
@@ -187,7 +192,7 @@
     }
 
     .policy-text strong {
-      color: #D8F2DE;
+      color: var(--ct-text, #D8F2DE);
       font-weight: 600;
     }
 
@@ -200,49 +205,49 @@
     }
 
     .policy-list li {
-      color: #86A99A;
+      color: var(--ct-muted, #86A99A);
       font-size: 0.9375rem;
     }
 
     .policy-list li strong {
-      color: #D8F2DE;
+      color: var(--ct-text, #D8F2DE);
     }
 
     .highlight-box {
-      background-color: #041E1D;
-      border: 1px solid rgba(216, 242, 222, 0.15);
+      background-color: var(--ct-bg, #041E1D);
+      border: 1px solid var(--ct-border, rgba(216, 242, 222, 0.13));
       border-radius: 4px;
       padding: 20px 24px;
       margin-top: 12px;
       font-size: 0.875rem;
-      color: #D8F2DE;
+      color: var(--ct-text, #D8F2DE);
       line-height: 1.6;
     }
 
     /* FOOTER */
     footer {
-      border-top: 1px solid rgba(216, 242, 222, 0.13);
+      border-top: 1px solid var(--ct-border, rgba(216, 242, 222, 0.13));
       padding: 32px 48px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      color: #86A99A;
+      color: var(--ct-muted, #86A99A);
       font-size: 0.75rem;
       letter-spacing: 0.1em;
       text-transform: uppercase;
-      background-color: #041E1D;
+      background-color: var(--ct-bg, #041E1D);
       flex-wrap: wrap;
       gap: 20px;
     }
 
     .footer-brand {
-      color: #D8F2DE;
+      color: var(--ct-text, #D8F2DE);
       font-weight: 800;
       text-decoration: none;
       letter-spacing: -0.01em;
     }
 
-    .footer-brand .faded { color: #86A99A; }
+    .footer-brand .faded { color: var(--ct-muted, #86A99A); }
 
     .footer-links {
       display: flex;
@@ -251,17 +256,17 @@
     }
 
     .footer-links a {
-      color: #86A99A;
+      color: var(--ct-muted, #86A99A);
       text-decoration: none;
       transition: color 0.15s ease;
     }
 
     .footer-links a:hover {
-      color: #D8F2DE;
+      color: var(--ct-text, #D8F2DE);
     }
 
     .footer-copy {
-      color: #86A99A;
+      color: var(--ct-muted, #86A99A);
       font-weight: 500;
     }
 
@@ -288,6 +293,7 @@
       <a href="index.html">UTILITIES</a>
       <a href="about.html">ABOUT</a>
       <a href="privacy.html" class="active">PRIVACY</a>
+      <a href="settings.html">SETTINGS</a>
       <span class="header-badge">50 TOOLS</span>
     </nav>
   </header>
@@ -348,7 +354,7 @@
             To keep this suite completely free for all users worldwide without subscriptions or paywalls, third-party advertising partners (such as <strong>Google AdSense</strong>) may be utilized in the future to display advertisements. These third-party vendors may use standard web cookies, web beacons, or similar technologies to serve ads based on your prior visits to this or other websites across the Internet.
           </p>
           <p>
-            Users may opt out of personalized advertising by visiting <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener noreferrer" style="color:#D8F2DE; text-decoration:underline;">Google Ads Settings</a> or through the <a href="https://optout.aboutads.info/" target="_blank" rel="noopener noreferrer" style="color:#D8F2DE; text-decoration:underline;">Digital Advertising Alliance Consumer Choice tool</a>.
+            Users may opt out of personalized advertising by visiting <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener noreferrer" style="color:var(--ct-text, #D8F2DE); text-decoration:underline;">Google Ads Settings</a> or through the <a href="https://optout.aboutads.info/" target="_blank" rel="noopener noreferrer" style="color:var(--ct-text, #D8F2DE); text-decoration:underline;">Digital Advertising Alliance Consumer Choice tool</a>.
           </p>
         </div>
       </div>
@@ -381,7 +387,7 @@
         <h2 class="section-title">Questions &amp; Inquiries</h2>
         <div class="policy-text">
           <p>
-            If you have any questions or feedback regarding the privacy practices of Codathode, please review our <a href="about.html" style="color:#D8F2DE; text-decoration:underline;">About Manifesto</a> or connect with us directly.
+            If you have any questions or feedback regarding the privacy practices of Codathode, please review our <a href="about.html" style="color:var(--ct-text, #D8F2DE); text-decoration:underline;">About Manifesto</a> or connect with us directly.
           </p>
         </div>
       </div>
