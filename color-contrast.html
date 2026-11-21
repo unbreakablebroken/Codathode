@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Color Contrast Checker — CODATHODE.</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon.png" />
+  <link rel="apple-touch-icon" href="favicon.png" />
+  <meta name="description" content="Calculate WCAG 2.1 contrast ratios and AA/AAA compliance between foreground text and background colors." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: #041E1D;
+      color: #D8F2DE;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      -webkit-font-smoothing: antialiased;
+      line-height: 1.5;
+    }
+    header {
+      width: 100%;
+      border-bottom: 1px solid rgba(216, 242, 222, 0.13);
+      padding: 24px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background-color: #041E1D;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+    .brand {
+      font-size: 1.125rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      text-decoration: none;
+      color: #D8F2DE;
+      display: inline-flex;
+      align-items: center;
+    }
+    .brand .faded { color: #86A99A; font-weight: 700; }
+    .header-meta {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      color: #86A99A;
+      text-transform: uppercase;
+    }
+    main {
+      flex: 1;
+      max-width: 1120px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 56px 48px 80px 48px;
+    }
+    .hero-kicker {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      color: #86A99A;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .hero-kicker a { color: #86A99A; text-decoration: none; transition: color 0.15s ease; }
+    .hero-kicker a:hover { color: #D8F2DE; }
+    .hero-kicker span.sep { opacity: 0.4; }
+    .hero-split {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 40px;
+      margin-bottom: 48px;
+      flex-wrap: wrap;
+    }
+    .hero-heading {
+      font-size: clamp(2.5rem, 6vw, 4.75rem);
+      font-weight: 900;
+      line-height: 0.92;
+      letter-spacing: -0.05em;
+      color: #D8F2DE;
+      text-transform: uppercase;
+    }
+    .hero-sub {
+      color: #86A99A;
+      font-size: 1rem;
+      line-height: 1.6;
+      max-width: 380px;
+    }
+    .tool-canvas {
+      background-color: #0C2D24;
+      border: 1px solid rgba(216, 242, 222, 0.13);
+      border-radius: 6px;
+      padding: 40px;
+      display: grid;
+      grid-template-columns: 1fr 1.15fr;
+      gap: 40px;
+    }
+    .col-left { display: flex; flex-direction: column; gap: 22px; }
+    .col-right {
+      border-left: 1px solid rgba(216, 242, 222, 0.13);
+      padding-left: 40px;
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+    }
+    .section-tag {
+      font-size: 0.6875rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #86A99A;
+    }
+    .color-control {
+      background-color: #041E1D;
+      border: 1px solid rgba(216, 242, 222, 0.15);
+      border-radius: 5px;
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .picker-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    input[type="color"] {
+      width: 56px;
+      height: 46px;
+      border: 1px solid rgba(216, 242, 222, 0.25);
+      border-radius: 4px;
+      background: #041E1D;
+      padding: 3px;
+      cursor: pointer;
+    }
+    .hex-input {
+      flex: 1;
+      background-color: #0C2D24;
+      border: 1px solid rgba(216, 242, 222, 0.2);
+      border-radius: 4px;
+      padding: 12px 14px;
+      font-family: 'SFMono-Regular', Consolas, monospace;
+      font-size: 1rem;
+      font-weight: 700;
+      color: #D8F2DE;
+      text-transform: uppercase;
+      outline: none;
+    }
+    .hex-input:focus { border-color: #D8F2DE; }
+    .btn-secondary {
+      background-color: transparent;
+      color: #D8F2DE;
+      border: 1px solid rgba(216, 242, 222, 0.2);
+      border-radius: 4px;
+      padding: 12px 18px;
+      font-family: inherit;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .btn-secondary:hover { background-color: rgba(216, 242, 222, 0.08); border-color: rgba(216, 242, 222, 0.4); }
+    .ratio-card {
+      background-color: #041E1D;
+      border: 1px solid rgba(216, 242, 222, 0.15);
+      border-radius: 5px;
+      padding: 24px;
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .ratio-num {
+      font-size: clamp(2.5rem, 4.5vw, 3.5rem);
+      font-weight: 900;
+      letter-spacing: -0.04em;
+      color: #D8F2DE;
+      font-variant-numeric: tabular-nums;
+      line-height: 1;
+    }
+    .wcag-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    .wcag-tile {
+      background-color: #041E1D;
+      border: 1px solid rgba(216, 242, 222, 0.14);
+      border-radius: 4px;
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .wcag-name {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .wcag-title { font-size: 0.8125rem; font-weight: 700; color: #D8F2DE; }
+    .wcag-req { font-size: 0.6875rem; color: #86A99A; }
+    .badge-pass {
+      font-size: 0.6875rem;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      padding: 5px 10px;
+      border-radius: 3px;
+      background-color: rgba(22, 84, 72, 0.65);
+      border: 1px solid rgba(216, 242, 222, 0.35);
+      color: #D8F2DE;
+    }
+    .badge-fail {
+      font-size: 0.6875rem;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      padding: 5px 10px;
+      border-radius: 3px;
+      background-color: rgba(220, 60, 60, 0.16);
+      border: 1px solid rgba(255, 155, 155, 0.35);
+      color: #ff9b9b;
+    }
+    .preview-card {
+      border: 1px solid rgba(216, 242, 222, 0.2);
+      border-radius: 6px;
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      transition: background-color 0.15s ease, color 0.15s ease;
+    }
+    .preview-large { font-size: 1.5rem; font-weight: 800; letter-spacing: -0.02em; line-height: 1.2; }
+    .preview-normal { font-size: 0.9375rem; line-height: 1.6; }
+    footer {
+      border-top: 1px solid rgba(216, 242, 222, 0.13);
+      padding: 28px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: #86A99A;
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+    .footer-brand { color: #D8F2DE; font-weight: 800; text-decoration: none; }
+    .footer-brand .faded { color: #86A99A; }
+    .footer-links { display: flex; align-items: center; gap: 24px; }
+    .footer-links a { color: #86A99A; text-decoration: none; transition: color 0.15s ease; }
+    .footer-links a:hover { color: #D8F2DE; }
+    @media (max-width: 900px) {
+      .tool-canvas { grid-template-columns: 1fr; padding: 24px; }
+      .col-right { border-left: none; border-top: 1px solid rgba(216, 242, 222, 0.13); padding-left: 0; padding-top: 28px; }
+    }
+    @media (max-width: 640px) {
+      header { padding: 20px 24px; }
+      main { padding: 40px 24px 64px 24px; }
+      .hero-heading { letter-spacing: -0.035em; line-height: 0.98; }
+      .wcag-grid { grid-template-columns: 1fr; }
+      footer { padding: 24px; flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="index.html" class="brand">CODA<span class="faded">THODE.</span></a>
+    <div class="header-meta">
+      <span>WEB UTILITIES</span>
+      <span>038 / 041</span>
+    </div>
+  </header>
+
+  <main>
+    <div class="hero-kicker">
+      <a href="index.html">DIGITAL UTILITIES</a>
+      <span class="sep">/</span>
+      <span>TOOL 038</span>
+    </div>
+
+    <div class="hero-split">
+      <h1 class="hero-heading">WCAG COLOR<br />CONTRAST.</h1>
+      <p class="hero-sub">
+        Measure luminance contrast ratios between foreground text and background colors against WCAG 2.1 AA and AAA accessibility thresholds.
+      </p>
+    </div>
+
+    <div class="tool-canvas">
+      <div class="col-left">
+        <span class="section-tag">01 — COLOR PAIRING</span>
+
+        <div class="color-control">
+          <label for="fgHex" class="section-tag">TEXT COLOR (FOREGROUND)</label>
+          <div class="picker-row">
+            <input type="color" id="fgPicker" value="#D8F2DE" aria-label="Foreground text color" />
+            <input type="text" id="fgHex" class="hex-input" value="#D8F2DE" maxlength="7" />
+          </div>
+        </div>
+
+        <div class="color-control">
+          <label for="bgHex" class="section-tag">BACKGROUND COLOR</label>
+          <div class="picker-row">
+            <input type="color" id="bgPicker" value="#041E1D" aria-label="Background color" />
+            <input type="text" id="bgHex" class="hex-input" value="#041E1D" maxlength="7" />
+          </div>
+        </div>
+
+        <button id="swapBtn" class="btn-secondary" type="button">SWAP FOREGROUND &amp; BACKGROUND ⇄</button>
+      </div>
+
+      <div class="col-right">
+        <span class="section-tag">02 — WCAG 2.1 COMPLIANCE</span>
+
+        <div class="ratio-card">
+          <div>
+            <div class="section-tag">CONTRAST RATIO</div>
+            <div class="ratio-num" id="ratioVal">14.69 : 1</div>
+          </div>
+          <span class="badge-pass" id="overallRating">EXCELLENT</span>
+        </div>
+
+        <div class="wcag-grid">
+          <div class="wcag-tile">
+            <div class="wcag-name">
+              <span class="wcag-title">AA Normal Text</span>
+              <span class="wcag-req">Requires &ge; 4.5:1</span>
+            </div>
+            <span id="badgeAaNormal" class="badge-pass">PASS</span>
+          </div>
+          <div class="wcag-tile">
+            <div class="wcag-name">
+              <span class="wcag-title">AA Large Text</span>
+              <span class="wcag-req">Requires &ge; 3.0:1</span>
+            </div>
+            <span id="badgeAaLarge" class="badge-pass">PASS</span>
+          </div>
+          <div class="wcag-tile">
+            <div class="wcag-name">
+              <span class="wcag-title">AAA Normal Text</span>
+              <span class="wcag-req">Requires &ge; 7.0:1</span>
+            </div>
+            <span id="badgeAaaNormal" class="badge-pass">PASS</span>
+          </div>
+          <div class="wcag-tile">
+            <div class="wcag-name">
+              <span class="wcag-title">AAA Large Text</span>
+              <span class="wcag-req">Requires &ge; 4.5:1</span>
+            </div>
+            <span id="badgeAaaLarge" class="badge-pass">PASS</span>
+          </div>
+        </div>
+
+        <div class="preview-card" id="previewCard">
+          <div class="preview-large">Large Display Heading (18pt+ Bold)</div>
+          <div class="preview-normal">
+            Normal body copy at 15px. Good legibility relies on clear luminance separation between ink and canvas.
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <a href="index.html" class="footer-brand">CODA<span class="faded">THODE.</span></a>
+    <div class="footer-links">
+      <a href="index.html">UTILITIES</a>
+      <a href="about.html">ABOUT</a>
+      <a href="privacy.html">PRIVACY POLICY</a>
+    </div>
+    <span>ALL UTILITIES RUN LOCALLY IN YOUR BROWSER &copy; 2026</span>
+  </footer>
+
+  <script>
+    const fgPicker = document.getElementById('fgPicker');
+    const bgPicker = document.getElementById('bgPicker');
+    const fgHex = document.getElementById('fgHex');
+    const bgHex = document.getElementById('bgHex');
+    const swapBtn = document.getElementById('swapBtn');
+    const ratioVal = document.getElementById('ratioVal');
+    const overallRating = document.getElementById('overallRating');
+    const previewCard = document.getElementById('previewCard');
+
+    const badgeAaNormal = document.getElementById('badgeAaNormal');
+    const badgeAaLarge = document.getElementById('badgeAaLarge');
+    const badgeAaaNormal = document.getElementById('badgeAaaNormal');
+    const badgeAaaLarge = document.getElementById('badgeAaaLarge');
+
+    function normalizeHex(str) {
+      let s = str.trim().replace(/^#/, '');
+      if (/^[0-9a-fA-F]{3}$/.test(s)) {
+        s = s.split('').map(c => c + c).join('');
+      }
+      if (/^[0-9a-fA-F]{6}$/.test(s)) return '#' + s.toUpperCase();
+      return null;
+    }
+
+    function hexToRgb(hex) {
+      const n = parseInt(hex.slice(1), 16);
+      return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
+    }
+
+    function luminance([r, g, b]) {
+      const a = [r, g, b].map(v => {
+        const s = v / 255;
+        return s <= 0.03928 ? s / 12.92 : Math.pow((s + 0.055) / 1.055, 2.4);
+      });
+      return 0.2126 * a[0] + 0.7152 * a[1] + 0.0722 * a[2];
+    }
+
+    function setBadge(el, pass) {
+      el.textContent = pass ? 'PASS' : 'FAIL';
+      el.className = pass ? 'badge-pass' : 'badge-fail';
+    }
+
+    function update() {
+      const fg = fgPicker.value.toUpperCase();
+      const bg = bgPicker.value.toUpperCase();
+
+      const l1 = luminance(hexToRgb(fg));
+      const l2 = luminance(hexToRgb(bg));
+      const ratio = (Math.max(l1, l2) + 0.05) / (Math.min(l1, l2) + 0.05);
+
+      ratioVal.textContent = ratio.toFixed(2) + ' : 1';
+      setBadge(badgeAaNormal, ratio >= 4.5);
+      setBadge(badgeAaLarge, ratio >= 3.0);
+      setBadge(badgeAaaNormal, ratio >= 7.0);
+      setBadge(badgeAaaLarge, ratio >= 4.5);
+
+      if (ratio >= 7.0) {
+        overallRating.textContent = 'AAA OPTIMAL';
+        overallRating.className = 'badge-pass';
+      } else if (ratio >= 4.5) {
+        overallRating.textContent = 'AA PASSED';
+        overallRating.className = 'badge-pass';
+      } else if (ratio >= 3.0) {
+        overallRating.textContent = 'LARGE ONLY';
+        overallRating.className = 'badge-fail';
+      } else {
+        overallRating.textContent = 'LOW CONTRAST';
+        overallRating.className = 'badge-fail';
+      }
+
+      previewCard.style.color = fg;
+      previewCard.style.backgroundColor = bg;
+    }
+
+    fgPicker.addEventListener('input', () => {
+      fgHex.value = fgPicker.value.toUpperCase();
+      update();
+    });
+
+    bgPicker.addEventListener('input', () => {
+      bgHex.value = bgPicker.value.toUpperCase();
+      update();
+    });
+
+    fgHex.addEventListener('input', () => {
+      const norm = normalizeHex(fgHex.value);
+      if (norm) {
+        fgPicker.value = norm;
+        update();
+      }
+    });
+
+    bgHex.addEventListener('input', () => {
+      const norm = normalizeHex(bgHex.value);
+      if (norm) {
+        bgPicker.value = norm;
+        update();
+      }
+    });
+
+    swapBtn.addEventListener('click', () => {
+      const tmp = fgPicker.value;
+      fgPicker.value = bgPicker.value;
+      bgPicker.value = tmp;
+      fgHex.value = fgPicker.value.toUpperCase();
+      bgHex.value = bgPicker.value.toUpperCase();
+      update();
+    });
+
+    update();
+  </script>
+</body>
+</html>
