@@ -19,6 +19,8 @@ export default defineConfig({
         'pwa-maskable-512x512.png',
         'codathode-shell.css',
         'codathode-shell.js',
+        'sitemap.xml',
+        'robots.txt',
       ],
       manifest: {
         id: '/',
