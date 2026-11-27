@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>XML Sitemap Generator — CODATHODE.</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon.png" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <meta name="theme-color" content="#041E1D" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Codathode" />
+  <link rel="icon" type="image/svg+xml" href="/icon.svg" />
+  <meta name="description" content="Generate standards-compliant sitemap.xml files with custom changefreq, priority, lastmod dates, and depth scaling 100% client-side." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <script>
+    (function(){try{var t=localStorage.getItem('codathode_theme');document.documentElement.setAttribute('data-theme',(t==='dark'||t==='light'||t==='green')?t:'green');if(localStorage.getItem('codathode_sidebar_collapsed')==='1')document.documentElement.setAttribute('data-sidebar','collapsed');}catch(e){}})();
+  </script>
+  <link rel="stylesheet" href="codathode-shell.css" />
+  <script src="codathode-shell.js" defer></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background-color: var(--ct-bg, #041E1D); color: var(--ct-text, #D8F2DE); font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; min-height: 100vh; display: flex; flex-direction: column; -webkit-font-smoothing: antialiased; line-height: 1.5; }
+    header { width: 100%; border-bottom: 1px solid var(--ct-border, rgba(216,242,222,0.13)); padding: 24px 48px; display: flex; align-items: center; justify-content: space-between; background-color: var(--ct-bg, #041E1D); position: sticky; top: 0; z-index: 50; }
+    .brand { font-size: 1.125rem; font-weight: 800; letter-spacing: -0.02em; text-decoration: none; color: var(--ct-text, #D8F2DE); display: inline-flex; align-items: center; }
+    .brand .faded { color: var(--ct-muted, #86A99A); font-weight: 700; }
+    .header-meta { display: flex; align-items: center; gap: 24px; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.14em; color: var(--ct-muted, #86A99A); text-transform: uppercase; }
+    main { flex: 1; max-width: 1240px; width: 100%; margin: 0 auto; padding: 56px 48px 80px 48px; }
+    .hero-kicker { font-size: 0.75rem; font-weight: 600; letter-spacing: 0.16em; color: var(--ct-muted, #86A99A); text-transform: uppercase; margin-bottom: 20px; display: flex; align-items: center; gap: 12px; }
+    .hero-kicker a { color: var(--ct-muted, #86A99A); text-decoration: none; }
+    .hero-kicker a:hover { color: var(--ct-text, #D8F2DE); }
+    .hero-kicker span.sep { opacity: 0.4; }
+    .hero-split { display: flex; justify-content: space-between; align-items: flex-end; gap: 40px; margin-bottom: 48px; flex-wrap: wrap; }
+    .hero-heading { font-size: clamp(2.5rem, 6vw, 4.75rem); font-weight: 900; line-height: 0.92; letter-spacing: -0.05em; color: var(--ct-text, #D8F2DE); text-transform: uppercase; }
+    .hero-sub { color: var(--ct-muted, #86A99A); font-size: 1rem; line-height: 1.6; max-width: 400px; }
+    .tool-canvas { background-color: var(--ct-card, #0C2D24); border: 1px solid var(--ct-border, rgba(216,242,222,0.13)); border-radius: 6px; padding: 36px; display: flex; flex-direction: column; gap: 24px; }
+    .top-bar { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+    .mode-toggle { display: inline-flex; background-color: var(--ct-bg, #041E1D); border: 1px solid var(--ct-border, rgba(216,242,222,0.13)); border-radius: 4px; padding: 4px; gap: 4px; }
+    .mode-btn { background: transparent; border: none; color: var(--ct-muted, #86A99A); font-family: inherit; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 10px 16px; border-radius: 3px; cursor: pointer; }
+    .mode-btn.active { background-color: var(--ct-accent, #165448); color: var(--ct-on-accent, #D8F2DE); }
+    .studio-grid { display: grid; grid-template-columns: 1fr 1.15fr; gap: 24px; align-items: start; }
+    .panel { background-color: var(--ct-bg, #041E1D); border: 1px solid var(--ct-border, rgba(216,242,222,0.13)); border-radius: 5px; padding: 20px; display: flex; flex-direction: column; gap: 14px; }
+    .ctrl-label { font-size: 0.6875rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ct-muted, #86A99A); display: flex; justify-content: space-between; align-items: center; }
+    .app-input, .app-select, .app-textarea { width: 100%; background-color: var(--ct-card, #0C2D24); border: 1px solid var(--ct-border-medium, rgba(216,242,222,0.18)); border-radius: 4px; padding: 11px 13px; color: var(--ct-text, #D8F2DE); font-family: inherit; font-size: 0.88rem; outline: none; transition: border-color 0.15s ease; }
+    .app-input:focus, .app-select:focus, .app-textarea:focus { border-color: var(--ct-text, #D8F2DE); }
+    .app-textarea { min-height: 190px; font-family: 'SFMono-Regular', Consolas, monospace; font-size: 0.82rem; line-height: 1.6; resize: vertical; }
+    .fields-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .fields-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+    .field-col { display: flex; flex-direction: column; gap: 6px; }
+    .chk-row { display: flex; flex-wrap: wrap; gap: 12px 18px; }
+    .chk-inline { display: inline-flex; align-items: center; gap: 8px; font-size: 0.82rem; font-weight: 600; color: var(--ct-text, #D8F2DE); cursor: pointer; }
+    .chk-inline input { accent-color: var(--ct-accent, #165448); width: 15px; height: 15px; }
+    .url-rows { display: flex; flex-direction: column; gap: 8px; max-height: 300px; overflow-y: auto; padding-right: 4px; }
+    .url-row-card { display: grid; grid-template-columns: 1.4fr 0.9fr 0.75fr auto; gap: 8px; align-items: center; background-color: var(--ct-card, #0C2D24); border: 1px solid var(--ct-border, rgba(216,242,222,0.13)); border-radius: 4px; padding: 8px; }
+    .url-row-card input, .url-row-card select { background-color: var(--ct-bg, #041E1D); border: 1px solid var(--ct-border, rgba(216,242,222,0.13)); border-radius: 3px; padding: 7px 8px; color: var(--ct-text, #D8F2DE); font-family: inherit; font-size: 0.78rem; outline: none; min-width: 0; }
+    .del-row-btn { background: transparent; border: 1px solid var(--ct-border, rgba(216,242,222,0.13)); color: var(--ct-muted, #86A99A); border-radius: 3px; width: 28px; height: 28px; cursor: pointer; font-weight: 700; }
+    .del-row-btn:hover { color: var(--ct-danger, #ff9b9b); border-color: var(--ct-danger, #ff9b9b); }
+    .code-box { background-color: var(--ct-bg, #041E1D); border: 1px solid var(--ct-border, rgba(216,242,222,0.13)); border-radius: 4px; padding: 18px; font-family: 'SFMono-Regular', Consolas, monospace; font-size: 0.8rem; color: var(--ct-text, #D8F2DE); white-space: pre-wrap; word-break: break-all; line-height: 1.6; min-height: 360px; max-height: 500px; overflow-y: auto; }
+    .meta-bar { display: flex; align-items: center; justify-content: space-between; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ct-muted, #86A99A); }
+    .btn-row { display: flex; gap: 10px; flex-wrap: wrap; }
+    .btn-primary { background-color: var(--ct-accent, #165448); color: var(--ct-on-accent, #D8F2DE); border: 1px solid var(--ct-border-medium, rgba(216,242,222,0.2)); border-radius: 4px; padding: 11px 18px; font-family: inherit; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; cursor: pointer; }
+    .btn-primary:hover { background-color: var(--ct-accent-hover, #1C6859); }
+    .btn-secondary { background-color: transparent; color: var(--ct-text, #D8F2DE); border: 1px solid var(--ct-border-strong, rgba(216,242,222,0.28)); border-radius: 4px; padding: 10px 16px; font-family: inherit; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; }
+    .btn-secondary:hover { background-color: var(--ct-surface-hover, rgba(216,242,222,0.09)); border-color: var(--ct-border-hover, rgba(216,242,222,0.42)); }
+    .hint-note { font-size: 0.78rem; color: var(--ct-muted, #86A99A); line-height: 1.5; }
+    footer { border-top: 1px solid var(--ct-border, rgba(216,242,222,0.13)); padding: 28px 48px; display: flex; align-items: center; justify-content: space-between; color: var(--ct-muted, #86A99A); font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; flex-wrap: wrap; gap: 20px; }
+    .footer-brand { color: var(--ct-text, #D8F2DE); font-weight: 800; text-decoration: none; }
+    .footer-brand .faded { color: var(--ct-muted, #86A99A); }
+    .footer-links { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; }
+    .footer-links a { color: var(--ct-muted, #86A99A); text-decoration: none; }
+    .footer-links a:hover { color: var(--ct-text, #D8F2DE); }
+    @media (max-width: 960px) { .studio-grid { grid-template-columns: 1fr; } .tool-canvas { padding: 24px; } }
+    @media (max-width: 640px) { .fields-2, .fields-3, .url-row-card { grid-template-columns: 1fr; } header { padding: 20px 24px; } main { padding: 40px 24px 64px 24px; } .hero-heading { letter-spacing: -0.035em; line-height: 0.98; } footer { padding: 24px; flex-direction: column; align-items: flex-start; } }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="index.html" class="brand">CODA<span class="faded">THODE.</span></a>
+    <div class="header-meta">
+      <span>WEB UTILITIES</span>
+      <span>065 / 065</span>
+    </div>
+  </header>
+
+  <main>
+    <div class="hero-kicker">
+      <a href="index.html">DIGITAL UTILITIES</a>
+      <span class="sep">/</span>
+      <span>TOOL 065</span>
+    </div>
+
+    <div class="hero-split">
+      <h1 class="hero-heading">XML SITEMAP<br />GENERATOR.</h1>
+      <p class="hero-sub">
+        Build standards-compliant <code>sitemap.xml</code> files with automated depth priority scaling, lastmod timestamps, and instant download.
+      </p>
+    </div>
+
+    <div class="tool-canvas">
+      <div class="top-bar">
+        <div class="mode-toggle" role="tablist" aria-label="Entry mode">
+          <button type="button" class="mode-btn active" data-mode="bulk">BULK URL LIST</button>
+          <button type="button" class="mode-btn" data-mode="rows">PER-URL EDITOR</button>
+        </div>
+        <div class="btn-row">
+          <button type="button" id="sampleBtn" class="btn-secondary">LOAD SAMPLE</button>
+          <button type="button" id="dedupeBtn" class="btn-secondary">DEDUPLICATE</button>
+        </div>
+      </div>
+
+      <div class="studio-grid">
+        <div class="panel">
+          <div class="field-col">
+            <label for="baseUrl" class="ctrl-label">BASE DOMAIN URL</label>
+            <input id="baseUrl" class="app-input" type="url" value="https://codathode.example" placeholder="https://example.com" />
+          </div>
+
+          <div id="bulkPanel" class="field-col">
+            <label for="urlBulk" class="ctrl-label">
+              <span>PATHS OR FULL URLS (ONE PER LINE)</span>
+              <span id="bulkCount">0 LINES</span>
+            </label>
+            <textarea id="urlBulk" class="app-textarea" placeholder="/&#10;/about&#10;/pricing&#10;/blog/getting-started">/
+/about
+/pricing
+/docs
+/docs/getting-started
+/blog
+/contact</textarea>
+            <span class="hint-note">Tip: Append optional overrides per line like <code>/pricing | weekly | 0.9</code>.</span>
+          </div>
+
+          <div id="rowsPanel" class="field-col" style="display:none;">
+            <div class="ctrl-label">
+              <span>INDIVIDUAL URL ENTRIES</span>
+              <button type="button" id="addRowBtn" class="btn-secondary" style="padding:5px 10px;">+ ADD URL</button>
+            </div>
+            <div id="urlRowsContainer" class="url-rows"></div>
+          </div>
+
+          <div class="fields-3">
+            <div class="field-col">
+              <label for="defFreq" class="ctrl-label">CHANGEFREQ</label>
+              <select id="defFreq" class="app-select">
+                <option value="weekly" selected>weekly</option>
+                <option value="daily">daily</option>
+                <option value="monthly">monthly</option>
+                <option value="yearly">yearly</option>
+                <option value="always">always</option>
+                <option value="hourly">hourly</option>
+                <option value="never">never</option>
+                <option value="">Omit</option>
+              </select>
+            </div>
+            <div class="field-col">
+              <label for="defPrio" class="ctrl-label">PRIORITY</label>
+              <select id="defPrio" class="app-select">
+                <option value="auto" selected>Auto (by depth)</option>
+                <option value="1.0">1.0</option>
+                <option value="0.9">0.9</option>
+                <option value="0.8">0.8</option>
+                <option value="0.7">0.7</option>
+                <option value="0.5">0.5</option>
+                <option value="0.3">0.3</option>
+                <option value="">Omit</option>
+              </select>
+            </div>
+            <div class="field-col">
+              <label for="defDate" class="ctrl-label">LASTMOD DATE</label>
+              <input id="defDate" class="app-input" type="date" />
+            </div>
+          </div>
+
+          <div class="fields-2">
+            <div class="field-col">
+              <label for="slashMode" class="ctrl-label">TRAILING SLASH</label>
+              <select id="slashMode" class="app-select">
+                <option value="keep" selected>Keep as entered</option>
+                <option value="add">Ensure trailing /</option>
+                <option value="strip">Strip trailing /</option>
+              </select>
+            </div>
+            <div class="field-col" style="justify-content:flex-end;">
+              <div class="chk-row" style="padding-bottom:8px;">
+                <label class="chk-inline"><input type="checkbox" id="includeLastmod" checked /> Include &lt;lastmod&gt;</label>
+                <label class="chk-inline"><input type="checkbox" id="minifyXml" /> Minify XML</label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:14px;">
+          <div class="meta-bar">
+            <span>GENERATED SITEMAP.XML</span>
+            <span id="xmlStats">0 URLS · 0 B</span>
+          </div>
+          <pre id="xmlOut" class="code-box"></pre>
+          <div class="btn-row">
+            <button type="button" id="copyXmlBtn" class="btn-primary">COPY XML</button>
+            <button type="button" id="dlXmlBtn" class="btn-secondary">DOWNLOAD SITEMAP.XML</button>
+            <button type="button" id="copyRobotsBtn" class="btn-secondary">COPY ROBOTS LINE</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <a href="index.html" class="footer-brand">CODA<span class="faded">THODE.</span></a>
+    <div class="footer-links">
+      <a href="index.html">UTILITIES</a>
+      <a href="about.html">ABOUT</a>
+      <a href="privacy.html">PRIVACY POLICY</a>
+      <a href="settings.html">SETTINGS</a>
+    </div>
+    <span class="footer-copy">ALL UTILITIES RUN LOCALLY IN YOUR BROWSER &copy; 2026</span>
+  </footer>
+
+  <script>
+    (function () {
+      var baseUrlEl = document.getElementById('baseUrl');
+      var urlBulkEl = document.getElementById('urlBulk');
+      var bulkCountEl = document.getElementById('bulkCount');
+      var bulkPanel = document.getElementById('bulkPanel');
+      var rowsPanel = document.getElementById('rowsPanel');
+      var rowsContainer = document.getElementById('urlRowsContainer');
+      var defFreqEl = document.getElementById('defFreq');
+      var defPrioEl = document.getElementById('defPrio');
+      var defDateEl = document.getElementById('defDate');
+      var slashModeEl = document.getElementById('slashMode');
+      var includeLastmodEl = document.getElementById('includeLastmod');
+      var minifyXmlEl = document.getElementById('minifyXml');
+      var xmlOutEl = document.getElementById('xmlOut');
+      var xmlStatsEl = document.getElementById('xmlStats');
+      var copyXmlBtn = document.getElementById('copyXmlBtn');
+      var copyRobotsBtn = document.getElementById('copyRobotsBtn');
+
+      var todayIso = new Date().toISOString().slice(0, 10);
+      defDateEl.value = todayIso;
+
+      var mode = 'bulk';
+      var rowEntries = [];
+
+      function escapeXml(str) {
+        return String(str)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&apos;');
+      }
+
+      function getCleanBase() {
+        var b = baseUrlEl.value.trim().replace(/\/+$/, '');
+        if (!b) return 'https://example.com';
+        if (!/^https?:\/\//i.test(b)) b = 'https://' + b;
+        return b;
+      }
+
+      function normalizeUrl(rawPath) {
+        var base = getCleanBase();
+        var raw = rawPath.trim();
+        if (!raw) return '';
+        var full = /^https?:\/\//i.test(raw)
+          ? raw
+          : base + (raw.charAt(0) === '/' ? raw : '/' + raw);
+
+        var slashMode = slashModeEl.value;
+        try {
+          var u = new URL(full);
+          if (slashMode === 'add' && !u.pathname.endsWith('/') && !/\.[a-z0-9]{1,6}$/i.test(u.pathname)) {
+            u.pathname += '/';
+          } else if (slashMode === 'strip' && u.pathname.length > 1 && u.pathname.endsWith('/')) {
+            u.pathname = u.pathname.slice(0, -1);
+          }
+          return u.toString();
+        } catch (e) {
+          return full;
+        }
+      }
+
+      function computeAutoPriority(urlStr) {
+        try {
+          var u = new URL(urlStr);
+          var parts = u.pathname.split('/').filter(Boolean);
+          if (parts.length === 0) return '1.0';
+          if (parts.length === 1) return '0.8';
+          if (parts.length === 2) return '0.6';
+          return '0.5';
+        } catch (e) {
+          return '0.8';
+        }
+      }
+
+      function parseBulkLines() {
+        var lines = urlBulkEl.value.split(/\r?\n/).map(function (l) { return l.trim(); }).filter(Boolean);
+        bulkCountEl.textContent = lines.length + (lines.length === 1 ? ' LINE' : ' LINES');
+        var list = [];
+        for (var i = 0; i < lines.length; i++) {
+          var parts = lines[i].split('|').map(function (p) { return p.trim(); });
+          list.push({
+            path: parts[0] || '',
+            freq: parts[1] !== undefined ? parts[1] : null,
+            prio: parts[2] !== undefined ? parts[2] : null
+          });
+        }
+        return list;
+      }
+
+      function syncRowsFromBulk() {
+        var parsed = parseBulkLines();
+        rowEntries = parsed.map(function (item) {
+          return {
+            path: item.path,
+            freq: item.freq || defFreqEl.value || 'weekly',
+            prio: item.prio || (defPrioEl.value === 'auto' ? '' : defPrioEl.value)
+          };
+        });
+        renderRowsUI();
+      }
+
+      function renderRowsUI() {
+        rowsContainer.innerHTML = '';
+        rowEntries.forEach(function (entry, idx) {
+          var card = document.createElement('div');
+          card.className = 'url-row-card';
+
+          var pathInput = document.createElement('input');
+          pathInput.type = 'text';
+          pathInput.value = entry.path;
+          pathInput.placeholder = '/path';
+          pathInput.addEventListener('input', function () {
+            rowEntries[idx].path = pathInput.value;
+            renderXml();
+          });
+
+          var freqSel = document.createElement('select');
+          ['weekly', 'daily', 'monthly', 'yearly', 'always', 'hourly', 'never', ''].forEach(function (v) {
+            var opt = document.createElement('option');
+            opt.value = v;
+            opt.textContent = v || 'Omit freq';
+            if (entry.freq === v) opt.selected = true;
+            freqSel.appendChild(opt);
+          });
+          freqSel.addEventListener('change', function () {
+            rowEntries[idx].freq = freqSel.value;
+            renderXml();
+          });
+
+          var prioSel = document.createElement('select');
+          ['', '1.0', '0.9', '0.8', '0.7', '0.6', '0.5', '0.3'].forEach(function (v) {
+            var opt = document.createElement('option');
+            opt.value = v;
+            opt.textContent = v || 'Auto';
+            if (entry.prio === v) opt.selected = true;
+            prioSel.appendChild(opt);
+          });
+          prioSel.addEventListener('change', function () {
+            rowEntries[idx].prio = prioSel.value;
+            renderXml();
+          });
+
+          var delBtn = document.createElement('button');
+          delBtn.type = 'button';
+          delBtn.className = 'del-row-btn';
+          delBtn.innerHTML = '&times;';
+          delBtn.title = 'Remove URL';
+          delBtn.addEventListener('click', function () {
+            rowEntries.splice(idx, 1);
+            renderRowsUI();
+            renderXml();
+          });
+
+          card.appendChild(pathInput);
+          card.appendChild(freqSel);
+          card.appendChild(prioSel);
+          card.appendChild(delBtn);
+          rowsContainer.appendChild(card);
+        });
+      }
+
+      function renderXml() {
+        var entries = mode === 'bulk' ? parseBulkLines() : rowEntries;
+        var seen = Object.create(null);
+        var urls = [];
+        var defFreq = defFreqEl.value;
+        var defPrio = defPrioEl.value;
+        var lastmod = includeLastmodEl.checked ? defDateEl.value.trim() : '';
+        var minify = minifyXmlEl.checked;
+
+        for (var i = 0; i < entries.length; i++) {
+          var loc = normalizeUrl(entries[i].path);
+          if (!loc || seen[loc]) continue;
+          seen[loc] = true;
+
+          var freq = entries[i].freq !== null ? entries[i].freq : defFreq;
+          var prioRaw = entries[i].prio !== null && entries[i].prio !== '' ? entries[i].prio : defPrio;
+          var prio = prioRaw === 'auto' ? computeAutoPriority(loc) : prioRaw;
+
+          urls.push({ loc: loc, lastmod: lastmod, freq: freq, prio: prio });
+        }
+
+        var nl = minify ? '' : '\n';
+        var ind1 = minify ? '' : '  ';
+        var ind2 = minify ? '' : '    ';
+
+        var xml = '<?xml version="1.0" encoding="UTF-8"?>' + nl;
+        xml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' + nl;
+        for (var u = 0; u < urls.length; u++) {
+          var item = urls[u];
+          xml += ind1 + '<url>' + nl;
+          xml += ind2 + '<loc>' + escapeXml(item.loc) + '</loc>' + nl;
+          if (item.lastmod) xml += ind2 + '<lastmod>' + escapeXml(item.lastmod) + '</lastmod>' + nl;
+          if (item.freq) xml += ind2 + '<changefreq>' + escapeXml(item.freq) + '</changefreq>' + nl;
+          if (item.prio) xml += ind2 + '<priority>' + escapeXml(item.prio) + '</priority>' + nl;
+          xml += ind1 + '</url>' + nl;
+        }
+        xml += '</urlset>';
+
+        xmlOutEl.textContent = xml;
+        var bytes = new Blob([xml]).size;
+        var sizeLabel = bytes >= 1024 ? (bytes / 1024).toFixed(1) + ' KB' : bytes + ' B';
+        xmlStatsEl.textContent = urls.length + (urls.length === 1 ? ' URL' : ' URLS') + ' · ' + sizeLabel;
+      }
+
+      document.querySelectorAll('.mode-btn').forEach(function (b) {
+        b.addEventListener('click', function () {
+          document.querySelectorAll('.mode-btn').forEach(function (x) { x.classList.remove('active'); });
+          b.classList.add('active');
+          var nextMode = b.getAttribute('data-mode');
+          if (nextMode === 'rows' && mode !== 'rows') {
+            syncRowsFromBulk();
+          } else if (nextMode === 'bulk' && mode !== 'bulk') {
+            urlBulkEl.value = rowEntries.map(function (r) {
+              var extra = [];
+              if (r.freq) extra.push(r.freq);
+              if (r.prio) extra.push(r.prio);
+              return extra.length ? r.path + ' | ' + extra.join(' | ') : r.path;
+            }).join('\n');
+          }
+          mode = nextMode;
+          bulkPanel.style.display = mode === 'bulk' ? 'flex' : 'none';
+          rowsPanel.style.display = mode === 'rows' ? 'flex' : 'none';
+          renderXml();
+        });
+      });
+
+      document.getElementById('addRowBtn').addEventListener('click', function () {
+        rowEntries.push({ path: '/new-page', freq: defFreqEl.value || 'weekly', prio: '' });
+        renderRowsUI();
+        renderXml();
+      });
+
+      document.getElementById('sampleBtn').addEventListener('click', function () {
+        baseUrlEl.value = 'https://codathode.example';
+        urlBulkEl.value = '/\n/utilities\n/utilities/json-formatter | daily | 0.9\n/utilities/password-generator | daily | 0.9\n/docs\n/docs/offline-pwa\n/about | monthly | 0.5\n/privacy | yearly | 0.3';
+        if (mode === 'rows') syncRowsFromBulk();
+        renderXml();
+      });
+
+      document.getElementById('dedupeBtn').addEventListener('click', function () {
+        if (mode === 'bulk') {
+          var seen = Object.create(null);
+          var clean = [];
+          urlBulkEl.value.split(/\r?\n/).forEach(function (line) {
+            var t = line.trim();
+            if (!t) return;
+            var key = normalizeUrl(t.split('|')[0]);
+            if (key && !seen[key]) {
+              seen[key] = true;
+              clean.push(t);
+            }
+          });
+          urlBulkEl.value = clean.join('\n');
+        } else {
+          var seenR = Object.create(null);
+          rowEntries = rowEntries.filter(function (r) {
+            var k = normalizeUrl(r.path);
+            if (!k || seenR[k]) return false;
+            seenR[k] = true;
+            return true;
+          });
+          renderRowsUI();
+        }
+        renderXml();
+      });
+
+      [baseUrlEl, urlBulkEl, defFreqEl, defPrioEl, defDateEl, slashModeEl, includeLastmodEl, minifyXmlEl].forEach(function (el) {
+        el.addEventListener('input', renderXml);
+        el.addEventListener('change', renderXml);
+      });
+
+      copyXmlBtn.addEventListener('click', function () {
+        navigator.clipboard.writeText(xmlOutEl.textContent).then(function () {
+          copyXmlBtn.textContent = 'COPIED!';
+          setTimeout(function () { copyXmlBtn.textContent = 'COPY XML'; }, 1400);
+        });
+      });
+
+      copyRobotsBtn.addEventListener('click', function () {
+        var line = 'Sitemap: ' + getCleanBase() + '/sitemap.xml';
+        navigator.clipboard.writeText(line).then(function () {
+          copyRobotsBtn.textContent = 'COPIED LINE!';
+          setTimeout(function () { copyRobotsBtn.textContent = 'COPY ROBOTS LINE'; }, 1400);
+        });
+      });
+
+      document.getElementById('dlXmlBtn').addEventListener('click', function () {
+        var blob = new Blob([xmlOutEl.textContent], { type: 'application/xml' });
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        a.href = url;
+        a.download = 'sitemap.xml';
+        a.click();
+        URL.revokeObjectURL(url);
+      });
+
+      renderXml();
+    })();
+  </script>
+</body>
+</html>

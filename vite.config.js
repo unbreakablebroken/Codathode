@@ -25,7 +25,7 @@ export default defineConfig({
         name: 'Codathode — Offline Digital Utilities',
         short_name: 'Codathode',
         description:
-          'Sixty-four private, zero-telemetry client-side web utilities engineered for 100% offline browser execution.',
+          'Sixty-five private, zero-telemetry client-side web utilities engineered for 100% offline browser execution.',
         theme_color: '#041E1D',
         background_color: '#041E1D',
         display: 'standalone',
@@ -164,6 +164,7 @@ export default defineConfig({
         robotsGitignore: path.resolve(__dirname, 'robots-gitignore.html'),
         canvasImageStudio: path.resolve(__dirname, 'canvas-image-studio.html'),
         notesBuilder: path.resolve(__dirname, 'notes-builder.html'),
+        xmlSitemap: path.resolve(__dirname, 'xml-sitemap.html'),
       },
     },
   },

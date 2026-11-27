@@ -63,7 +63,8 @@
         { num: '044', name: 'Regex Tester', href: 'regex-tester.html', keywords: 'regular expression match groups flags pattern' },
         { num: '050', name: 'CSV ↔ JSON', href: 'csv-json.html', keywords: 'spreadsheet table delimiter json convert export' },
         { num: '061', name: 'Git Commit Builder', href: 'git-commit.html', keywords: 'conventional commits feat fix scope breaking message' },
-        { num: '062', name: 'robots.txt / .gitignore', href: 'robots-gitignore.html', keywords: 'seo crawler disallow gitignore node python ignore' }
+        { num: '062', name: 'robots.txt / .gitignore', href: 'robots-gitignore.html', keywords: 'seo crawler disallow gitignore node python ignore' },
+        { num: '065', name: 'XML Sitemap Gen', href: 'xml-sitemap.html', keywords: 'xml sitemap seo urlset lastmod changefreq priority google' }
       ]
     },
     {
@@ -314,7 +315,7 @@
     if (!cmdList) return;
     if (cmdMetaCount) {
       cmdMetaCount.textContent = cmdFiltered.length === ALL_SEARCH_ITEMS.length
-        ? '64 TOOLS · WORKSPACE'
+        ? '65 TOOLS · WORKSPACE'
         : cmdFiltered.length + (cmdFiltered.length === 1 ? ' MATCH' : ' MATCHES');
     }
 
@@ -452,7 +453,7 @@
     searchWrap.innerHTML =
       '<div class="ct-sb-search-box">' +
         '<svg class="ct-sb-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>' +
-        '<input type="text" id="ct-sb-search" class="ct-sb-search-input" placeholder="Find 64 tools..." aria-label="Filter navigation tools" autocomplete="off" spellcheck="false" />' +
+        '<input type="text" id="ct-sb-search" class="ct-sb-search-input" placeholder="Find 65 tools..." aria-label="Filter navigation tools" autocomplete="off" spellcheck="false" />' +
         '<button type="button" id="ct-sb-search-clear" class="ct-sb-search-clear" title="Clear filter" aria-label="Clear sidebar search">&times;</button>' +
         '<button type="button" id="ct-sb-kbd-trigger" class="ct-sb-kbd-btn" title="Open Command Palette (' + shortcutLabel + ')">' + shortcutLabel + '</button>' +
       '</div>' +
@@ -473,7 +474,7 @@
       {
         href: 'index.html',
         label: 'All Utilities',
-        badge: '64',
+        badge: '65',
         icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>'
       },
       {
@@ -617,7 +618,7 @@
         '</div>' +
         '<div class="ct-cmd-meta">' +
           '<span>INSTANT COMMAND PALETTE</span>' +
-          '<span id="ct-cmd-count">64 TOOLS · WORKSPACE</span>' +
+          '<span id="ct-cmd-count">65 TOOLS · WORKSPACE</span>' +
         '</div>' +
         '<div class="ct-cmd-list" id="ct-cmd-list"></div>' +
         '<div class="ct-cmd-foot">' +
@@ -648,7 +649,7 @@
         '<div class="ct-ios-steps">' +
           '<span>1. Tap the <strong>Share</strong> icon in Safari&rsquo;s toolbar.</span>' +
           '<span>2. Scroll down and choose <strong>Add to Home Screen</strong>.</span>' +
-          '<span>3. Tap <strong>Add</strong> to launch all 64 tools 100% offline.</span>' +
+          '<span>3. Tap <strong>Add</strong> to launch all 65 tools 100% offline.</span>' +
         '</div>' +
         '<button type="button" class="ct-ios-close" id="ct-ios-close">GOT IT</button>' +
       '</div>';

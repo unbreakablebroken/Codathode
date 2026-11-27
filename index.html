@@ -1167,7 +1167,7 @@
     <div class="splash-chrome">
       <div class="splash-topbar">
         <span class="splash-wordmark">CODA<span class="faded">THODE.</span></span>
-        <span class="splash-meta">64 CLIENT-SIDE UTILITIES</span>
+        <span class="splash-meta">65 CLIENT-SIDE UTILITIES</span>
       </div>
 
       <div class="splash-center">
@@ -1213,7 +1213,7 @@
           <div class="splash-progress-track-wrap">
             <div class="splash-status-row">
               <span class="splash-tool-ticker" id="splash-ticker">QR CODE GENERATOR</span>
-              <span id="splash-count">01 / 64</span>
+              <span id="splash-count">01 / 65</span>
             </div>
             <div class="splash-track">
               <div class="splash-track-fill" id="splash-track-fill"></div>
@@ -1239,7 +1239,7 @@
         <span>SEARCH</span>
         <span class="header-cmd-kbd" id="header-cmd-kbd">CTRL+K</span>
       </button>
-      <span class="header-badge">64 TOOLS</span>
+      <span class="header-badge">65 TOOLS</span>
     </nav>
   </header>
 
@@ -1257,13 +1257,13 @@
         INTENTION.
       </h1>
       <p class="hero-sub">
-        A bespoke collection of sixty-four focused, high-precision web utilities. Zero tracking, zero telemetry, zero latency. Built strictly for local client-side execution.
+        A bespoke collection of sixty-five focused, high-precision web utilities. Zero tracking, zero telemetry, zero latency. Built strictly for local client-side execution.
       </p>
     </div>
 
     <div class="section-bar">
       <span>ORGANIZED BY USE CASE</span>
-      <span id="home-section-count">6 CATEGORIES · 64 TOOLS</span>
+      <span id="home-section-count">6 CATEGORIES · 65 TOOLS</span>
     </div>
 
     <div class="home-search-wrap">
@@ -1276,8 +1276,8 @@
           type="search"
           id="home-instant-search"
           class="home-search-input"
-          placeholder="Instant filter by name, category, or keyword (e.g. JSON, password, PDF, bezier, loan)..."
-          aria-label="Filter all 64 tools"
+          placeholder="Instant filter by name, category, or keyword (e.g. JSON, password, PDF, bezier, sitemap)..."
+          aria-label="Filter all 65 tools"
           autocomplete="off"
           spellcheck="false"
         />
@@ -1287,15 +1287,15 @@
         </div>
       </div>
       <div class="home-search-meta">
-        <span id="home-search-status">SHOWING ALL 64 UTILITIES</span>
+        <span id="home-search-status">SHOWING ALL 65 UTILITIES</span>
         <span>PRESS ENTER TO LAUNCH TOP MATCH</span>
       </div>
     </div>
 
     <div id="home-search-empty" class="home-search-empty" role="status">
       <span class="home-search-empty-title">No utilities matched your query</span>
-      <span class="home-search-empty-sub">Try terms like &ldquo;JSON&rdquo;, &ldquo;password&rdquo;, &ldquo;hash&rdquo;, &ldquo;image&rdquo;, or &ldquo;PDF&rdquo;.</span>
-      <button type="button" id="home-search-reset" class="home-search-reset-btn">SHOW ALL 64 TOOLS</button>
+      <span class="home-search-empty-sub">Try terms like &ldquo;JSON&rdquo;, &ldquo;password&rdquo;, &ldquo;hash&rdquo;, &ldquo;sitemap&rdquo;, or &ldquo;PDF&rdquo;.</span>
+      <button type="button" id="home-search-reset" class="home-search-reset-btn">SHOW ALL 65 TOOLS</button>
     </div>
 
     <nav class="category-jumpbar" aria-label="Tool categories">
@@ -1664,7 +1664,7 @@
           <h2 class="group-title">Developer &amp; Code</h2>
           <span class="group-subtitle">Data serialization, markup escaping, and binary encoding</span>
         </div>
-        <span class="group-count">14 TOOLS</span>
+        <span class="group-count">15 TOOLS</span>
       </div>
 
       <div class="tools-grid">
@@ -1871,6 +1871,21 @@
             </div>
             <h3 class="tool-title">robots.txt &amp; .gitignore</h3>
             <p class="tool-desc">Build search crawler rules and multi-stack .gitignore files in seconds.</p>
+          </div>
+          <div class="tool-card-bottom">
+            <span>LAUNCH</span>
+            <span class="tool-arrow">→</span>
+          </div>
+        </a>
+
+        <a href="xml-sitemap.html" class="tool-card">
+          <div>
+            <div class="tool-card-top">
+              <span class="tool-number">TOOL / 065</span>
+              <span class="tool-category">SEO / XML</span>
+            </div>
+            <h3 class="tool-title">XML Sitemap Generator</h3>
+            <p class="tool-desc">Build standards-compliant sitemap.xml files with depth priority and download.</p>
           </div>
           <div class="tool-card-bottom">
             <span>LAUNCH</span>
@@ -2367,7 +2382,7 @@
     <div class="specs-strip">
       <div class="spec-item">
         <span class="spec-label">SUITE CAPACITY</span>
-        <span class="spec-val">64 Focused Tools</span>
+        <span class="spec-val">65 Focused Tools</span>
       </div>
       <div class="spec-item">
         <span class="spec-label">EXECUTION ENGINE</span>
@@ -2487,7 +2502,8 @@
         'GIT COMMIT BUILDER',
         'ROBOTS.TXT & .GITIGNORE BUILDER',
         'CANVAS IMAGE STUDIO',
-        'CORNELL & MEETING NOTES'
+        'CORNELL & MEETING NOTES',
+        'XML SITEMAP GENERATOR'
       ];
 
       const circumference = 2 * Math.PI * 152;
@@ -2547,7 +2563,7 @@
 
         const toolIdx = Math.min(utilities.length - 1, Math.floor(eased * utilities.length));
         if (tickerEl) tickerEl.textContent = utilities[toolIdx];
-        if (countEl) countEl.textContent = String(toolIdx + 1).padStart(2, '0') + ' / 64';
+        if (countEl) countEl.textContent = String(toolIdx + 1).padStart(2, '0') + ' / 65';
 
         for (let i = 0; i < ticks.length; i++) {
           if (ticks[i] && pct >= (i + 1) * 25) {
@@ -2669,13 +2685,13 @@
 
         if (statusEl) {
           statusEl.textContent = q
-            ? 'SHOWING ' + totalVisible + ' OF 64 UTILITIES'
-            : 'SHOWING ALL 64 UTILITIES';
+            ? 'SHOWING ' + totalVisible + ' OF 65 UTILITIES'
+            : 'SHOWING ALL 65 UTILITIES';
         }
         if (sectionCountEl) {
           sectionCountEl.textContent = q
             ? visibleGroups + ' CATEGORIES · ' + totalVisible + ' MATCHES'
-            : '6 CATEGORIES · 64 TOOLS';
+            : '6 CATEGORIES · 65 TOOLS';
         }
         if (emptyBox) {
           emptyBox.classList.toggle('is-visible', totalVisible === 0);
