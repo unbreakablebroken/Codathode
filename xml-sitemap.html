@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>XML Sitemap Generator — CODATHODE.</title>
+  <title>XML Sitemap Auto-Crawler &amp; Generator — CODATHODE.</title>
   <link rel="icon" type="image/png" sizes="32x32" href="favicon.png" />
   <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
   <meta name="theme-color" content="#041E1D" />
@@ -12,7 +12,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="Codathode" />
   <link rel="icon" type="image/svg+xml" href="/icon.svg" />
-  <meta name="description" content="Generate standards-compliant sitemap.xml files with custom changefreq, priority, lastmod dates, and depth scaling 100% client-side." />
+  <meta name="description" content="Automatically crawl pages in your browser, persist discovered URLs in IndexedDB browser storage with zero backend, and generate standards-compliant sitemap.xml files." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
@@ -28,52 +28,86 @@
     .brand { font-size: 1.125rem; font-weight: 800; letter-spacing: -0.02em; text-decoration: none; color: var(--ct-text, #D8F2DE); display: inline-flex; align-items: center; }
     .brand .faded { color: var(--ct-muted, #86A99A); font-weight: 700; }
     .header-meta { display: flex; align-items: center; gap: 24px; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.14em; color: var(--ct-muted, #86A99A); text-transform: uppercase; }
-    main { flex: 1; max-width: 1240px; width: 100%; margin: 0 auto; padding: 56px 48px 80px 48px; }
+    main { flex: 1; max-width: 1280px; width: 100%; margin: 0 auto; padding: 56px 48px 80px 48px; }
     .hero-kicker { font-size: 0.75rem; font-weight: 600; letter-spacing: 0.16em; color: var(--ct-muted, #86A99A); text-transform: uppercase; margin-bottom: 20px; display: flex; align-items: center; gap: 12px; }
     .hero-kicker a { color: var(--ct-muted, #86A99A); text-decoration: none; }
     .hero-kicker a:hover { color: var(--ct-text, #D8F2DE); }
     .hero-kicker span.sep { opacity: 0.4; }
     .hero-split { display: flex; justify-content: space-between; align-items: flex-end; gap: 40px; margin-bottom: 48px; flex-wrap: wrap; }
     .hero-heading { font-size: clamp(2.5rem, 6vw, 4.75rem); font-weight: 900; line-height: 0.92; letter-spacing: -0.05em; color: var(--ct-text, #D8F2DE); text-transform: uppercase; }
-    .hero-sub { color: var(--ct-muted, #86A99A); font-size: 1rem; line-height: 1.6; max-width: 400px; }
-    .tool-canvas { background-color: var(--ct-card, #0C2D24); border: 1px solid var(--ct-border, rgba(216,242,222,0.13)); border-radius: 6px; padding: 36px; display: flex; flex-direction: column; gap: 24px; }
+    .hero-sub { color: var(--ct-muted, #86A99A); font-size: 1rem; line-height: 1.6; max-width: 430px; }
+    .tool-canvas { background-color: var(--ct-card, #0C2D24); border: 1px solid var(--ct-border, rgba(216,242,222,0.13)); border-radius: 6px; padding: 32px; display: flex; flex-direction: column; gap: 22px; }
     .top-bar { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
-    .mode-toggle { display: inline-flex; background-color: var(--ct-bg, #041E1D); border: 1px solid var(--ct-border, rgba(216,242,222,0.13)); border-radius: 4px; padding: 4px; gap: 4px; }
-    .mode-btn { background: transparent; border: none; color: var(--ct-muted, #86A99A); font-family: inherit; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 10px 16px; border-radius: 3px; cursor: pointer; }
+    .mode-toggle { display: inline-flex; background-color: var(--ct-bg, #041E1D); border: 1px solid var(--ct-border, rgba(216,242,222,0.13)); border-radius: 4px; padding: 4px; gap: 4px; flex-wrap: wrap; }
+    .mode-btn { background: transparent; border: none; color: var(--ct-muted, #86A99A); font-family: inherit; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 10px 15px; border-radius: 3px; cursor: pointer; }
     .mode-btn.active { background-color: var(--ct-accent, #165448); color: var(--ct-on-accent, #D8F2DE); }
-    .studio-grid { display: grid; grid-template-columns: 1fr 1.15fr; gap: 24px; align-items: start; }
-    .panel { background-color: var(--ct-bg, #041E1D); border: 1px solid var(--ct-border, rgba(216,242,222,0.13)); border-radius: 5px; padding: 20px; display: flex; flex-direction: column; gap: 14px; }
-    .ctrl-label { font-size: 0.6875rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ct-muted, #86A99A); display: flex; justify-content: space-between; align-items: center; }
-    .app-input, .app-select, .app-textarea { width: 100%; background-color: var(--ct-card, #0C2D24); border: 1px solid var(--ct-border-medium, rgba(216,242,222,0.18)); border-radius: 4px; padding: 11px 13px; color: var(--ct-text, #D8F2DE); font-family: inherit; font-size: 0.88rem; outline: none; transition: border-color 0.15s ease; }
+    .studio-grid { display: grid; grid-template-columns: 1.08fr 1fr; gap: 24px; align-items: start; }
+    .panel { background-color: var(--ct-bg, #041E1D); border: 1px solid var(--ct-border, rgba(216,242,222,0.13)); border-radius: 5px; padding: 20px; display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+    .ctrl-label { font-size: 0.6875rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ct-muted, #86A99A); display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+    .app-input, .app-select, .app-textarea { width: 100%; background-color: var(--ct-card, #0C2D24); border: 1px solid var(--ct-border-medium, rgba(216,242,222,0.18)); border-radius: 4px; padding: 10px 12px; color: var(--ct-text, #D8F2DE); font-family: inherit; font-size: 0.86rem; outline: none; transition: border-color 0.15s ease; }
     .app-input:focus, .app-select:focus, .app-textarea:focus { border-color: var(--ct-text, #D8F2DE); }
-    .app-textarea { min-height: 190px; font-family: 'SFMono-Regular', Consolas, monospace; font-size: 0.82rem; line-height: 1.6; resize: vertical; }
+    .app-textarea { min-height: 210px; font-family: 'SFMono-Regular', Consolas, monospace; font-size: 0.8rem; line-height: 1.6; resize: vertical; }
     .fields-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
     .fields-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
-    .field-col { display: flex; flex-direction: column; gap: 6px; }
-    .chk-row { display: flex; flex-wrap: wrap; gap: 12px 18px; }
-    .chk-inline { display: inline-flex; align-items: center; gap: 8px; font-size: 0.82rem; font-weight: 600; color: var(--ct-text, #D8F2DE); cursor: pointer; }
-    .chk-inline input { accent-color: var(--ct-accent, #165448); width: 15px; height: 15px; }
-    .url-rows { display: flex; flex-direction: column; gap: 8px; max-height: 300px; overflow-y: auto; padding-right: 4px; }
-    .url-row-card { display: grid; grid-template-columns: 1.4fr 0.9fr 0.75fr auto; gap: 8px; align-items: center; background-color: var(--ct-card, #0C2D24); border: 1px solid var(--ct-border, rgba(216,242,222,0.13)); border-radius: 4px; padding: 8px; }
+    .field-col { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+    .url-input-row { display: flex; gap: 8px; align-items: stretch; }
+    .url-input-row .app-input { flex: 1; min-width: 0; }
+    .chk-row { display: flex; flex-wrap: wrap; gap: 10px 16px; }
+    .chk-inline { display: inline-flex; align-items: center; gap: 8px; font-size: 0.8rem; font-weight: 600; color: var(--ct-text, #D8F2DE); cursor: pointer; }
+    .chk-inline input { accent-color: var(--ct-accent, #165448); width: 15px; height: 15px; cursor: pointer; }
+    .storage-bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; padding: 12px 14px; background-color: var(--ct-bg, #041E1D); border: 1px solid var(--ct-border, rgba(216,242,222,0.13)); border-radius: 4px; }
+    .storage-bar-left { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; flex: 1; min-width: 0; }
+    .storage-tag { font-size: 0.65rem; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ct-on-accent, #D8F2DE); background-color: var(--ct-accent, #165448); padding: 4px 8px; border-radius: 3px; white-space: nowrap; }
+    .storage-select { min-width: 210px; max-width: 340px; flex: 1; background-color: var(--ct-card, #0C2D24); border: 1px solid var(--ct-border-medium, rgba(216,242,222,0.18)); border-radius: 4px; padding: 7px 10px; color: var(--ct-text, #D8F2DE); font-family: inherit; font-size: 0.8rem; outline: none; }
+    .storage-meta { font-size: 0.72rem; color: var(--ct-muted, #86A99A); font-weight: 600; letter-spacing: 0.04em; }
+    .crawl-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+    .stat-box { background-color: var(--ct-card, #0C2D24); border: 1px solid var(--ct-border, rgba(216,242,222,0.13)); border-radius: 4px; padding: 10px 12px; display: flex; flex-direction: column; gap: 2px; }
+    .stat-k { font-size: 0.62rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ct-muted, #86A99A); }
+    .stat-v { font-size: 1.05rem; font-weight: 800; color: var(--ct-text, #D8F2DE); font-variant-numeric: tabular-nums; }
+    .progress-track { width: 100%; height: 6px; background-color: var(--ct-card, #0C2D24); border-radius: 3px; overflow: hidden; border: 1px solid var(--ct-border, rgba(216,242,222,0.13)); }
+    .progress-fill { height: 100%; width: 0%; background-color: var(--ct-accent, #165448); transition: width 0.2s ease; }
+    .crawl-status-line { font-size: 0.76rem; color: var(--ct-muted, #86A99A); font-family: 'SFMono-Regular', Consolas, monospace; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .cors-banner { background-color: var(--ct-card, #0C2D24); border: 1px solid var(--ct-border-strong, rgba(216,242,222,0.28)); border-radius: 4px; padding: 14px; display: none; flex-direction: column; gap: 10px; }
+    .cors-banner.visible { display: flex; }
+    .cors-banner-title { font-size: 0.74rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ct-text, #D8F2DE); }
+    .cors-banner-text { font-size: 0.8rem; color: var(--ct-muted, #86A99A); line-height: 1.5; }
+    .discovered-wrap { border: 1px solid var(--ct-border, rgba(216,242,222,0.13)); border-radius: 4px; background-color: var(--ct-card, #0C2D24); max-height: 290px; overflow-y: auto; }
+    .discovered-table { width: 100%; border-collapse: collapse; font-size: 0.76rem; }
+    .discovered-table th { position: sticky; top: 0; background-color: var(--ct-bg, #041E1D); color: var(--ct-muted, #86A99A); font-size: 0.62rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--ct-border, rgba(216,242,222,0.13)); z-index: 2; }
+    .discovered-table td { padding: 7px 10px; border-bottom: 1px solid var(--ct-border, rgba(216,242,222,0.08)); vertical-align: middle; color: var(--ct-text, #D8F2DE); }
+    .discovered-table tr:last-child td { border-bottom: none; }
+    .path-cell { max-width: 210px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-family: 'SFMono-Regular', Consolas, monospace; font-size: 0.74rem; }
+    .title-cell { max-width: 140px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--ct-muted, #86A99A); font-size: 0.74rem; }
+    .status-pill { display: inline-block; font-size: 0.62rem; font-weight: 800; letter-spacing: 0.06em; padding: 2px 6px; border-radius: 3px; text-transform: uppercase; border: 1px solid var(--ct-border-medium, rgba(216,242,222,0.2)); }
+    .status-ok { background-color: var(--ct-accent, #165448); color: var(--ct-on-accent, #D8F2DE); }
+    .status-skip { color: var(--ct-muted, #86A99A); }
+    .status-err { color: var(--ct-danger, #ff9b9b); border-color: var(--ct-danger, #ff9b9b); }
+    .url-rows { display: flex; flex-direction: column; gap: 8px; max-height: 360px; overflow-y: auto; padding-right: 4px; }
+    .url-row-card { display: grid; grid-template-columns: 1.4fr 0.85fr 0.7fr auto; gap: 8px; align-items: center; background-color: var(--ct-card, #0C2D24); border: 1px solid var(--ct-border, rgba(216,242,222,0.13)); border-radius: 4px; padding: 8px; }
     .url-row-card input, .url-row-card select { background-color: var(--ct-bg, #041E1D); border: 1px solid var(--ct-border, rgba(216,242,222,0.13)); border-radius: 3px; padding: 7px 8px; color: var(--ct-text, #D8F2DE); font-family: inherit; font-size: 0.78rem; outline: none; min-width: 0; }
-    .del-row-btn { background: transparent; border: 1px solid var(--ct-border, rgba(216,242,222,0.13)); color: var(--ct-muted, #86A99A); border-radius: 3px; width: 28px; height: 28px; cursor: pointer; font-weight: 700; }
+    .del-row-btn { background: transparent; border: 1px solid var(--ct-border, rgba(216,242,222,0.13)); color: var(--ct-muted, #86A99A); border-radius: 3px; width: 26px; height: 26px; cursor: pointer; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; }
     .del-row-btn:hover { color: var(--ct-danger, #ff9b9b); border-color: var(--ct-danger, #ff9b9b); }
-    .code-box { background-color: var(--ct-bg, #041E1D); border: 1px solid var(--ct-border, rgba(216,242,222,0.13)); border-radius: 4px; padding: 18px; font-family: 'SFMono-Regular', Consolas, monospace; font-size: 0.8rem; color: var(--ct-text, #D8F2DE); white-space: pre-wrap; word-break: break-all; line-height: 1.6; min-height: 360px; max-height: 500px; overflow-y: auto; }
-    .meta-bar { display: flex; align-items: center; justify-content: space-between; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ct-muted, #86A99A); }
-    .btn-row { display: flex; gap: 10px; flex-wrap: wrap; }
-    .btn-primary { background-color: var(--ct-accent, #165448); color: var(--ct-on-accent, #D8F2DE); border: 1px solid var(--ct-border-medium, rgba(216,242,222,0.2)); border-radius: 4px; padding: 11px 18px; font-family: inherit; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; cursor: pointer; }
-    .btn-primary:hover { background-color: var(--ct-accent-hover, #1C6859); }
-    .btn-secondary { background-color: transparent; color: var(--ct-text, #D8F2DE); border: 1px solid var(--ct-border-strong, rgba(216,242,222,0.28)); border-radius: 4px; padding: 10px 16px; font-family: inherit; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; }
-    .btn-secondary:hover { background-color: var(--ct-surface-hover, rgba(216,242,222,0.09)); border-color: var(--ct-border-hover, rgba(216,242,222,0.42)); }
-    .hint-note { font-size: 0.78rem; color: var(--ct-muted, #86A99A); line-height: 1.5; }
+    .code-box { background-color: var(--ct-bg, #041E1D); border: 1px solid var(--ct-border, rgba(216,242,222,0.13)); border-radius: 4px; padding: 18px; font-family: 'SFMono-Regular', Consolas, monospace; font-size: 0.78rem; color: var(--ct-text, #D8F2DE); white-space: pre-wrap; word-break: break-all; line-height: 1.6; min-height: 430px; max-height: 620px; overflow-y: auto; }
+    .meta-bar { display: flex; align-items: center; justify-content: space-between; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ct-muted, #86A99A); gap: 10px; flex-wrap: wrap; }
+    .btn-row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+    .btn-primary { background-color: var(--ct-accent, #165448); color: var(--ct-on-accent, #D8F2DE); border: 1px solid var(--ct-border-medium, rgba(216,242,222,0.2)); border-radius: 4px; padding: 10px 16px; font-family: inherit; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.11em; text-transform: uppercase; cursor: pointer; white-space: nowrap; }
+    .btn-primary:hover:not(:disabled) { background-color: var(--ct-accent-hover, #1C6859); }
+    .btn-primary:disabled { opacity: 0.55; cursor: not-allowed; }
+    .btn-secondary { background-color: transparent; color: var(--ct-text, #D8F2DE); border: 1px solid var(--ct-border-strong, rgba(216,242,222,0.28)); border-radius: 4px; padding: 9px 14px; font-family: inherit; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; white-space: nowrap; }
+    .btn-secondary:hover:not(:disabled) { background-color: var(--ct-surface-hover, rgba(216,242,222,0.09)); border-color: var(--ct-border-hover, rgba(216,242,222,0.42)); }
+    .btn-secondary:disabled { opacity: 0.45; cursor: not-allowed; }
+    .btn-danger { background-color: transparent; color: var(--ct-danger, #ff9b9b); border: 1px solid rgba(255,155,155,0.35); border-radius: 4px; padding: 9px 14px; font-family: inherit; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; white-space: nowrap; }
+    .btn-danger:hover:not(:disabled) { background-color: rgba(255,155,155,0.1); }
+    .hint-note { font-size: 0.76rem; color: var(--ct-muted, #86A99A); line-height: 1.5; }
+    .empty-state { padding: 24px 14px; text-align: center; font-size: 0.8rem; color: var(--ct-muted, #86A99A); }
     footer { border-top: 1px solid var(--ct-border, rgba(216,242,222,0.13)); padding: 28px 48px; display: flex; align-items: center; justify-content: space-between; color: var(--ct-muted, #86A99A); font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; flex-wrap: wrap; gap: 20px; }
     .footer-brand { color: var(--ct-text, #D8F2DE); font-weight: 800; text-decoration: none; }
     .footer-brand .faded { color: var(--ct-muted, #86A99A); }
     .footer-links { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; }
     .footer-links a { color: var(--ct-muted, #86A99A); text-decoration: none; }
     .footer-links a:hover { color: var(--ct-text, #D8F2DE); }
-    @media (max-width: 960px) { .studio-grid { grid-template-columns: 1fr; } .tool-canvas { padding: 24px; } }
-    @media (max-width: 640px) { .fields-2, .fields-3, .url-row-card { grid-template-columns: 1fr; } header { padding: 20px 24px; } main { padding: 40px 24px 64px 24px; } .hero-heading { letter-spacing: -0.035em; line-height: 0.98; } footer { padding: 24px; flex-direction: column; align-items: flex-start; } }
+    @media (max-width: 1020px) { .studio-grid { grid-template-columns: 1fr; } .tool-canvas { padding: 22px; } }
+    @media (max-width: 640px) { .fields-2, .fields-3, .url-row-card, .crawl-stats { grid-template-columns: 1fr 1fr; } .url-row-card { grid-template-columns: 1fr; } .url-input-row { flex-direction: column; } header { padding: 20px 24px; } main { padding: 40px 24px 64px 24px; } .hero-heading { letter-spacing: -0.035em; line-height: 0.98; } footer { padding: 24px; flex-direction: column; align-items: flex-start; } }
   </style>
 </head>
 <body>
@@ -93,44 +127,140 @@
     </div>
 
     <div class="hero-split">
-      <h1 class="hero-heading">XML SITEMAP<br />GENERATOR.</h1>
+      <h1 class="hero-heading">XML SITEMAP<br />AUTO-CRAWLER.</h1>
       <p class="hero-sub">
-        Build standards-compliant <code>sitemap.xml</code> files with automated depth priority scaling, lastmod timestamps, and instant download.
+        Automatically crawl all pages directly in your browser, persist site maps in local IndexedDB storage with zero backend, and export standards-compliant <code>sitemap.xml</code>.
       </p>
     </div>
 
     <div class="tool-canvas">
       <div class="top-bar">
-        <div class="mode-toggle" role="tablist" aria-label="Entry mode">
-          <button type="button" class="mode-btn active" data-mode="bulk">BULK URL LIST</button>
+        <div class="mode-toggle" role="tablist" aria-label="Sitemap workspace mode">
+          <button type="button" class="mode-btn active" data-mode="crawl">AUTO CRAWLER</button>
           <button type="button" class="mode-btn" data-mode="rows">PER-URL EDITOR</button>
+          <button type="button" class="mode-btn" data-mode="bulk">BULK URL LIST</button>
         </div>
         <div class="btn-row">
-          <button type="button" id="sampleBtn" class="btn-secondary">LOAD SAMPLE</button>
-          <button type="button" id="dedupeBtn" class="btn-secondary">DEDUPLICATE</button>
+          <button type="button" id="crawlCurrentBtn" class="btn-secondary">CRAWL THIS SITE</button>
+          <button type="button" id="folderPickBtn" class="btn-secondary">CRAWL LOCAL FOLDER</button>
+          <input type="file" id="folderInput" webkitdirectory directory multiple style="display:none;" />
+        </div>
+      </div>
+
+      <div class="storage-bar">
+        <div class="storage-bar-left">
+          <span class="storage-tag">BROWSER STORAGE · INDEXEDDB</span>
+          <select id="savedSitesSelect" class="storage-select" aria-label="Saved site crawls in browser storage"></select>
+          <span id="storageMeta" class="storage-meta">0 SAVED SITES</span>
+        </div>
+        <div class="btn-row">
+          <button type="button" id="deleteSiteBtn" class="btn-secondary" style="padding:7px 11px;">DELETE SAVED</button>
+          <button type="button" id="clearAllStorageBtn" class="btn-danger" style="padding:7px 11px;">CLEAR ALL STORAGE</button>
         </div>
       </div>
 
       <div class="studio-grid">
         <div class="panel">
           <div class="field-col">
-            <label for="baseUrl" class="ctrl-label">BASE DOMAIN URL</label>
-            <input id="baseUrl" class="app-input" type="url" value="https://codathode.example" placeholder="https://example.com" />
+            <label for="baseUrl" class="ctrl-label">
+              <span>TARGET START URL / DOMAIN</span>
+              <span id="originBadge">BROWSER CLIENT</span>
+            </label>
+            <div class="url-input-row">
+              <input id="baseUrl" class="app-input" type="url" placeholder="https://example.com" />
+              <button type="button" id="startCrawlBtn" class="btn-primary">START AUTO-CRAWL</button>
+            </div>
           </div>
 
-          <div id="bulkPanel" class="field-col">
-            <label for="urlBulk" class="ctrl-label">
-              <span>PATHS OR FULL URLS (ONE PER LINE)</span>
-              <span id="bulkCount">0 LINES</span>
-            </label>
-            <textarea id="urlBulk" class="app-textarea" placeholder="/&#10;/about&#10;/pricing&#10;/blog/getting-started">/
-/about
-/pricing
-/docs
-/docs/getting-started
-/blog
-/contact</textarea>
-            <span class="hint-note">Tip: Append optional overrides per line like <code>/pricing | weekly | 0.9</code>.</span>
+          <div id="crawlPanel" class="field-col" style="gap:14px;">
+            <div class="fields-3">
+              <div class="field-col">
+                <label for="maxPages" class="ctrl-label">MAX PAGES</label>
+                <select id="maxPages" class="app-select">
+                  <option value="25">25 pages</option>
+                  <option value="50">50 pages</option>
+                  <option value="100">100 pages</option>
+                  <option value="250" selected>250 pages</option>
+                  <option value="500">500 pages</option>
+                  <option value="1000">1000 pages</option>
+                </select>
+              </div>
+              <div class="field-col">
+                <label for="maxDepth" class="ctrl-label">MAX DEPTH</label>
+                <select id="maxDepth" class="app-select">
+                  <option value="2">Depth 2</option>
+                  <option value="3">Depth 3</option>
+                  <option value="5" selected>Depth 5</option>
+                  <option value="8">Depth 8</option>
+                  <option value="12">Depth 12</option>
+                </select>
+              </div>
+              <div class="field-col">
+                <label for="concurrency" class="ctrl-label">CONCURRENCY</label>
+                <select id="concurrency" class="app-select">
+                  <option value="2">2 workers</option>
+                  <option value="4" selected>4 workers</option>
+                  <option value="6">6 workers</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="chk-row">
+              <label class="chk-inline"><input type="checkbox" id="respectRobots" checked /> Parse robots.txt &amp; sitemap.xml</label>
+              <label class="chk-inline"><input type="checkbox" id="skipNoindex" checked /> Skip noindex &amp; non-canonical</label>
+              <label class="chk-inline"><input type="checkbox" id="stripQuery" checked /> Strip query params</label>
+              <label class="chk-inline" title="Browser Same-Origin Policy blocks cross-origin HTML fetches unless the site sends CORS headers. Enable this opt-in fallback to retry blocked remote URLs via a browser-side public CORS relay."><input type="checkbox" id="corsFallback" /> CORS Relay Fallback (remote sites)</label>
+            </div>
+
+            <div class="btn-row">
+              <button type="button" id="pauseCrawlBtn" class="btn-secondary" disabled>PAUSE</button>
+              <button type="button" id="stopCrawlBtn" class="btn-danger" disabled>STOP</button>
+              <button type="button" id="dedupeBtn" class="btn-secondary">DEDUPLICATE</button>
+            </div>
+
+            <div class="crawl-stats">
+              <div class="stat-box"><span class="stat-k">In Sitemap</span><span class="stat-v" id="stIncluded">0</span></div>
+              <div class="stat-box"><span class="stat-k">Crawled</span><span class="stat-v" id="stCrawled">0</span></div>
+              <div class="stat-box"><span class="stat-k">Queued</span><span class="stat-v" id="stQueued">0</span></div>
+              <div class="stat-box"><span class="stat-k">Skipped / Err</span><span class="stat-v" id="stSkipped">0</span></div>
+            </div>
+
+            <div class="progress-track" aria-label="Crawl progress">
+              <div id="crawlProgressBar" class="progress-fill"></div>
+            </div>
+            <div id="crawlStatusLine" class="crawl-status-line">Ready. Enter a URL and click START AUTO-CRAWL, or click CRAWL THIS SITE.</div>
+
+            <div id="corsBanner" class="cors-banner" role="alert">
+              <div class="cors-banner-title">Cross-Origin CORS Restriction Detected</div>
+              <div class="cors-banner-text">
+                Because this crawler runs 100% in your browser with zero backend, remote sites that do not send <code>Access-Control-Allow-Origin</code> headers block direct browser <code>fetch()</code> calls. Choose an option below:
+              </div>
+              <div class="btn-row">
+                <button type="button" id="retryCorsBtn" class="btn-primary">RETRY WITH CORS RELAY</button>
+                <button type="button" id="bannerFolderBtn" class="btn-secondary">CRAWL LOCAL FOLDER</button>
+                <button type="button" id="bannerSelfBtn" class="btn-secondary">CRAWL THIS SITE</button>
+              </div>
+            </div>
+
+            <div class="ctrl-label">
+              <span>DISCOVERED PAGES (SAVED LOCALLY)</span>
+              <span id="discoveredCountLabel">0 ENTRIES</span>
+            </div>
+            <div class="discovered-wrap">
+              <table class="discovered-table">
+                <thead>
+                  <tr>
+                    <th>Include</th>
+                    <th>Path</th>
+                    <th>Title</th>
+                    <th>Status</th>
+                    <th>Depth</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody id="discoveredTbody"></tbody>
+              </table>
+            </div>
           </div>
 
           <div id="rowsPanel" class="field-col" style="display:none;">
@@ -141,9 +271,18 @@
             <div id="urlRowsContainer" class="url-rows"></div>
           </div>
 
+          <div id="bulkPanel" class="field-col" style="display:none;">
+            <label for="urlBulk" class="ctrl-label">
+              <span>PATHS OR FULL URLS (ONE PER LINE)</span>
+              <span id="bulkCount">0 LINES</span>
+            </label>
+            <textarea id="urlBulk" class="app-textarea" placeholder="/&#10;/about&#10;/pricing | weekly | 0.9"></textarea>
+            <span class="hint-note">Tip: Append optional overrides per line like <code>/pricing | weekly | 0.9</code>. Edits auto-save to browser storage.</span>
+          </div>
+
           <div class="fields-3">
             <div class="field-col">
-              <label for="defFreq" class="ctrl-label">CHANGEFREQ</label>
+              <label for="defFreq" class="ctrl-label">DEFAULT CHANGEFREQ</label>
               <select id="defFreq" class="app-select">
                 <option value="weekly" selected>weekly</option>
                 <option value="daily">daily</option>
@@ -156,7 +295,7 @@
               </select>
             </div>
             <div class="field-col">
-              <label for="defPrio" class="ctrl-label">PRIORITY</label>
+              <label for="defPrio" class="ctrl-label">DEFAULT PRIORITY</label>
               <select id="defPrio" class="app-select">
                 <option value="auto" selected>Auto (by depth)</option>
                 <option value="1.0">1.0</option>
@@ -169,7 +308,7 @@
               </select>
             </div>
             <div class="field-col">
-              <label for="defDate" class="ctrl-label">LASTMOD DATE</label>
+              <label for="defDate" class="ctrl-label">FALLBACK LASTMOD</label>
               <input id="defDate" class="app-input" type="date" />
             </div>
           </div>
@@ -178,7 +317,7 @@
             <div class="field-col">
               <label for="slashMode" class="ctrl-label">TRAILING SLASH</label>
               <select id="slashMode" class="app-select">
-                <option value="keep" selected>Keep as entered</option>
+                <option value="keep" selected>Keep as discovered</option>
                 <option value="add">Ensure trailing /</option>
                 <option value="strip">Strip trailing /</option>
               </select>
@@ -192,7 +331,7 @@
           </div>
         </div>
 
-        <div style="display:flex;flex-direction:column;gap:14px;">
+        <div style="display:flex;flex-direction:column;gap:14px;min-width:0;">
           <div class="meta-bar">
             <span>GENERATED SITEMAP.XML</span>
             <span id="xmlStats">0 URLS · 0 B</span>
@@ -201,8 +340,12 @@
           <div class="btn-row">
             <button type="button" id="copyXmlBtn" class="btn-primary">COPY XML</button>
             <button type="button" id="dlXmlBtn" class="btn-secondary">DOWNLOAD SITEMAP.XML</button>
+            <button type="button" id="exportCsvBtn" class="btn-secondary">EXPORT CSV</button>
             <button type="button" id="copyRobotsBtn" class="btn-secondary">COPY ROBOTS LINE</button>
           </div>
+          <p class="hint-note">
+            100% browser execution: discovered URLs, titles, status codes, and lastmod dates are stored locally inside your browser's IndexedDB &amp; localStorage with zero server storage.
+          </p>
         </div>
       </div>
     </div>
@@ -221,28 +364,356 @@
 
   <script>
     (function () {
+      var DB_NAME = 'CodathodeSitemapDB';
+      var DB_VERSION = 1;
+      var STORE_SITES = 'sites';
+      var PREFS_KEY = 'codathode_sitemap_prefs_v1';
+      var FALLBACK_SITES_KEY = 'codathode_sitemap_sites_fallback_v1';
+
       var baseUrlEl = document.getElementById('baseUrl');
+      var originBadgeEl = document.getElementById('originBadge');
+      var startCrawlBtn = document.getElementById('startCrawlBtn');
+      var pauseCrawlBtn = document.getElementById('pauseCrawlBtn');
+      var stopCrawlBtn = document.getElementById('stopCrawlBtn');
+      var crawlCurrentBtn = document.getElementById('crawlCurrentBtn');
+      var folderPickBtn = document.getElementById('folderPickBtn');
+      var folderInput = document.getElementById('folderInput');
+      var savedSitesSelect = document.getElementById('savedSitesSelect');
+      var storageMetaEl = document.getElementById('storageMeta');
+      var deleteSiteBtn = document.getElementById('deleteSiteBtn');
+      var clearAllStorageBtn = document.getElementById('clearAllStorageBtn');
+
+      var maxPagesEl = document.getElementById('maxPages');
+      var maxDepthEl = document.getElementById('maxDepth');
+      var concurrencyEl = document.getElementById('concurrency');
+      var respectRobotsEl = document.getElementById('respectRobots');
+      var skipNoindexEl = document.getElementById('skipNoindex');
+      var stripQueryEl = document.getElementById('stripQuery');
+      var corsFallbackEl = document.getElementById('corsFallback');
+
+      var stIncludedEl = document.getElementById('stIncluded');
+      var stCrawledEl = document.getElementById('stCrawled');
+      var stQueuedEl = document.getElementById('stQueued');
+      var stSkippedEl = document.getElementById('stSkipped');
+      var crawlProgressBar = document.getElementById('crawlProgressBar');
+      var crawlStatusLine = document.getElementById('crawlStatusLine');
+      var corsBanner = document.getElementById('corsBanner');
+      var retryCorsBtn = document.getElementById('retryCorsBtn');
+      var bannerFolderBtn = document.getElementById('bannerFolderBtn');
+      var bannerSelfBtn = document.getElementById('bannerSelfBtn');
+
+      var discoveredTbody = document.getElementById('discoveredTbody');
+      var discoveredCountLabel = document.getElementById('discoveredCountLabel');
+
+      var crawlPanel = document.getElementById('crawlPanel');
+      var rowsPanel = document.getElementById('rowsPanel');
+      var bulkPanel = document.getElementById('bulkPanel');
+      var rowsContainer = document.getElementById('urlRowsContainer');
       var urlBulkEl = document.getElementById('urlBulk');
       var bulkCountEl = document.getElementById('bulkCount');
-      var bulkPanel = document.getElementById('bulkPanel');
-      var rowsPanel = document.getElementById('rowsPanel');
-      var rowsContainer = document.getElementById('urlRowsContainer');
+
       var defFreqEl = document.getElementById('defFreq');
       var defPrioEl = document.getElementById('defPrio');
       var defDateEl = document.getElementById('defDate');
       var slashModeEl = document.getElementById('slashMode');
       var includeLastmodEl = document.getElementById('includeLastmod');
       var minifyXmlEl = document.getElementById('minifyXml');
+
       var xmlOutEl = document.getElementById('xmlOut');
       var xmlStatsEl = document.getElementById('xmlStats');
       var copyXmlBtn = document.getElementById('copyXmlBtn');
+      var dlXmlBtn = document.getElementById('dlXmlBtn');
+      var exportCsvBtn = document.getElementById('exportCsvBtn');
       var copyRobotsBtn = document.getElementById('copyRobotsBtn');
 
       var todayIso = new Date().toISOString().slice(0, 10);
-      defDateEl.value = todayIso;
+      var activeMode = 'crawl';
+      var entries = [];
+      var activeOriginKey = '';
+      var crawlState = {
+        running: false,
+        paused: false,
+        aborted: false,
+        controllers: [],
+        crawledCount: 0,
+        queuedCount: 0,
+        skippedCount: 0
+      };
 
-      var mode = 'bulk';
-      var rowEntries = [];
+      var ASSET_EXT_RE = /\.(png|jpe?g|gif|webp|avif|svg|ico|css|js|mjs|map|woff2?|ttf|eot|otf|pdf|zip|tar|gz|rar|mp3|mp4|webm|ogg|wav|json|xml|txt|wasm|webmanifest)$/i;
+
+      // ---------------------------------------------------------
+      // Browser Storage (IndexedDB primary + localStorage fallback)
+      // ---------------------------------------------------------
+      var dbPromise = null;
+
+      function openDB() {
+        if (dbPromise) return dbPromise;
+        dbPromise = new Promise(function (resolve) {
+          if (!('indexedDB' in window)) {
+            resolve(null);
+            return;
+          }
+          try {
+            var req = indexedDB.open(DB_NAME, DB_VERSION);
+            req.onupgradeneeded = function (ev) {
+              var db = ev.target.result;
+              if (!db.objectStoreNames.contains(STORE_SITES)) {
+                db.createObjectStore(STORE_SITES, { keyPath: 'originKey' });
+              }
+            };
+            req.onsuccess = function (ev) {
+              resolve(ev.target.result);
+            };
+            req.onerror = function () {
+              resolve(null);
+            };
+          } catch (e) {
+            resolve(null);
+          }
+        });
+        return dbPromise;
+      }
+
+      function readFallbackSites() {
+        try {
+          var raw = localStorage.getItem(FALLBACK_SITES_KEY);
+          return raw ? JSON.parse(raw) : {};
+        } catch (e) {
+          return {};
+        }
+      }
+
+      function writeFallbackSites(map) {
+        try {
+          localStorage.setItem(FALLBACK_SITES_KEY, JSON.stringify(map));
+        } catch (e) {}
+      }
+
+      async function saveSiteRecord(record) {
+        var db = await openDB();
+        if (!db) {
+          var map = readFallbackSites();
+          map[record.originKey] = record;
+          writeFallbackSites(map);
+          return;
+        }
+        return new Promise(function (resolve) {
+          try {
+            var tx = db.transaction(STORE_SITES, 'readwrite');
+            tx.objectStore(STORE_SITES).put(record);
+            tx.oncomplete = function () { resolve(); };
+            tx.onerror = function () { resolve(); };
+          } catch (e) {
+            resolve();
+          }
+        });
+      }
+
+      async function getAllSiteRecords() {
+        var db = await openDB();
+        if (!db) {
+          var map = readFallbackSites();
+          return Object.keys(map).map(function (k) { return map[k]; }).sort(function (a, b) {
+            return (b.updatedAt || 0) - (a.updatedAt || 0);
+          });
+        }
+        return new Promise(function (resolve) {
+          try {
+            var tx = db.transaction(STORE_SITES, 'readonly');
+            var req = tx.objectStore(STORE_SITES).getAll();
+            req.onsuccess = function () {
+              var list = (req.result || []).sort(function (a, b) {
+                return (b.updatedAt || 0) - (a.updatedAt || 0);
+              });
+              resolve(list);
+            };
+            req.onerror = function () { resolve([]); };
+          } catch (e) {
+            resolve([]);
+          }
+        });
+      }
+
+      async function getSiteRecord(originKey) {
+        if (!originKey) return null;
+        var db = await openDB();
+        if (!db) {
+          var map = readFallbackSites();
+          return map[originKey] || null;
+        }
+        return new Promise(function (resolve) {
+          try {
+            var tx = db.transaction(STORE_SITES, 'readonly');
+            var req = tx.objectStore(STORE_SITES).get(originKey);
+            req.onsuccess = function () { resolve(req.result || null); };
+            req.onerror = function () { resolve(null); };
+          } catch (e) {
+            resolve(null);
+          }
+        });
+      }
+
+      async function deleteSiteRecord(originKey) {
+        if (!originKey) return;
+        var db = await openDB();
+        if (!db) {
+          var map = readFallbackSites();
+          delete map[originKey];
+          writeFallbackSites(map);
+          return;
+        }
+        return new Promise(function (resolve) {
+          try {
+            var tx = db.transaction(STORE_SITES, 'readwrite');
+            tx.objectStore(STORE_SITES).delete(originKey);
+            tx.oncomplete = function () { resolve(); };
+            tx.onerror = function () { resolve(); };
+          } catch (e) {
+            resolve();
+          }
+        });
+      }
+
+      async function clearAllSiteRecords() {
+        var db = await openDB();
+        try { localStorage.removeItem(FALLBACK_SITES_KEY); } catch (e) {}
+        if (!db) return;
+        return new Promise(function (resolve) {
+          try {
+            var tx = db.transaction(STORE_SITES, 'readwrite');
+            tx.objectStore(STORE_SITES).clear();
+            tx.oncomplete = function () { resolve(); };
+            tx.onerror = function () { resolve(); };
+          } catch (e) {
+            resolve();
+          }
+        });
+      }
+
+      function savePrefs() {
+        try {
+          var prefs = {
+            baseUrl: baseUrlEl.value.trim(),
+            activeOriginKey: activeOriginKey,
+            activeMode: activeMode,
+            maxPages: maxPagesEl.value,
+            maxDepth: maxDepthEl.value,
+            concurrency: concurrencyEl.value,
+            respectRobots: respectRobotsEl.checked,
+            skipNoindex: skipNoindexEl.checked,
+            stripQuery: stripQueryEl.checked,
+            corsFallback: corsFallbackEl.checked,
+            defFreq: defFreqEl.value,
+            defPrio: defPrioEl.value,
+            defDate: defDateEl.value,
+            slashMode: slashModeEl.value,
+            includeLastmod: includeLastmodEl.checked,
+            minifyXml: minifyXmlEl.checked
+          };
+          localStorage.setItem(PREFS_KEY, JSON.stringify(prefs));
+        } catch (e) {}
+      }
+
+      function loadPrefs() {
+        try {
+          var raw = localStorage.getItem(PREFS_KEY);
+          if (!raw) return null;
+          return JSON.parse(raw);
+        } catch (e) {
+          return null;
+        }
+      }
+
+      // ---------------------------------------------------------
+      // URL Normalization & Helpers
+      // ---------------------------------------------------------
+      function parseSafeBase(rawInput) {
+        var val = (rawInput || '').trim();
+        if (!val) val = window.location.origin;
+        if (!/^https?:\/\//i.test(val)) val = 'https://' + val;
+        try {
+          var u = new URL(val);
+          if (u.protocol !== 'http:' && u.protocol !== 'https:') {
+            throw new Error('Invalid protocol');
+          }
+          return u;
+        } catch (e) {
+          return new URL(window.location.origin);
+        }
+      }
+
+      function getCleanBaseOrigin() {
+        return parseSafeBase(baseUrlEl.value).origin;
+      }
+
+      function updateOriginBadge() {
+        try {
+          var targetOrigin = getCleanBaseOrigin();
+          if (targetOrigin === window.location.origin) {
+            originBadgeEl.textContent = 'SAME-ORIGIN (DIRECT)';
+          } else {
+            originBadgeEl.textContent = corsFallbackEl.checked ? 'CROSS-ORIGIN + RELAY' : 'REMOTE ORIGIN';
+          }
+        } catch (e) {
+          originBadgeEl.textContent = 'BROWSER CLIENT';
+        }
+      }
+
+      function applySlashPreference(urlObj) {
+        var mode = slashModeEl.value;
+        var p = urlObj.pathname || '/';
+        if (mode === 'add' && !p.endsWith('/') && !/\.[a-z0-9]{1,8}$/i.test(p)) {
+          urlObj.pathname = p + '/';
+        } else if (mode === 'strip' && p.length > 1 && p.endsWith('/')) {
+          urlObj.pathname = p.slice(0, -1);
+        }
+        return urlObj;
+      }
+
+      function normalizeEntryUrl(rawPathOrUrl, baseOriginOverride) {
+        var baseOrigin = baseOriginOverride || getCleanBaseOrigin();
+        var raw = String(rawPathOrUrl || '').trim();
+        if (!raw) return '';
+        var candidate = /^https?:\/\//i.test(raw)
+          ? raw
+          : baseOrigin + (raw.charAt(0) === '/' ? raw : '/' + raw);
+        try {
+          var u = new URL(candidate);
+          if (u.protocol !== 'http:' && u.protocol !== 'https:') return '';
+          u.hash = '';
+          if (stripQueryEl.checked) u.search = '';
+          applySlashPreference(u);
+          return u.toString();
+        } catch (e) {
+          return '';
+        }
+      }
+
+      function extractPath(fullOrRel) {
+        try {
+          var u = new URL(fullOrRel, getCleanBaseOrigin());
+          return (u.pathname || '/') + (u.search || '');
+        } catch (e) {
+          return fullOrRel;
+        }
+      }
+
+      function computeAutoPriority(urlStr, explicitDepth) {
+        try {
+          var u = new URL(urlStr);
+          var parts = u.pathname.split('/').filter(Boolean);
+          var d = parts.length;
+          if (d === 0) return '1.0';
+          if (d === 1) return '0.8';
+          if (d === 2) return '0.6';
+          return '0.5';
+        } catch (e) {
+          if (explicitDepth === 0) return '1.0';
+          if (explicitDepth === 1) return '0.8';
+          return '0.6';
+        }
+      }
 
       function escapeXml(str) {
         return String(str)
@@ -253,78 +724,190 @@
           .replace(/'/g, '&apos;');
       }
 
-      function getCleanBase() {
-        var b = baseUrlEl.value.trim().replace(/\/+$/, '');
-        if (!b) return 'https://example.com';
-        if (!/^https?:\/\//i.test(b)) b = 'https://' + b;
-        return b;
+      function toIsoDate(headerVal) {
+        if (!headerVal) return '';
+        var d = new Date(headerVal);
+        if (isNaN(d.getTime())) return '';
+        return d.toISOString().slice(0, 10);
       }
 
-      function normalizeUrl(rawPath) {
-        var base = getCleanBase();
-        var raw = rawPath.trim();
-        if (!raw) return '';
-        var full = /^https?:\/\//i.test(raw)
-          ? raw
-          : base + (raw.charAt(0) === '/' ? raw : '/' + raw);
+      // ---------------------------------------------------------
+      // Persistence Sync & Saved Sites Selector
+      // ---------------------------------------------------------
+      var persistTimer = null;
+      function schedulePersistSite(sourceLabel) {
+        clearTimeout(persistTimer);
+        persistTimer = setTimeout(function () {
+          persistCurrentSite(sourceLabel || 'manual');
+        }, 250);
+      }
 
-        var slashMode = slashModeEl.value;
-        try {
-          var u = new URL(full);
-          if (slashMode === 'add' && !u.pathname.endsWith('/') && !/\.[a-z0-9]{1,6}$/i.test(u.pathname)) {
-            u.pathname += '/';
-          } else if (slashMode === 'strip' && u.pathname.length > 1 && u.pathname.endsWith('/')) {
-            u.pathname = u.pathname.slice(0, -1);
-          }
-          return u.toString();
-        } catch (e) {
-          return full;
+      async function persistCurrentSite(sourceLabel) {
+        var baseUrl = getCleanBaseOrigin();
+        var key = activeOriginKey || baseUrl;
+        activeOriginKey = key;
+        var record = {
+          originKey: key,
+          baseUrl: baseUrl,
+          source: sourceLabel || 'crawl',
+          entries: entries,
+          stats: {
+            crawled: crawlState.crawledCount,
+            queued: crawlState.queuedCount,
+            skipped: crawlState.skippedCount
+          },
+          updatedAt: Date.now()
+        };
+        await saveSiteRecord(record);
+        savePrefs();
+        await refreshSavedSitesUI();
+      }
+
+      async function refreshSavedSitesUI() {
+        var list = await getAllSiteRecords();
+        savedSitesSelect.innerHTML = '';
+        if (list.length === 0) {
+          var emptyOpt = document.createElement('option');
+          emptyOpt.value = '';
+          emptyOpt.textContent = 'No saved crawls in IndexedDB yet';
+          savedSitesSelect.appendChild(emptyOpt);
+          storageMetaEl.textContent = '0 SAVED SITES';
+          deleteSiteBtn.disabled = true;
+          return;
         }
-      }
-
-      function computeAutoPriority(urlStr) {
-        try {
-          var u = new URL(urlStr);
-          var parts = u.pathname.split('/').filter(Boolean);
-          if (parts.length === 0) return '1.0';
-          if (parts.length === 1) return '0.8';
-          if (parts.length === 2) return '0.6';
-          return '0.5';
-        } catch (e) {
-          return '0.8';
-        }
-      }
-
-      function parseBulkLines() {
-        var lines = urlBulkEl.value.split(/\r?\n/).map(function (l) { return l.trim(); }).filter(Boolean);
-        bulkCountEl.textContent = lines.length + (lines.length === 1 ? ' LINE' : ' LINES');
-        var list = [];
-        for (var i = 0; i < lines.length; i++) {
-          var parts = lines[i].split('|').map(function (p) { return p.trim(); });
-          list.push({
-            path: parts[0] || '',
-            freq: parts[1] !== undefined ? parts[1] : null,
-            prio: parts[2] !== undefined ? parts[2] : null
-          });
-        }
-        return list;
-      }
-
-      function syncRowsFromBulk() {
-        var parsed = parseBulkLines();
-        rowEntries = parsed.map(function (item) {
-          return {
-            path: item.path,
-            freq: item.freq || defFreqEl.value || 'weekly',
-            prio: item.prio || (defPrioEl.value === 'auto' ? '' : defPrioEl.value)
-          };
+        deleteSiteBtn.disabled = false;
+        var totalUrls = 0;
+        list.forEach(function (item) {
+          var count = (item.entries || []).filter(function (e) { return e.included !== false; }).length;
+          totalUrls += (item.entries || []).length;
+          var opt = document.createElement('option');
+          opt.value = item.originKey;
+          var dt = item.updatedAt ? new Date(item.updatedAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '';
+          opt.textContent = item.baseUrl.replace(/^https?:\/\//, '') + ' (' + count + ' URLs · ' + dt + ')';
+          if (item.originKey === activeOriginKey) opt.selected = true;
+          savedSitesSelect.appendChild(opt);
         });
-        renderRowsUI();
+        storageMetaEl.textContent = list.length + (list.length === 1 ? ' SITE' : ' SITES') + ' · ' + totalUrls + ' URLS CACHED';
+      }
+
+      async function loadSavedSite(originKey) {
+        var rec = await getSiteRecord(originKey);
+        if (!rec) return false;
+        activeOriginKey = rec.originKey;
+        baseUrlEl.value = rec.baseUrl || originKey;
+        entries = Array.isArray(rec.entries) ? rec.entries : [];
+        if (rec.stats) {
+          crawlState.crawledCount = rec.stats.crawled || entries.length;
+          crawlState.queuedCount = 0;
+          crawlState.skippedCount = rec.stats.skipped || 0;
+        }
+        updateOriginBadge();
+        syncAllViews();
+        savePrefs();
+        return true;
+      }
+
+      // ---------------------------------------------------------
+      // Rendering: Table, Per-URL Rows, Bulk List, XML Output
+      // ---------------------------------------------------------
+      function renderDiscoveredTable() {
+        discoveredTbody.innerHTML = '';
+        var includedCount = entries.filter(function (e) { return e.included !== false; }).length;
+        discoveredCountLabel.textContent = entries.length + ' DISCOVERED (' + includedCount + ' INCLUDED)';
+        stIncludedEl.textContent = String(includedCount);
+        stCrawledEl.textContent = String(crawlState.crawledCount);
+        stQueuedEl.textContent = String(crawlState.queuedCount);
+        stSkippedEl.textContent = String(crawlState.skippedCount);
+
+        if (entries.length === 0) {
+          var trEmpty = document.createElement('tr');
+          var tdEmpty = document.createElement('td');
+          tdEmpty.colSpan = 6;
+          tdEmpty.className = 'empty-state';
+          tdEmpty.textContent = 'No pages crawled yet. Click START AUTO-CRAWL, CRAWL THIS SITE, or CRAWL LOCAL FOLDER.';
+          trEmpty.appendChild(tdEmpty);
+          discoveredTbody.appendChild(trEmpty);
+          return;
+        }
+
+        var frag = document.createDocumentFragment();
+        entries.forEach(function (entry, idx) {
+          var tr = document.createElement('tr');
+
+          // Include checkbox
+          var tdChk = document.createElement('td');
+          var chk = document.createElement('input');
+          chk.type = 'checkbox';
+          chk.checked = entry.included !== false;
+          chk.style.accentColor = 'var(--ct-accent, #165448)';
+          chk.addEventListener('change', function () {
+            entries[idx].included = chk.checked;
+            renderXml();
+            stIncludedEl.textContent = String(entries.filter(function (e) { return e.included !== false; }).length);
+            schedulePersistSite('edit');
+          });
+          tdChk.appendChild(chk);
+          tr.appendChild(tdChk);
+
+          // Path
+          var tdPath = document.createElement('td');
+          tdPath.className = 'path-cell';
+          tdPath.textContent = entry.path || '/';
+          tdPath.title = entry.path || '/';
+          tr.appendChild(tdPath);
+
+          // Title
+          var tdTitle = document.createElement('td');
+          tdTitle.className = 'title-cell';
+          tdTitle.textContent = entry.title || '—';
+          tdTitle.title = entry.title || '';
+          tr.appendChild(tdTitle);
+
+          // Status
+          var tdStatus = document.createElement('td');
+          var pill = document.createElement('span');
+          var st = String(entry.status || '200');
+          pill.className = 'status-pill ' + (st === '200' || st === 'LOCAL' || st === 'SEED' || st === 'MANUAL' ? 'status-ok' : (st.indexOf('SKIP') === 0 ? 'status-skip' : 'status-err'));
+          pill.textContent = st;
+          tdStatus.appendChild(pill);
+          tr.appendChild(tdStatus);
+
+          // Depth
+          var tdDepth = document.createElement('td');
+          tdDepth.textContent = typeof entry.depth === 'number' ? String(entry.depth) : '—';
+          tr.appendChild(tdDepth);
+
+          // Delete
+          var tdDel = document.createElement('td');
+          var btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'del-row-btn';
+          btn.textContent = '×';
+          btn.title = 'Remove entry';
+          btn.addEventListener('click', function () {
+            entries.splice(idx, 1);
+            syncAllViews();
+            schedulePersistSite('edit');
+          });
+          tdDel.appendChild(btn);
+          tr.appendChild(tdDel);
+
+          frag.appendChild(tr);
+        });
+        discoveredTbody.appendChild(frag);
       }
 
       function renderRowsUI() {
         rowsContainer.innerHTML = '';
-        rowEntries.forEach(function (entry, idx) {
+        if (entries.length === 0) {
+          var empty = document.createElement('div');
+          empty.className = 'empty-state';
+          empty.textContent = 'No URL entries yet. Click + ADD URL or run the Auto Crawler.';
+          rowsContainer.appendChild(empty);
+          return;
+        }
+        var frag = document.createDocumentFragment();
+        entries.forEach(function (entry, idx) {
           var card = document.createElement('div');
           card.className = 'url-row-card';
 
@@ -333,21 +916,23 @@
           pathInput.value = entry.path;
           pathInput.placeholder = '/path';
           pathInput.addEventListener('input', function () {
-            rowEntries[idx].path = pathInput.value;
+            entries[idx].path = pathInput.value;
             renderXml();
+            schedulePersistSite('edit');
           });
 
           var freqSel = document.createElement('select');
-          ['weekly', 'daily', 'monthly', 'yearly', 'always', 'hourly', 'never', ''].forEach(function (v) {
+          ['', 'weekly', 'daily', 'monthly', 'yearly', 'always', 'hourly', 'never'].forEach(function (v) {
             var opt = document.createElement('option');
             opt.value = v;
-            opt.textContent = v || 'Omit freq';
-            if (entry.freq === v) opt.selected = true;
+            opt.textContent = v || 'Default freq';
+            if ((entry.freq || '') === v) opt.selected = true;
             freqSel.appendChild(opt);
           });
           freqSel.addEventListener('change', function () {
-            rowEntries[idx].freq = freqSel.value;
+            entries[idx].freq = freqSel.value;
             renderXml();
+            schedulePersistSite('edit');
           });
 
           var prioSel = document.createElement('select');
@@ -355,50 +940,88 @@
             var opt = document.createElement('option');
             opt.value = v;
             opt.textContent = v || 'Auto';
-            if (entry.prio === v) opt.selected = true;
+            if ((entry.prio || '') === v) opt.selected = true;
             prioSel.appendChild(opt);
           });
           prioSel.addEventListener('change', function () {
-            rowEntries[idx].prio = prioSel.value;
+            entries[idx].prio = prioSel.value;
             renderXml();
+            schedulePersistSite('edit');
           });
 
           var delBtn = document.createElement('button');
           delBtn.type = 'button';
           delBtn.className = 'del-row-btn';
-          delBtn.innerHTML = '&times;';
+          delBtn.textContent = '×';
           delBtn.title = 'Remove URL';
           delBtn.addEventListener('click', function () {
-            rowEntries.splice(idx, 1);
-            renderRowsUI();
-            renderXml();
+            entries.splice(idx, 1);
+            syncAllViews();
+            schedulePersistSite('edit');
           });
 
           card.appendChild(pathInput);
           card.appendChild(freqSel);
           card.appendChild(prioSel);
           card.appendChild(delBtn);
-          rowsContainer.appendChild(card);
+          frag.appendChild(card);
+        });
+        rowsContainer.appendChild(frag);
+      }
+
+      function syncBulkTextareaFromEntries() {
+        var lines = entries.filter(function (e) { return e.included !== false; }).map(function (r) {
+          var extra = [];
+          if (r.freq) extra.push(r.freq);
+          if (r.prio) extra.push(r.prio);
+          return extra.length ? r.path + ' | ' + extra.join(' | ') : r.path;
+        });
+        urlBulkEl.value = lines.join('\n');
+        bulkCountEl.textContent = lines.length + (lines.length === 1 ? ' LINE' : ' LINES');
+      }
+
+      function parseBulkIntoEntries() {
+        var lines = urlBulkEl.value.split(/\r?\n/).map(function (l) { return l.trim(); }).filter(Boolean);
+        bulkCountEl.textContent = lines.length + (lines.length === 1 ? ' LINE' : ' LINES');
+        var existingByPath = Object.create(null);
+        entries.forEach(function (e) { existingByPath[e.path] = e; });
+        entries = lines.map(function (line) {
+          var parts = line.split('|').map(function (p) { return p.trim(); });
+          var p = parts[0] || '/';
+          var prev = existingByPath[p];
+          return {
+            path: p,
+            title: prev ? prev.title : '',
+            status: prev ? prev.status : 'MANUAL',
+            depth: prev ? prev.depth : Math.max(0, p.split('/').filter(Boolean).length),
+            lastmod: prev ? prev.lastmod : '',
+            freq: parts[1] !== undefined ? parts[1] : (prev ? prev.freq : ''),
+            prio: parts[2] !== undefined ? parts[2] : (prev ? prev.prio : ''),
+            included: true
+          };
         });
       }
 
       function renderXml() {
-        var entries = mode === 'bulk' ? parseBulkLines() : rowEntries;
         var seen = Object.create(null);
         var urls = [];
         var defFreq = defFreqEl.value;
         var defPrio = defPrioEl.value;
-        var lastmod = includeLastmodEl.checked ? defDateEl.value.trim() : '';
+        var fallbackLastmod = defDateEl.value.trim();
+        var useLastmod = includeLastmodEl.checked;
         var minify = minifyXmlEl.checked;
 
         for (var i = 0; i < entries.length; i++) {
-          var loc = normalizeUrl(entries[i].path);
+          var item = entries[i];
+          if (item.included === false) continue;
+          var loc = normalizeEntryUrl(item.path);
           if (!loc || seen[loc]) continue;
           seen[loc] = true;
 
-          var freq = entries[i].freq !== null ? entries[i].freq : defFreq;
-          var prioRaw = entries[i].prio !== null && entries[i].prio !== '' ? entries[i].prio : defPrio;
-          var prio = prioRaw === 'auto' ? computeAutoPriority(loc) : prioRaw;
+          var freq = item.freq ? item.freq : defFreq;
+          var prioRaw = item.prio ? item.prio : defPrio;
+          var prio = prioRaw === 'auto' ? computeAutoPriority(loc, item.depth) : prioRaw;
+          var lastmod = useLastmod ? (item.lastmod || fallbackLastmod) : '';
 
           urls.push({ loc: loc, lastmod: lastmod, freq: freq, prio: prio });
         }
@@ -410,12 +1033,12 @@
         var xml = '<?xml version="1.0" encoding="UTF-8"?>' + nl;
         xml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' + nl;
         for (var u = 0; u < urls.length; u++) {
-          var item = urls[u];
+          var row = urls[u];
           xml += ind1 + '<url>' + nl;
-          xml += ind2 + '<loc>' + escapeXml(item.loc) + '</loc>' + nl;
-          if (item.lastmod) xml += ind2 + '<lastmod>' + escapeXml(item.lastmod) + '</lastmod>' + nl;
-          if (item.freq) xml += ind2 + '<changefreq>' + escapeXml(item.freq) + '</changefreq>' + nl;
-          if (item.prio) xml += ind2 + '<priority>' + escapeXml(item.prio) + '</priority>' + nl;
+          xml += ind2 + '<loc>' + escapeXml(row.loc) + '</loc>' + nl;
+          if (row.lastmod) xml += ind2 + '<lastmod>' + escapeXml(row.lastmod) + '</lastmod>' + nl;
+          if (row.freq) xml += ind2 + '<changefreq>' + escapeXml(row.freq) + '</changefreq>' + nl;
+          if (row.prio) xml += ind2 + '<priority>' + escapeXml(row.prio) + '</priority>' + nl;
           xml += ind1 + '</url>' + nl;
         }
         xml += '</urlset>';
@@ -426,71 +1049,574 @@
         xmlStatsEl.textContent = urls.length + (urls.length === 1 ? ' URL' : ' URLS') + ' · ' + sizeLabel;
       }
 
+      function syncAllViews() {
+        renderDiscoveredTable();
+        if (activeMode === 'rows') renderRowsUI();
+        if (activeMode === 'bulk') syncBulkTextareaFromEntries();
+        renderXml();
+      }
+
+      // ---------------------------------------------------------
+      // Browser-Only Auto Crawler Engine (BFS + DOMParser)
+      // ---------------------------------------------------------
+      function parseRobotsRules(text) {
+        var disallows = [];
+        var sitemaps = [];
+        var inStar = false;
+        var lines = String(text || '').split(/\r?\n/);
+        for (var i = 0; i < lines.length; i++) {
+          var line = lines[i].replace(/#.*$/, '').trim();
+          if (!line) continue;
+          var colon = line.indexOf(':');
+          if (colon === -1) continue;
+          var key = line.slice(0, colon).trim().toLowerCase();
+          var val = line.slice(colon + 1).trim();
+          if (key === 'user-agent') {
+            inStar = (val === '*');
+          } else if (key === 'disallow' && inStar && val) {
+            disallows.push(val);
+          } else if (key === 'sitemap' && val) {
+            sitemaps.push(val);
+          }
+        }
+        return { disallows: disallows, sitemaps: sitemaps };
+      }
+
+      function isDisallowedByRobots(pathname, disallows) {
+        for (var i = 0; i < disallows.length; i++) {
+          var rule = disallows[i];
+          if (rule === '/') return true;
+          if (rule && pathname.indexOf(rule) === 0) return true;
+        }
+        return false;
+      }
+
+      async function browserFetch(url, signal) {
+        try {
+          var res = await fetch(url, {
+            method: 'GET',
+            credentials: 'same-origin',
+            redirect: 'follow',
+            signal: signal
+          });
+          return { res: res, via: 'direct' };
+        } catch (err) {
+          if (err && err.name === 'AbortError') throw err;
+          var targetOrigin = new URL(url).origin;
+          if (targetOrigin !== window.location.origin && corsFallbackEl.checked) {
+            var relays = [
+              'https://api.allorigins.win/raw?url=' + encodeURIComponent(url),
+              'https://corsproxy.io/?' + encodeURIComponent(url)
+            ];
+            for (var r = 0; r < relays.length; r++) {
+              try {
+                var relayRes = await fetch(relays[r], { method: 'GET', signal: signal });
+                if (relayRes.ok) {
+                  return { res: relayRes, via: 'relay' };
+                }
+              } catch (relayErr) {
+                if (relayErr && relayErr.name === 'AbortError') throw relayErr;
+              }
+            }
+          }
+          var corsErr = new Error('Fetch blocked or failed');
+          corsErr.isCorsLikely = (targetOrigin !== window.location.origin);
+          throw corsErr;
+        }
+      }
+
+      function setCrawlButtons(running, paused) {
+        startCrawlBtn.disabled = running;
+        pauseCrawlBtn.disabled = !running;
+        stopCrawlBtn.disabled = !running;
+        pauseCrawlBtn.textContent = paused ? 'RESUME' : 'PAUSE';
+      }
+
+      async function waitIfPaused() {
+        while (crawlState.paused && !crawlState.aborted) {
+          await new Promise(function (r) { setTimeout(r, 120); });
+        }
+      }
+
+      async function startAutoCrawl() {
+        if (crawlState.running) return;
+        corsBanner.classList.remove('visible');
+
+        var startUrlObj = parseSafeBase(baseUrlEl.value);
+        baseUrlEl.value = startUrlObj.href;
+        var targetOrigin = startUrlObj.origin;
+        activeOriginKey = targetOrigin;
+        updateOriginBadge();
+
+        var maxPages = parseInt(maxPagesEl.value, 10) || 250;
+        var maxDepth = parseInt(maxDepthEl.value, 10) || 5;
+        var workerCount = parseInt(concurrencyEl.value, 10) || 4;
+        var respectRobots = respectRobotsEl.checked;
+        var skipNoindex = skipNoindexEl.checked;
+
+        entries = [];
+        crawlState = {
+          running: true,
+          paused: false,
+          aborted: false,
+          controllers: [],
+          crawledCount: 0,
+          queuedCount: 0,
+          skippedCount: 0
+        };
+        setCrawlButtons(true, false);
+        crawlProgressBar.style.width = '4%';
+        crawlStatusLine.textContent = 'Starting browser crawl on ' + targetOrigin + '...';
+        syncAllViews();
+
+        var visited = Object.create(null);
+        var queuedSet = Object.create(null);
+        var queue = [];
+        var disallows = [];
+        var seedBlockedByCors = false;
+
+        function enqueue(rawUrl, depth) {
+          if (depth > maxDepth) return;
+          var normalized = normalizeEntryUrl(rawUrl, targetOrigin);
+          if (!normalized) return;
+          try {
+            var u = new URL(normalized);
+            if (u.origin !== targetOrigin) return;
+            if (ASSET_EXT_RE.test(u.pathname)) return;
+            if (respectRobots && isDisallowedByRobots(u.pathname, disallows)) return;
+          } catch (e) {
+            return;
+          }
+          if (visited[normalized] || queuedSet[normalized]) return;
+          queuedSet[normalized] = true;
+          queue.push({ url: normalized, depth: depth });
+        }
+
+        // Optional robots.txt & sitemap.xml bootstrap
+        if (respectRobots) {
+          crawlStatusLine.textContent = 'Checking ' + targetOrigin + '/robots.txt...';
+          try {
+            var ctrlR = new AbortController();
+            crawlState.controllers.push(ctrlR);
+            var robotsFetch = await browserFetch(targetOrigin + '/robots.txt', ctrlR.signal);
+            if (robotsFetch.res.ok) {
+              var robotsTxt = await robotsFetch.res.text();
+              var parsedR = parseRobotsRules(robotsTxt);
+              disallows = parsedR.disallows;
+              for (var s = 0; s < parsedR.sitemaps.length; s++) {
+                try {
+                  var smCtrl = new AbortController();
+                  crawlState.controllers.push(smCtrl);
+                  var smFetch = await browserFetch(parsedR.sitemaps[s], smCtrl.signal);
+                  if (smFetch.res.ok) {
+                    var smXml = await smFetch.res.text();
+                    var locs = smXml.match(/<loc>\s*([^<]+?)\s*<\/loc>/gi) || [];
+                    for (var l = 0; l < locs.length && l < maxPages; l++) {
+                      var inner = locs[l].replace(/<\/?loc>/gi, '').trim();
+                      enqueue(inner, 1);
+                    }
+                  }
+                } catch (e) {}
+              }
+            }
+          } catch (e) {}
+        }
+
+        enqueue(startUrlObj.href, 0);
+        if (startUrlObj.pathname !== '/' && startUrlObj.pathname !== '') {
+          enqueue(targetOrigin + '/', 0);
+        }
+
+        var parser = new DOMParser();
+
+        async function processNext() {
+          while (!crawlState.aborted) {
+            await waitIfPaused();
+            if (crawlState.aborted) break;
+            if (crawlState.crawledCount >= maxPages) break;
+            var job = queue.shift();
+            if (!job) break;
+            if (visited[job.url]) continue;
+            visited[job.url] = true;
+            crawlState.queuedCount = queue.length;
+
+            var ctrl = new AbortController();
+            crawlState.controllers.push(ctrl);
+            crawlStatusLine.textContent = 'Crawling [' + (crawlState.crawledCount + 1) + '/' + maxPages + ']: ' + extractPath(job.url);
+
+            try {
+              var fetched = await browserFetch(job.url, ctrl.signal);
+              var res = fetched.res;
+              var finalUrl = fetched.via === 'direct' && res.url ? res.url : job.url;
+              var contentType = (res.headers.get('content-type') || '').toLowerCase();
+              var lastModHeader = toIsoDate(res.headers.get('last-modified'));
+
+              if (!res.ok) {
+                crawlState.crawledCount++;
+                crawlState.skippedCount++;
+                entries.push({
+                  path: extractPath(job.url),
+                  title: 'HTTP ' + res.status,
+                  status: String(res.status),
+                  depth: job.depth,
+                  lastmod: lastModHeader,
+                  freq: '',
+                  prio: '',
+                  included: false
+                });
+              } else if (contentType && contentType.indexOf('text/html') === -1 && contentType.indexOf('application/xhtml') === -1) {
+                crawlState.crawledCount++;
+                crawlState.skippedCount++;
+              } else {
+                var html = await res.text();
+                var doc = parser.parseFromString(html, 'text/html');
+                var titleEl = doc.querySelector('title');
+                var pageTitle = titleEl ? titleEl.textContent.trim().slice(0, 80) : '';
+
+                // Check robots meta tags
+                var robotsContent = '';
+                doc.querySelectorAll('meta[name="robots"], meta[name="googlebot"]').forEach(function (m) {
+                  robotsContent += ' ' + (m.getAttribute('content') || '').toLowerCase();
+                });
+                var hasNoindex = robotsContent.indexOf('noindex') !== -1;
+                var hasNofollow = robotsContent.indexOf('nofollow') !== -1;
+
+                // Check canonical
+                var canonicalEl = doc.querySelector('link[rel="canonical"]');
+                var canonicalMismatch = false;
+                if (canonicalEl && canonicalEl.getAttribute('href')) {
+                  try {
+                    var canNorm = normalizeEntryUrl(new URL(canonicalEl.getAttribute('href'), finalUrl).href, targetOrigin);
+                    var jobNorm = normalizeEntryUrl(finalUrl, targetOrigin);
+                    if (canNorm && jobNorm && canNorm !== jobNorm) {
+                      canonicalMismatch = true;
+                      enqueue(canNorm, job.depth);
+                    }
+                  } catch (e) {}
+                }
+
+                // Check article modified meta if header missing
+                var metaDate = '';
+                var metaMod = doc.querySelector('meta[property="article:modified_time"], meta[name="lastmod"], meta[name="last-modified"]');
+                if (metaMod && metaMod.getAttribute('content')) {
+                  metaDate = toIsoDate(metaMod.getAttribute('content'));
+                }
+
+                var shouldExclude = skipNoindex && (hasNoindex || canonicalMismatch);
+                var statusLabel = hasNoindex ? 'SKIP:NOINDEX' : (canonicalMismatch ? 'SKIP:CANON' : '200');
+                if (shouldExclude) crawlState.skippedCount++;
+
+                crawlState.crawledCount++;
+                entries.push({
+                  path: extractPath(job.url),
+                  title: pageTitle || extractPath(job.url),
+                  status: statusLabel,
+                  depth: job.depth,
+                  lastmod: lastModHeader || metaDate || '',
+                  freq: '',
+                  prio: '',
+                  included: !shouldExclude
+                });
+
+                // Discover links
+                if (!hasNofollow && job.depth < maxDepth) {
+                  var anchors = doc.querySelectorAll('a[href]');
+                  for (var a = 0; a < anchors.length; a++) {
+                    var href = (anchors[a].getAttribute('href') || '').trim();
+                    if (!href || href.charAt(0) === '#' || /^(mailto:|tel:|javascript:|data:)/i.test(href)) continue;
+                    try {
+                      var resolved = new URL(href, finalUrl);
+                      if (resolved.origin === targetOrigin) {
+                        enqueue(resolved.href, job.depth + 1);
+                      }
+                    } catch (e) {}
+                  }
+                }
+              }
+            } catch (err) {
+              if (err && err.name === 'AbortError') break;
+              crawlState.crawledCount++;
+              crawlState.skippedCount++;
+              if (job.depth === 0 && err && err.isCorsLikely && !corsFallbackEl.checked) {
+                seedBlockedByCors = true;
+              }
+              entries.push({
+                path: extractPath(job.url),
+                title: err && err.isCorsLikely ? 'Blocked by CORS Policy' : 'Network Error',
+                status: err && err.isCorsLikely ? 'CORS' : 'ERR',
+                depth: job.depth,
+                lastmod: '',
+                freq: '',
+                prio: '',
+                included: false
+              });
+            }
+
+            crawlState.queuedCount = queue.length;
+            var pct = Math.min(98, Math.round((crawlState.crawledCount / Math.max(1, Math.min(maxPages, crawlState.crawledCount + queue.length))) * 100));
+            crawlProgressBar.style.width = pct + '%';
+            renderDiscoveredTable();
+            renderXml();
+          }
+        }
+
+        // Seed worker pool
+        var workers = [];
+        for (var w = 0; w < workerCount; w++) {
+          workers.push(processNext());
+        }
+        await Promise.all(workers);
+
+        crawlState.running = false;
+        crawlState.paused = false;
+        crawlState.queuedCount = 0;
+        setCrawlButtons(false, false);
+        crawlProgressBar.style.width = '100%';
+
+        var includedFinal = entries.filter(function (e) { return e.included !== false; }).length;
+        if (crawlState.aborted) {
+          crawlStatusLine.textContent = 'Crawl stopped. Kept ' + includedFinal + ' discovered URLs in browser storage.';
+        } else if (seedBlockedByCors) {
+          crawlStatusLine.textContent = 'Remote domain blocked direct browser fetch (CORS). Use options below to continue.';
+          corsBanner.classList.add('visible');
+        } else {
+          crawlStatusLine.textContent = 'Crawl complete: ' + includedFinal + ' sitemap URLs saved to IndexedDB browser storage.';
+        }
+
+        syncAllViews();
+        await persistCurrentSite('crawl');
+      }
+
+      // ---------------------------------------------------------
+      // Local Static Folder Crawler (100% Offline HTML Files)
+      // ---------------------------------------------------------
+      async function crawlLocalFolderFiles(fileList) {
+        var htmlFiles = Array.prototype.slice.call(fileList || []).filter(function (f) {
+          return /\.html?$/i.test(f.name);
+        });
+        if (htmlFiles.length === 0) {
+          crawlStatusLine.textContent = 'No .html or .htm files found in the selected folder.';
+          return;
+        }
+
+        corsBanner.classList.remove('visible');
+        var baseUrl = getCleanBaseOrigin();
+        activeOriginKey = baseUrl;
+        entries = [];
+        crawlState.crawledCount = 0;
+        crawlState.queuedCount = htmlFiles.length;
+        crawlState.skippedCount = 0;
+
+        // Strip root folder prefix from webkitRelativePath
+        var firstRel = htmlFiles[0].webkitRelativePath || htmlFiles[0].name;
+        var rootFolder = firstRel.indexOf('/') !== -1 ? firstRel.split('/')[0] + '/' : '';
+        var parser = new DOMParser();
+
+        for (var i = 0; i < htmlFiles.length; i++) {
+          var file = htmlFiles[i];
+          var rel = file.webkitRelativePath || file.name;
+          if (rootFolder && rel.indexOf(rootFolder) === 0) {
+            rel = rel.slice(rootFolder.length);
+          }
+          if (!rel.startsWith('/')) rel = '/' + rel;
+          if (rel === '/index.html') rel = '/';
+
+          var text = await file.text();
+          var doc = parser.parseFromString(text, 'text/html');
+          var titleEl = doc.querySelector('title');
+          var title = titleEl ? titleEl.textContent.trim().slice(0, 80) : rel;
+
+          var robotsContent = '';
+          doc.querySelectorAll('meta[name="robots"], meta[name="googlebot"]').forEach(function (m) {
+            robotsContent += ' ' + (m.getAttribute('content') || '').toLowerCase();
+          });
+          var isNoindex = skipNoindexEl.checked && robotsContent.indexOf('noindex') !== -1;
+          var lastmod = file.lastModified ? new Date(file.lastModified).toISOString().slice(0, 10) : todayIso;
+          var depth = rel === '/' ? 0 : rel.split('/').filter(Boolean).length;
+
+          crawlState.crawledCount++;
+          crawlState.queuedCount = Math.max(0, htmlFiles.length - crawlState.crawledCount);
+          if (isNoindex) crawlState.skippedCount++;
+
+          entries.push({
+            path: rel,
+            title: title,
+            status: isNoindex ? 'SKIP:NOINDEX' : 'LOCAL',
+            depth: depth,
+            lastmod: lastmod,
+            freq: '',
+            prio: '',
+            included: !isNoindex
+          });
+        }
+
+        crawlProgressBar.style.width = '100%';
+        crawlStatusLine.textContent = 'Crawled ' + htmlFiles.length + ' local HTML files offline and saved to IndexedDB.';
+        syncAllViews();
+        await persistCurrentSite('folder');
+      }
+
+      // ---------------------------------------------------------
+      // Mode Switching & Event Bindings
+      // ---------------------------------------------------------
+      function switchMode(nextMode) {
+        if (activeMode === 'bulk' && nextMode !== 'bulk') {
+          parseBulkIntoEntries();
+        }
+        activeMode = nextMode;
+        document.querySelectorAll('.mode-btn').forEach(function (b) {
+          b.classList.toggle('active', b.getAttribute('data-mode') === nextMode);
+        });
+        crawlPanel.style.display = nextMode === 'crawl' ? 'flex' : 'none';
+        rowsPanel.style.display = nextMode === 'rows' ? 'flex' : 'none';
+        bulkPanel.style.display = nextMode === 'bulk' ? 'flex' : 'none';
+        syncAllViews();
+        savePrefs();
+      }
+
       document.querySelectorAll('.mode-btn').forEach(function (b) {
         b.addEventListener('click', function () {
-          document.querySelectorAll('.mode-btn').forEach(function (x) { x.classList.remove('active'); });
-          b.classList.add('active');
-          var nextMode = b.getAttribute('data-mode');
-          if (nextMode === 'rows' && mode !== 'rows') {
-            syncRowsFromBulk();
-          } else if (nextMode === 'bulk' && mode !== 'bulk') {
-            urlBulkEl.value = rowEntries.map(function (r) {
-              var extra = [];
-              if (r.freq) extra.push(r.freq);
-              if (r.prio) extra.push(r.prio);
-              return extra.length ? r.path + ' | ' + extra.join(' | ') : r.path;
-            }).join('\n');
-          }
-          mode = nextMode;
-          bulkPanel.style.display = mode === 'bulk' ? 'flex' : 'none';
-          rowsPanel.style.display = mode === 'rows' ? 'flex' : 'none';
-          renderXml();
+          switchMode(b.getAttribute('data-mode'));
         });
       });
 
-      document.getElementById('addRowBtn').addEventListener('click', function () {
-        rowEntries.push({ path: '/new-page', freq: defFreqEl.value || 'weekly', prio: '' });
-        renderRowsUI();
-        renderXml();
+      startCrawlBtn.addEventListener('click', startAutoCrawl);
+
+      pauseCrawlBtn.addEventListener('click', function () {
+        if (!crawlState.running) return;
+        crawlState.paused = !crawlState.paused;
+        setCrawlButtons(true, crawlState.paused);
+        crawlStatusLine.textContent = crawlState.paused ? 'Crawl paused.' : 'Resuming crawl...';
       });
 
-      document.getElementById('sampleBtn').addEventListener('click', function () {
-        baseUrlEl.value = 'https://codathode.example';
-        urlBulkEl.value = '/\n/utilities\n/utilities/json-formatter | daily | 0.9\n/utilities/password-generator | daily | 0.9\n/docs\n/docs/offline-pwa\n/about | monthly | 0.5\n/privacy | yearly | 0.3';
-        if (mode === 'rows') syncRowsFromBulk();
-        renderXml();
+      stopCrawlBtn.addEventListener('click', function () {
+        if (!crawlState.running) return;
+        crawlState.aborted = true;
+        crawlState.paused = false;
+        crawlState.controllers.forEach(function (c) { try { c.abort(); } catch (e) {} });
+      });
+
+      crawlCurrentBtn.addEventListener('click', function () {
+        baseUrlEl.value = window.location.origin;
+        updateOriginBadge();
+        switchMode('crawl');
+        startAutoCrawl();
+      });
+
+      bannerSelfBtn.addEventListener('click', function () {
+        baseUrlEl.value = window.location.origin;
+        updateOriginBadge();
+        startAutoCrawl();
+      });
+
+      retryCorsBtn.addEventListener('click', function () {
+        corsFallbackEl.checked = true;
+        updateOriginBadge();
+        savePrefs();
+        startAutoCrawl();
+      });
+
+      folderPickBtn.addEventListener('click', function () { folderInput.click(); });
+      bannerFolderBtn.addEventListener('click', function () { folderInput.click(); });
+      folderInput.addEventListener('change', function () {
+        if (folderInput.files && folderInput.files.length > 0) {
+          switchMode('crawl');
+          crawlLocalFolderFiles(folderInput.files);
+          folderInput.value = '';
+        }
+      });
+
+      savedSitesSelect.addEventListener('change', function () {
+        if (savedSitesSelect.value) {
+          loadSavedSite(savedSitesSelect.value);
+          crawlStatusLine.textContent = 'Loaded saved crawl from browser storage.';
+        }
+      });
+
+      deleteSiteBtn.addEventListener('click', async function () {
+        var key = savedSitesSelect.value || activeOriginKey;
+        if (!key) return;
+        await deleteSiteRecord(key);
+        var remaining = await getAllSiteRecords();
+        if (remaining.length > 0) {
+          await loadSavedSite(remaining[0].originKey);
+        } else {
+          activeOriginKey = '';
+          entries = [];
+          crawlState.crawledCount = 0;
+          crawlState.skippedCount = 0;
+          syncAllViews();
+          await refreshSavedSitesUI();
+        }
+        crawlStatusLine.textContent = 'Removed saved site from IndexedDB browser storage.';
+      });
+
+      clearAllStorageBtn.addEventListener('click', async function () {
+        await clearAllSiteRecords();
+        entries = [];
+        activeOriginKey = '';
+        crawlState.crawledCount = 0;
+        crawlState.queuedCount = 0;
+        crawlState.skippedCount = 0;
+        crawlProgressBar.style.width = '0%';
+        crawlStatusLine.textContent = 'Cleared all saved sitemaps from browser storage.';
+        syncAllViews();
+        await refreshSavedSitesUI();
+      });
+
+      document.getElementById('addRowBtn').addEventListener('click', function () {
+        entries.push({
+          path: '/new-page',
+          title: 'Custom URL',
+          status: 'MANUAL',
+          depth: 1,
+          lastmod: '',
+          freq: '',
+          prio: '',
+          included: true
+        });
+        syncAllViews();
+        schedulePersistSite('manual');
       });
 
       document.getElementById('dedupeBtn').addEventListener('click', function () {
-        if (mode === 'bulk') {
-          var seen = Object.create(null);
-          var clean = [];
-          urlBulkEl.value.split(/\r?\n/).forEach(function (line) {
-            var t = line.trim();
-            if (!t) return;
-            var key = normalizeUrl(t.split('|')[0]);
-            if (key && !seen[key]) {
-              seen[key] = true;
-              clean.push(t);
-            }
-          });
-          urlBulkEl.value = clean.join('\n');
-        } else {
-          var seenR = Object.create(null);
-          rowEntries = rowEntries.filter(function (r) {
-            var k = normalizeUrl(r.path);
-            if (!k || seenR[k]) return false;
-            seenR[k] = true;
-            return true;
-          });
-          renderRowsUI();
-        }
-        renderXml();
+        if (activeMode === 'bulk') parseBulkIntoEntries();
+        var seen = Object.create(null);
+        entries = entries.filter(function (item) {
+          var norm = normalizeEntryUrl(item.path);
+          if (!norm || seen[norm]) return false;
+          seen[norm] = true;
+          return true;
+        });
+        syncAllViews();
+        schedulePersistSite('dedupe');
+        crawlStatusLine.textContent = 'Deduplicated URL entries and updated browser storage.';
       });
 
-      [baseUrlEl, urlBulkEl, defFreqEl, defPrioEl, defDateEl, slashModeEl, includeLastmodEl, minifyXmlEl].forEach(function (el) {
-        el.addEventListener('input', renderXml);
-        el.addEventListener('change', renderXml);
+      urlBulkEl.addEventListener('input', function () {
+        parseBulkIntoEntries();
+        renderXml();
+        schedulePersistSite('bulk');
+      });
+
+      baseUrlEl.addEventListener('input', function () {
+        updateOriginBadge();
+        renderXml();
+        savePrefs();
+      });
+
+      [defFreqEl, defPrioEl, defDateEl, slashModeEl, includeLastmodEl, minifyXmlEl,
+        maxPagesEl, maxDepthEl, concurrencyEl, respectRobotsEl, skipNoindexEl, stripQueryEl, corsFallbackEl
+      ].forEach(function (el) {
+        el.addEventListener('change', function () {
+          updateOriginBadge();
+          renderXml();
+          savePrefs();
+        });
+        el.addEventListener('input', function () {
+          renderXml();
+          savePrefs();
+        });
       });
 
       copyXmlBtn.addEventListener('click', function () {
@@ -501,14 +1627,14 @@
       });
 
       copyRobotsBtn.addEventListener('click', function () {
-        var line = 'Sitemap: ' + getCleanBase() + '/sitemap.xml';
+        var line = 'Sitemap: ' + getCleanBaseOrigin() + '/sitemap.xml';
         navigator.clipboard.writeText(line).then(function () {
           copyRobotsBtn.textContent = 'COPIED LINE!';
           setTimeout(function () { copyRobotsBtn.textContent = 'COPY ROBOTS LINE'; }, 1400);
         });
       });
 
-      document.getElementById('dlXmlBtn').addEventListener('click', function () {
+      dlXmlBtn.addEventListener('click', function () {
         var blob = new Blob([xmlOutEl.textContent], { type: 'application/xml' });
         var url = URL.createObjectURL(blob);
         var a = document.createElement('a');
@@ -518,7 +1644,80 @@
         URL.revokeObjectURL(url);
       });
 
-      renderXml();
+      exportCsvBtn.addEventListener('click', function () {
+        var rows = [['URL', 'Title', 'Status', 'Depth', 'Lastmod', 'Changefreq', 'Priority', 'Included']];
+        entries.forEach(function (e) {
+          var full = normalizeEntryUrl(e.path);
+          var prio = e.prio ? e.prio : (defPrioEl.value === 'auto' ? computeAutoPriority(full, e.depth) : defPrioEl.value);
+          var cols = [
+            full,
+            e.title || '',
+            e.status || '',
+            String(typeof e.depth === 'number' ? e.depth : ''),
+            e.lastmod || defDateEl.value || '',
+            e.freq || defFreqEl.value || '',
+            prio || '',
+            e.included === false ? 'false' : 'true'
+          ].map(function (c) {
+            return '"' + String(c).replace(/"/g, '""') + '"';
+          });
+          rows.push(cols);
+        });
+        var csv = rows.map(function (r) { return r.join(','); }).join('\n');
+        var blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        a.href = url;
+        a.download = 'crawled-sitemap-urls.csv';
+        a.click();
+        URL.revokeObjectURL(url);
+      });
+
+      // ---------------------------------------------------------
+      // Boot & Restore From Browser Storage
+      // ---------------------------------------------------------
+      (async function init() {
+        defDateEl.value = todayIso;
+        var prefs = loadPrefs();
+        if (prefs) {
+          if (prefs.baseUrl) baseUrlEl.value = prefs.baseUrl;
+          if (prefs.maxPages) maxPagesEl.value = prefs.maxPages;
+          if (prefs.maxDepth) maxDepthEl.value = prefs.maxDepth;
+          if (prefs.concurrency) concurrencyEl.value = prefs.concurrency;
+          if (typeof prefs.respectRobots === 'boolean') respectRobotsEl.checked = prefs.respectRobots;
+          if (typeof prefs.skipNoindex === 'boolean') skipNoindexEl.checked = prefs.skipNoindex;
+          if (typeof prefs.stripQuery === 'boolean') stripQueryEl.checked = prefs.stripQuery;
+          if (typeof prefs.corsFallback === 'boolean') corsFallbackEl.checked = prefs.corsFallback;
+          if (prefs.defFreq !== undefined) defFreqEl.value = prefs.defFreq;
+          if (prefs.defPrio !== undefined) defPrioEl.value = prefs.defPrio;
+          if (prefs.defDate) defDateEl.value = prefs.defDate;
+          if (prefs.slashMode) slashModeEl.value = prefs.slashMode;
+          if (typeof prefs.includeLastmod === 'boolean') includeLastmodEl.checked = prefs.includeLastmod;
+          if (typeof prefs.minifyXml === 'boolean') minifyXmlEl.checked = prefs.minifyXml;
+          if (prefs.activeOriginKey) activeOriginKey = prefs.activeOriginKey;
+          if (prefs.activeMode) activeMode = prefs.activeMode;
+        }
+        if (!baseUrlEl.value) {
+          baseUrlEl.value = window.location.origin;
+        }
+        updateOriginBadge();
+
+        var loaded = false;
+        if (activeOriginKey) {
+          loaded = await loadSavedSite(activeOriginKey);
+        }
+        if (!loaded) {
+          var all = await getAllSiteRecords();
+          if (all.length > 0) {
+            loaded = await loadSavedSite(all[0].originKey);
+          }
+        }
+        await refreshSavedSitesUI();
+        switchMode(activeMode || 'crawl');
+        if (loaded) {
+          crawlStatusLine.textContent = 'Restored ' + entries.length + ' discovered URLs from browser IndexedDB storage.';
+        }
+      })();
     })();
   </script>
 </body>

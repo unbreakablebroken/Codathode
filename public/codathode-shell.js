@@ -64,7 +64,7 @@
         { num: '050', name: 'CSV ↔ JSON', href: 'csv-json.html', keywords: 'spreadsheet table delimiter json convert export' },
         { num: '061', name: 'Git Commit Builder', href: 'git-commit.html', keywords: 'conventional commits feat fix scope breaking message' },
         { num: '062', name: 'robots.txt / .gitignore', href: 'robots-gitignore.html', keywords: 'seo crawler disallow gitignore node python ignore' },
-        { num: '065', name: 'XML Sitemap Gen', href: 'xml-sitemap.html', keywords: 'xml sitemap seo urlset lastmod changefreq priority google' }
+        { num: '065', name: 'XML Sitemap Gen', href: 'xml-sitemap.html', keywords: 'xml sitemap auto crawl spider seo urlset lastmod changefreq priority indexeddb browser storage' }
       ]
     },
     {
