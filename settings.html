@@ -18,7 +18,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
   <script>
-    (function(){try{var t=localStorage.getItem('codathode_theme');document.documentElement.setAttribute('data-theme',(t==='dark'||t==='light'||t==='green')?t:'green');if(localStorage.getItem('codathode_sidebar_collapsed')==='1')document.documentElement.setAttribute('data-sidebar','collapsed');}catch(e){}})();
+    (function(){try{var t=localStorage.getItem('codathode_theme');document.documentElement.setAttribute('data-theme',(t==='dark'||t==='light'||t==='green')?t:'green');}catch(e){}})();
   </script>
   <link rel="stylesheet" href="codathode-shell.css" />
   <script src="codathode-shell.js" defer></script>
@@ -253,15 +253,6 @@
       overflow: hidden;
     }
 
-    .mock-sidebar {
-      width: 34px;
-      border-radius: 3px;
-      padding: 6px 5px;
-      display: flex;
-      flex-direction: column;
-      gap: 5px;
-    }
-
     .mock-line {
       height: 4px;
       border-radius: 2px;
@@ -304,21 +295,18 @@
 
     /* Explicit literal swatches for each preview so previews stay accurate in every active theme */
     .preview-green { background-color: #041E1D; }
-    .preview-green .mock-sidebar { background-color: #021211; border: 1px solid rgba(216,242,222,0.14); }
     .preview-green .mock-line { background-color: #86A99A; }
     .preview-green .mock-bar { background-color: #D8F2DE; }
     .preview-green .mock-card { background-color: #0C2D24; border: 1px solid rgba(216,242,222,0.15); }
     .preview-green .mock-btn { background-color: #165448; color: #D8F2DE; }
 
     .preview-dark { background-color: #050505; }
-    .preview-dark .mock-sidebar { background-color: #000000; border: 1px solid rgba(255,255,255,0.14); }
     .preview-dark .mock-line { background-color: #93939E; }
     .preview-dark .mock-bar { background-color: #F4F4F5; }
     .preview-dark .mock-card { background-color: #0E0E11; border: 1px solid rgba(255,255,255,0.14); }
     .preview-dark .mock-btn { background-color: #27272E; color: #FAFAFA; }
 
     .preview-light { background-color: #F3F6F4; }
-    .preview-light .mock-sidebar { background-color: #E7ECE9; border: 1px solid rgba(11,34,29,0.14); }
     .preview-light .mock-line { background-color: #4D6B61; }
     .preview-light .mock-bar { background-color: #0B221D; }
     .preview-light .mock-card { background-color: #FFFFFF; border: 1px solid rgba(11,34,29,0.14); }
@@ -593,11 +581,6 @@
         <!-- GREEN THEME -->
         <button type="button" class="theme-card" data-theme-choice="green" role="radio" aria-checked="true">
           <div class="theme-mockup preview-green" aria-hidden="true">
-            <div class="mock-sidebar">
-              <div class="mock-line" style="width:100%;"></div>
-              <div class="mock-line" style="width:75%;"></div>
-              <div class="mock-line" style="width:85%;"></div>
-            </div>
             <div class="mock-main">
               <div class="mock-bar"></div>
               <div class="mock-card">
@@ -625,11 +608,6 @@
         <!-- DARK (BLACK) THEME -->
         <button type="button" class="theme-card" data-theme-choice="dark" role="radio" aria-checked="false">
           <div class="theme-mockup preview-dark" aria-hidden="true">
-            <div class="mock-sidebar">
-              <div class="mock-line" style="width:100%;"></div>
-              <div class="mock-line" style="width:75%;"></div>
-              <div class="mock-line" style="width:85%;"></div>
-            </div>
             <div class="mock-main">
               <div class="mock-bar"></div>
               <div class="mock-card">
@@ -657,11 +635,6 @@
         <!-- LIGHT THEME -->
         <button type="button" class="theme-card" data-theme-choice="light" role="radio" aria-checked="false">
           <div class="theme-mockup preview-light" aria-hidden="true">
-            <div class="mock-sidebar">
-              <div class="mock-line" style="width:100%;"></div>
-              <div class="mock-line" style="width:75%;"></div>
-              <div class="mock-line" style="width:85%;"></div>
-            </div>
             <div class="mock-main">
               <div class="mock-bar"></div>
               <div class="mock-card">
@@ -686,38 +659,20 @@
           </div>
         </button>
       </div>
-    </section>
-
-    <section class="settings-section" aria-labelledby="workspace-heading">
-      <div class="section-head">
-        <div>
-          <span class="section-kicker">02 / NAVIGATION</span>
-          <h2 class="section-title" id="workspace-heading">Workspace Layout</h2>
-        </div>
-        <button type="button" id="resetPrefsBtn" class="btn-secondary">RESET DEFAULTS</button>
-      </div>
-
-      <div class="pref-row">
-        <div>
-          <div class="pref-title">Desktop Navigation Sidebar</div>
-          <div class="pref-desc">Choose whether the navigation sidebar starts expanded with category labels or collapsed to a compact icon rail.</div>
-        </div>
-        <div class="mode-toggle" role="group" aria-label="Sidebar layout">
-          <button type="button" class="mode-btn" data-sidebar-choice="expanded">EXPANDED</button>
-          <button type="button" class="mode-btn" data-sidebar-choice="collapsed">COLLAPSED</button>
-        </div>
-      </div>
 
       <div class="privacy-note">
-        <span>ZERO TELEMETRY: Theme and sidebar settings persist solely in local browser storage across all 65 utilities.</span>
-        <a href="index.html" style="color:var(--ct-text, #D8F2DE);font-weight:700;text-decoration:none;">← RETURN TO ALL 65 UTILITIES</a>
+        <span>ZERO TELEMETRY: Theme preferences persist solely in local browser storage across all 65 utilities.</span>
+        <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;">
+          <button type="button" id="resetPrefsBtn" class="btn-secondary">RESET DEFAULTS</button>
+          <a href="index.html" style="color:var(--ct-text, #D8F2DE);font-weight:700;text-decoration:none;">← RETURN TO ALL 65 UTILITIES</a>
+        </div>
       </div>
     </section>
 
     <section class="settings-section" aria-labelledby="pwa-heading">
       <div class="section-head">
         <div>
-          <span class="section-kicker">03 / PROGRESSIVE WEB APP</span>
+          <span class="section-kicker">02 / PROGRESSIVE WEB APP</span>
           <h2 class="section-title" id="pwa-heading">Offline App Installation</h2>
         </div>
         <span class="section-status" id="pwa-status-badge">OFFLINE READY</span>
@@ -757,7 +712,6 @@
     (function () {
       var cards = document.querySelectorAll('[data-theme-choice]');
       var themeLabel = document.getElementById('active-theme-label');
-      var sidebarBtns = document.querySelectorAll('[data-sidebar-choice]');
       var resetBtn = document.getElementById('resetPrefsBtn');
 
       var THEME_LABELS = {
@@ -770,9 +724,6 @@
         var currentTheme = window.CodathodeShell
           ? window.CodathodeShell.getTheme()
           : (document.documentElement.getAttribute('data-theme') || 'green');
-        var collapsed = window.CodathodeShell
-          ? window.CodathodeShell.isSidebarCollapsed()
-          : (document.documentElement.getAttribute('data-sidebar') === 'collapsed');
 
         if (themeLabel) {
           themeLabel.textContent = 'CURRENT: ' + (THEME_LABELS[currentTheme] || 'GREEN');
@@ -787,11 +738,6 @@
           if (statusEl) {
             statusEl.textContent = active ? 'ACTIVE' : (choice === 'green' ? 'DEFAULT' : 'SELECT');
           }
-        });
-
-        sidebarBtns.forEach(function (btn) {
-          var mode = btn.getAttribute('data-sidebar-choice');
-          btn.classList.toggle('active', (collapsed && mode === 'collapsed') || (!collapsed && mode === 'expanded'));
         });
       }
 
@@ -808,30 +754,13 @@
         });
       });
 
-      sidebarBtns.forEach(function (btn) {
-        btn.addEventListener('click', function () {
-          var isCollapsed = btn.getAttribute('data-sidebar-choice') === 'collapsed';
-          if (window.CodathodeShell) {
-            window.CodathodeShell.setSidebarCollapsed(isCollapsed);
-          } else {
-            if (isCollapsed) document.documentElement.setAttribute('data-sidebar', 'collapsed');
-            else document.documentElement.removeAttribute('data-sidebar');
-            localStorage.setItem('codathode_sidebar_collapsed', isCollapsed ? '1' : '0');
-          }
-          syncUI();
-        });
-      });
-
       if (resetBtn) {
         resetBtn.addEventListener('click', function () {
           if (window.CodathodeShell) {
             window.CodathodeShell.setTheme('green');
-            window.CodathodeShell.setSidebarCollapsed(false);
           } else {
             document.documentElement.setAttribute('data-theme', 'green');
-            document.documentElement.removeAttribute('data-sidebar');
             localStorage.setItem('codathode_theme', 'green');
-            localStorage.setItem('codathode_sidebar_collapsed', '0');
           }
           syncUI();
         });
@@ -884,7 +813,6 @@
       }
 
       window.addEventListener('codathode:themechange', syncUI);
-      window.addEventListener('codathode:sidebarchange', syncUI);
       window.addEventListener('codathode:pwastatechange', syncPWA);
       window.addEventListener('DOMContentLoaded', function () {
         syncUI();
