@@ -401,11 +401,22 @@
     cmdBackdrop.classList.remove('is-open');
   }
 
+  var globalListenersBound = false;
+
+  function removeExistingShellElements() {
+    var ids = ['ct-sidebar', 'ct-sidebar-backdrop', 'ct-cmd-backdrop', 'ct-ios-modal', 'ct-offline-banner'];
+    for (var i = 0; i < ids.length; i++) {
+      var el = document.getElementById(ids[i]);
+      if (el && el.parentNode) el.parentNode.removeChild(el);
+    }
+  }
+
   function initShell() {
     applyTheme(getSavedTheme());
     applySidebarCollapsed(isSidebarCollapsed());
 
-    if (document.getElementById('ct-sidebar')) return;
+    // Cleanly remove any previous sidebar / overlay DOM before mounting fresh sidebar
+    removeExistingShellElements();
 
     var currentPage = getCurrentPage();
     var activeTheme = getSavedTheme();
@@ -441,7 +452,8 @@
     searchWrap.innerHTML =
       '<div class="ct-sb-search-box">' +
         '<svg class="ct-sb-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>' +
-        '<input type="search" id="ct-sb-search" class="ct-sb-search-input has-kbd" placeholder="Find 64 tools..." aria-label="Filter navigation tools" autocomplete="off" />' +
+        '<input type="text" id="ct-sb-search" class="ct-sb-search-input" placeholder="Find 64 tools..." aria-label="Filter navigation tools" autocomplete="off" spellcheck="false" />' +
+        '<button type="button" id="ct-sb-search-clear" class="ct-sb-search-clear" title="Clear filter" aria-label="Clear sidebar search">&times;</button>' +
         '<button type="button" id="ct-sb-kbd-trigger" class="ct-sb-kbd-btn" title="Open Command Palette (' + shortcutLabel + ')">' + shortcutLabel + '</button>' +
       '</div>' +
       '<button type="button" class="ct-sb-search-btn" id="ct-sb-search-expand" title="Command Palette (' + shortcutLabel + ')" aria-label="Open quick tool search">' +
@@ -755,23 +767,32 @@
       });
     }
 
-    // Global Ctrl+K / Cmd+K shortcut
-    document.addEventListener('keydown', function (e) {
-      if ((e.ctrlKey || e.metaKey) && String(e.key).toLowerCase() === 'k') {
-        e.preventDefault();
-        if (cmdBackdrop.classList.contains('is-open')) {
-          closeCommandPalette();
-        } else {
-          openCommandPalette('');
+    // Global Ctrl+K / Cmd+K & Storage Listeners (bind once)
+    if (!globalListenersBound) {
+      globalListenersBound = true;
+      document.addEventListener('keydown', function (e) {
+        if ((e.ctrlKey || e.metaKey) && String(e.key).toLowerCase() === 'k') {
+          e.preventDefault();
+          if (cmdBackdrop && cmdBackdrop.classList.contains('is-open')) {
+            closeCommandPalette();
+          } else {
+            openCommandPalette('');
+          }
+        } else if (e.key === 'Escape') {
+          var iosEl = document.getElementById('ct-ios-modal');
+          if (cmdBackdrop && cmdBackdrop.classList.contains('is-open')) {
+            closeCommandPalette();
+          } else if (iosEl && iosEl.classList.contains('is-open')) {
+            closeIOSGuide();
+          }
         }
-      } else if (e.key === 'Escape') {
-        if (cmdBackdrop.classList.contains('is-open')) {
-          closeCommandPalette();
-        } else if (iosModal.classList.contains('is-open')) {
-          closeIOSGuide();
-        }
-      }
-    });
+      });
+
+      window.addEventListener('storage', function (e) {
+        if (e.key === THEME_KEY) applyTheme(getSavedTheme());
+        if (e.key === SIDEBAR_KEY) applySidebarCollapsed(isSidebarCollapsed());
+      });
+    }
 
     // Toggle collapse / expand
     var toggleBtn = document.getElementById('ct-sb-toggle');
@@ -805,38 +826,59 @@
     // Search expand button in collapsed rail opens Command Palette directly
     var searchExpandBtn = document.getElementById('ct-sb-search-expand');
     var searchInput = document.getElementById('ct-sb-search');
+    var searchClearBtn = document.getElementById('ct-sb-search-clear');
     if (searchExpandBtn) {
       searchExpandBtn.addEventListener('click', function () {
         openCommandPalette('');
       });
     }
 
-    // Live sidebar search filtering
-    if (searchInput) {
-      searchInput.addEventListener('input', function () {
-        var q = searchInput.value.trim().toLowerCase();
-        var anyVisible = false;
+    function applySidebarFilter() {
+      var q = searchInput ? searchInput.value.trim().toLowerCase() : '';
+      var anyVisible = false;
 
-        for (var m = 0; m < catEls.length; m++) {
-          var catEl = catEls[m];
-          var links = catEl.querySelectorAll('.ct-sb-tool-link');
-          var catMatchCount = 0;
+      if (searchClearBtn) {
+        searchClearBtn.classList.toggle('is-visible', q.length > 0);
+      }
 
-          for (var n = 0; n < links.length; n++) {
-            var hay = links[n].getAttribute('data-search') || '';
-            var match = !q || hay.indexOf(q) !== -1;
-            links[n].style.display = match ? 'flex' : 'none';
-            if (match) catMatchCount++;
-          }
+      for (var m = 0; m < catEls.length; m++) {
+        var catEl = catEls[m];
+        var links = catEl.querySelectorAll('.ct-sb-tool-link');
+        var catMatchCount = 0;
 
-          catEl.style.display = catMatchCount > 0 ? 'flex' : 'none';
-          if (q && catMatchCount > 0) {
-            catEl.classList.add('is-open');
-          }
-          if (catMatchCount > 0) anyVisible = true;
+        for (var n = 0; n < links.length; n++) {
+          var hay = links[n].getAttribute('data-search') || '';
+          var match = !q || hay.indexOf(q) !== -1;
+          links[n].style.display = match ? 'flex' : 'none';
+          if (match) catMatchCount++;
         }
 
-        emptySearch.style.display = anyVisible ? 'none' : 'block';
+        catEl.style.display = catMatchCount > 0 ? 'flex' : 'none';
+        if (q && catMatchCount > 0) {
+          catEl.classList.add('is-open');
+        }
+        if (catMatchCount > 0) anyVisible = true;
+      }
+
+      emptySearch.style.display = anyVisible ? 'none' : 'block';
+    }
+
+    if (searchInput) {
+      searchInput.addEventListener('input', applySidebarFilter);
+      searchInput.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && searchInput.value.length > 0) {
+          e.preventDefault();
+          searchInput.value = '';
+          applySidebarFilter();
+        }
+      });
+    }
+
+    if (searchClearBtn && searchInput) {
+      searchClearBtn.addEventListener('click', function () {
+        searchInput.value = '';
+        applySidebarFilter();
+        searchInput.focus();
       });
     }
 
@@ -863,12 +905,6 @@
       }, 60);
     }
 
-    // Keep tabs synced if user changes theme/sidebar in another tab
-    window.addEventListener('storage', function (e) {
-      if (e.key === THEME_KEY) applyTheme(getSavedTheme());
-      if (e.key === SIDEBAR_KEY) applySidebarCollapsed(isSidebarCollapsed());
-    });
-
     notifyPWAState();
   }
 
@@ -879,6 +915,7 @@
     setSidebarCollapsed: applySidebarCollapsed,
     openCommandPalette: openCommandPalette,
     closeCommandPalette: closeCommandPalette,
+    rebuildSidebar: initShell,
     categories: CATEGORIES,
     searchItems: ALL_SEARCH_ITEMS,
     pwa: {

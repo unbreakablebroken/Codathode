@@ -261,7 +261,7 @@ html.splash-active .ct-sidebar {
   transform: rotate(180deg);
 }
 
-/* Search Bar in Sidebar */
+/* Search Bar in Sidebar (Flex container — zero overlap) */
 .ct-sb-search-wrap {
   padding: 12px 14px;
   border-bottom: 1px solid var(--ct-border-subtle);
@@ -275,32 +275,38 @@ html.splash-active .ct-sidebar {
 }
 
 .ct-sb-search-box {
-  position: relative;
   display: flex;
   align-items: center;
-}
-
-.ct-sb-search-icon {
-  position: absolute;
-  left: 10px;
-  width: 14px;
-  height: 14px;
-  color: var(--ct-muted);
-  pointer-events: none;
-}
-
-.ct-sb-search-input {
-  width: 100%;
+  gap: 6px;
   background-color: var(--ct-card);
   border: 1px solid var(--ct-border);
   border-radius: 4px;
-  padding: 8px 10px 8px 30px;
+  padding: 0 8px 0 10px;
+  height: 34px;
+  transition: border-color 0.15s ease;
+}
+
+.ct-sb-search-box:focus-within {
+  border-color: var(--ct-border-hover);
+}
+
+.ct-sb-search-icon {
+  width: 14px;
+  height: 14px;
+  color: var(--ct-muted);
+  flex-shrink: 0;
+}
+
+.ct-sb-search-input {
+  flex: 1;
+  min-width: 0;
+  background: transparent;
+  border: none;
   font-family: inherit;
   font-size: 0.75rem;
   font-weight: 500;
   color: var(--ct-text);
   outline: none;
-  transition: border-color 0.15s ease;
 }
 
 .ct-sb-search-input::placeholder {
@@ -308,8 +314,47 @@ html.splash-active .ct-sidebar {
   opacity: 0.75;
 }
 
-.ct-sb-search-input:focus {
+.ct-sb-search-clear {
+  display: none;
+  background: transparent;
+  border: none;
+  color: var(--ct-muted);
+  font-size: 0.9rem;
+  line-height: 1;
+  padding: 2px 4px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.ct-sb-search-clear.is-visible {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ct-sb-search-clear:hover {
+  color: var(--ct-text);
+}
+
+.ct-sb-kbd-btn {
+  background-color: var(--ct-surface-tint-2);
+  border: 1px solid var(--ct-border);
+  border-radius: 3px;
+  color: var(--ct-muted);
+  font-family: inherit;
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  padding: 2px 5px;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: all 0.14s ease;
+}
+
+.ct-sb-kbd-btn:hover {
+  color: var(--ct-text);
   border-color: var(--ct-border-hover);
+  background-color: var(--ct-surface-hover);
 }
 
 .ct-sb-search-btn {
@@ -342,12 +387,15 @@ html.splash-active .ct-sidebar {
 /* Scrollable Sidebar Body */
 .ct-sb-scroll {
   flex: 1;
+  min-height: 0;
   overflow-y: auto;
   overflow-x: hidden;
   padding: 12px 10px;
   display: flex;
   flex-direction: column;
   gap: 14px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--ct-border-medium) transparent;
 }
 
 .ct-sb-scroll::-webkit-scrollbar {
@@ -604,6 +652,60 @@ html.splash-active .ct-sidebar {
   display: none !important;
 }
 
+/* PWA Install Control inside Sidebar */
+.ct-sb-pwa-wrap {
+  padding: 8px 12px 0 12px;
+  display: none;
+  flex-shrink: 0;
+}
+
+.ct-sb-pwa-wrap.is-visible {
+  display: block;
+}
+
+.ct-sb-pwa-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border-radius: 4px;
+  border: 1px solid var(--ct-border-strong);
+  background-color: var(--ct-accent);
+  color: var(--ct-on-accent);
+  font-family: inherit;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.ct-sb-pwa-btn:hover {
+  background-color: var(--ct-accent-hover);
+  border-color: var(--ct-border-hover);
+}
+
+.ct-sb-pwa-btn svg {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+
+:root[data-sidebar="collapsed"] .ct-sb-pwa-wrap {
+  padding: 8px 8px 0 8px;
+}
+
+:root[data-sidebar="collapsed"] .ct-sb-pwa-btn {
+  padding: 8px 0;
+}
+
+:root[data-sidebar="collapsed"] .ct-sb-pwa-label {
+  display: none;
+}
+
 /* Sidebar Footer: Quick Theme Switcher */
 .ct-sb-footer {
   padding: 12px 12px;
@@ -755,7 +857,6 @@ html.splash-active .ct-sidebar {
     transform: translateX(0);
   }
 
-  /* On mobile drawer, always show full expanded contents even if desktop was collapsed */
   :root[data-sidebar="collapsed"] .ct-sb-brand {
     display: inline-flex;
   }
@@ -781,6 +882,14 @@ html.splash-active .ct-sidebar {
   :root[data-sidebar="collapsed"] .ct-sb-theme-label,
   :root[data-sidebar="collapsed"] .ct-sb-theme-name {
     display: block;
+  }
+
+  :root[data-sidebar="collapsed"] .ct-sb-pwa-label {
+    display: inline;
+  }
+
+  :root[data-sidebar="collapsed"] .ct-sb-pwa-btn {
+    padding: 8px 10px;
   }
 
   :root[data-sidebar="collapsed"] .ct-sb-link {
@@ -816,97 +925,6 @@ html.splash-active .ct-sidebar {
   .ct-ios-modal,
   .ct-offline-banner {
     display: none !important;
-  }
-}
-
-/* ============================================================
-   SIDEBAR KBD TRIGGER & PWA INSTALL CONTROLS
-   ============================================================ */
-.ct-sb-search-input.has-kbd {
-  padding-right: 48px;
-}
-
-.ct-sb-kbd-btn {
-  position: absolute;
-  right: 6px;
-  background-color: var(--ct-surface-tint-2);
-  border: 1px solid var(--ct-border);
-  border-radius: 3px;
-  color: var(--ct-muted);
-  font-family: inherit;
-  font-size: 0.6rem;
-  font-weight: 700;
-  letter-spacing: 0.05em;
-  padding: 2px 5px;
-  cursor: pointer;
-  transition: all 0.14s ease;
-}
-
-.ct-sb-kbd-btn:hover {
-  color: var(--ct-text);
-  border-color: var(--ct-border-hover);
-  background-color: var(--ct-surface-hover);
-}
-
-.ct-sb-pwa-wrap {
-  padding: 0 10px 8px 10px;
-  display: none;
-  flex-shrink: 0;
-}
-
-.ct-sb-pwa-wrap.is-visible {
-  display: block;
-}
-
-.ct-sb-pwa-btn {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  padding: 8px 10px;
-  border-radius: 4px;
-  border: 1px solid var(--ct-border-strong);
-  background-color: var(--ct-accent);
-  color: var(--ct-on-accent);
-  font-family: inherit;
-  font-size: 0.6875rem;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  cursor: pointer;
-  transition: background-color 0.15s ease, border-color 0.15s ease;
-}
-
-.ct-sb-pwa-btn:hover {
-  background-color: var(--ct-accent-hover);
-  border-color: var(--ct-border-hover);
-}
-
-.ct-sb-pwa-btn svg {
-  width: 14px;
-  height: 14px;
-  flex-shrink: 0;
-}
-
-:root[data-sidebar="collapsed"] .ct-sb-pwa-wrap {
-  padding: 0 8px 8px 8px;
-}
-
-:root[data-sidebar="collapsed"] .ct-sb-pwa-btn {
-  padding: 8px 0;
-}
-
-:root[data-sidebar="collapsed"] .ct-sb-pwa-label {
-  display: none;
-}
-
-@media (max-width: 960px) {
-  :root[data-sidebar="collapsed"] .ct-sb-pwa-label {
-    display: inline;
-  }
-  :root[data-sidebar="collapsed"] .ct-sb-pwa-btn {
-    padding: 8px 10px;
   }
 }
 
