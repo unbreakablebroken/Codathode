@@ -6,7 +6,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>CODATHODE. — Digital Utilities Built With Intention</title>
   <link rel="icon" type="image/png" sizes="32x32" href="favicon.png" />
-  <link rel="apple-touch-icon" href="favicon.png" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <meta name="theme-color" content="#041E1D" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Codathode" />
+  <link rel="icon" type="image/svg+xml" href="/icon.svg" />
   <meta name="description" content="A premium suite of standalone browser utilities engineered with intention, privacy, and speed." />
   <meta property="og:title" content="CODATHODE. — Digital Utilities Built With Intention" />
   <meta property="og:description" content="A premium suite of standalone browser utilities engineered with intention, privacy, and speed." />
@@ -213,6 +219,192 @@
     .jump-link:hover {
       color: var(--ct-text, #D8F2DE);
       border-bottom-color: var(--ct-border-hover, rgba(216, 242, 222, 0.42));
+    }
+
+    /* INSTANT TOP SEARCH BAR */
+    .header-cmd-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 10px;
+      border-radius: 4px;
+      border: 1px solid var(--ct-border-medium, rgba(216, 242, 222, 0.18));
+      background-color: var(--ct-card, #0C2D24);
+      color: var(--ct-text, #D8F2DE);
+      font-family: inherit;
+      font-size: 0.6875rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: border-color 0.15s ease, background-color 0.15s ease;
+    }
+
+    .header-cmd-btn:hover {
+      border-color: var(--ct-border-hover, rgba(216, 242, 222, 0.42));
+      background-color: var(--ct-card-hover, #0E352B);
+    }
+
+    .header-cmd-kbd {
+      font-size: 0.625rem;
+      color: var(--ct-muted, #86A99A);
+      border: 1px solid var(--ct-border, rgba(216, 242, 222, 0.13));
+      border-radius: 3px;
+      padding: 1px 5px;
+      background-color: var(--ct-bg, #041E1D);
+    }
+
+    .home-search-wrap {
+      margin-bottom: 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .home-search-bar {
+      position: relative;
+      display: flex;
+      align-items: center;
+      background-color: var(--ct-card, #0C2D24);
+      border: 1px solid var(--ct-border-strong, rgba(216, 242, 222, 0.28));
+      border-radius: 5px;
+      transition: border-color 0.15s ease, background-color 0.15s ease;
+    }
+
+    .home-search-bar:focus-within {
+      border-color: var(--ct-text, #D8F2DE);
+    }
+
+    .home-search-icon {
+      position: absolute;
+      left: 16px;
+      width: 18px;
+      height: 18px;
+      color: var(--ct-muted, #86A99A);
+      pointer-events: none;
+    }
+
+    .home-search-input {
+      width: 100%;
+      background: transparent;
+      border: none;
+      outline: none;
+      padding: 15px 150px 15px 46px;
+      font-family: inherit;
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: var(--ct-text, #D8F2DE);
+    }
+
+    .home-search-input::placeholder {
+      color: var(--ct-muted, #86A99A);
+      opacity: 0.78;
+    }
+
+    .home-search-actions {
+      position: absolute;
+      right: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .home-search-clear {
+      display: none;
+      background: transparent;
+      border: 1px solid var(--ct-border, rgba(216, 242, 222, 0.13));
+      border-radius: 3px;
+      color: var(--ct-muted, #86A99A);
+      font-family: inherit;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 5px 8px;
+      cursor: pointer;
+    }
+
+    .home-search-clear.is-visible {
+      display: inline-flex;
+    }
+
+    .home-search-clear:hover {
+      color: var(--ct-text, #D8F2DE);
+      border-color: var(--ct-border-hover, rgba(216, 242, 222, 0.42));
+    }
+
+    .home-search-kbd {
+      background-color: var(--ct-bg, #041E1D);
+      border: 1px solid var(--ct-border, rgba(216, 242, 222, 0.13));
+      border-radius: 3px;
+      color: var(--ct-muted, #86A99A);
+      font-family: inherit;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      padding: 5px 8px;
+      cursor: pointer;
+      transition: color 0.15s ease, border-color 0.15s ease;
+    }
+
+    .home-search-kbd:hover {
+      color: var(--ct-text, #D8F2DE);
+      border-color: var(--ct-border-hover, rgba(216, 242, 222, 0.42));
+    }
+
+    .home-search-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.6875rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ct-muted, #86A99A);
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .home-search-empty {
+      display: none;
+      background-color: var(--ct-card, #0C2D24);
+      border: 1px dashed var(--ct-border-strong, rgba(216, 242, 222, 0.28));
+      border-radius: 6px;
+      padding: 40px 24px;
+      text-align: center;
+      margin-bottom: 32px;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .home-search-empty.is-visible {
+      display: flex;
+    }
+
+    .home-search-empty-title {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: var(--ct-text, #D8F2DE);
+    }
+
+    .home-search-empty-sub {
+      font-size: 0.875rem;
+      color: var(--ct-muted, #86A99A);
+    }
+
+    .home-search-reset-btn {
+      background-color: var(--ct-accent, #165448);
+      color: var(--ct-on-accent, #D8F2DE);
+      border: 1px solid var(--ct-border-medium, rgba(216, 242, 222, 0.18));
+      border-radius: 4px;
+      padding: 9px 16px;
+      font-family: inherit;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
     }
 
     .jump-num {
@@ -975,7 +1167,7 @@
     <div class="splash-chrome">
       <div class="splash-topbar">
         <span class="splash-wordmark">CODA<span class="faded">THODE.</span></span>
-        <span class="splash-meta">50 CLIENT-SIDE UTILITIES</span>
+        <span class="splash-meta">64 CLIENT-SIDE UTILITIES</span>
       </div>
 
       <div class="splash-center">
@@ -1021,7 +1213,7 @@
           <div class="splash-progress-track-wrap">
             <div class="splash-status-row">
               <span class="splash-tool-ticker" id="splash-ticker">QR CODE GENERATOR</span>
-              <span id="splash-count">01 / 50</span>
+              <span id="splash-count">01 / 64</span>
             </div>
             <div class="splash-track">
               <div class="splash-track-fill" id="splash-track-fill"></div>
@@ -1043,7 +1235,11 @@
       <a href="about.html">ABOUT</a>
       <a href="privacy.html">PRIVACY</a>
       <a href="settings.html">SETTINGS</a>
-      <span class="header-badge">50 TOOLS</span>
+      <button type="button" id="header-cmd-trigger" class="header-cmd-btn" title="Open Command Palette (Ctrl+K)">
+        <span>SEARCH</span>
+        <span class="header-cmd-kbd" id="header-cmd-kbd">CTRL+K</span>
+      </button>
+      <span class="header-badge">64 TOOLS</span>
     </nav>
   </header>
 
@@ -1061,13 +1257,45 @@
         INTENTION.
       </h1>
       <p class="hero-sub">
-        A bespoke collection of fifty focused, high-precision web utilities. Zero tracking, zero telemetry, zero latency. Built strictly for local client-side execution.
+        A bespoke collection of sixty-four focused, high-precision web utilities. Zero tracking, zero telemetry, zero latency. Built strictly for local client-side execution.
       </p>
     </div>
 
     <div class="section-bar">
       <span>ORGANIZED BY USE CASE</span>
-      <span>6 CATEGORIES · 50 TOOLS</span>
+      <span id="home-section-count">6 CATEGORIES · 64 TOOLS</span>
+    </div>
+
+    <div class="home-search-wrap">
+      <div class="home-search-bar">
+        <svg class="home-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+        <input
+          type="search"
+          id="home-instant-search"
+          class="home-search-input"
+          placeholder="Instant filter by name, category, or keyword (e.g. JSON, password, PDF, bezier, loan)..."
+          aria-label="Filter all 64 tools"
+          autocomplete="off"
+          spellcheck="false"
+        />
+        <div class="home-search-actions">
+          <button type="button" id="home-search-clear" class="home-search-clear">CLEAR</button>
+          <button type="button" id="home-search-palette-btn" class="home-search-kbd" title="Open Quick Launcher (Ctrl+K)">CTRL + K</button>
+        </div>
+      </div>
+      <div class="home-search-meta">
+        <span id="home-search-status">SHOWING ALL 64 UTILITIES</span>
+        <span>PRESS ENTER TO LAUNCH TOP MATCH</span>
+      </div>
+    </div>
+
+    <div id="home-search-empty" class="home-search-empty" role="status">
+      <span class="home-search-empty-title">No utilities matched your query</span>
+      <span class="home-search-empty-sub">Try terms like &ldquo;JSON&rdquo;, &ldquo;password&rdquo;, &ldquo;hash&rdquo;, &ldquo;image&rdquo;, or &ldquo;PDF&rdquo;.</span>
+      <button type="button" id="home-search-reset" class="home-search-reset-btn">SHOW ALL 64 TOOLS</button>
     </div>
 
     <nav class="category-jumpbar" aria-label="Tool categories">
@@ -1089,7 +1317,7 @@
           <h2 class="group-title">Text &amp; Writing</h2>
           <span class="group-subtitle">Case formatting, analysis, cleanup, and placeholder text</span>
         </div>
-        <span class="group-count">06 TOOLS</span>
+        <span class="group-count">11 TOOLS</span>
       </div>
 
       <div class="tools-grid">
@@ -1176,6 +1404,81 @@
             </div>
             <h3 class="tool-title">Lorem Ipsum Generator</h3>
             <p class="tool-desc">Generate structured placeholder paragraphs with classic or random openings.</p>
+          </div>
+          <div class="tool-card-bottom">
+            <span>LAUNCH</span>
+            <span class="tool-arrow">→</span>
+          </div>
+        </a>
+
+        <a href="reading-level.html" class="tool-card">
+          <div>
+            <div class="tool-card-top">
+              <span class="tool-number">TOOL / 051</span>
+              <span class="tool-category">READABILITY</span>
+            </div>
+            <h3 class="tool-title">Reading Level Analyzer</h3>
+            <p class="tool-desc">Measure Flesch Reading Ease, Grade Level, Gunning Fog, SMOG, and syllables.</p>
+          </div>
+          <div class="tool-card-bottom">
+            <span>LAUNCH</span>
+            <span class="tool-arrow">→</span>
+          </div>
+        </a>
+
+        <a href="extractive-summarizer.html" class="tool-card">
+          <div>
+            <div class="tool-card-top">
+              <span class="tool-number">TOOL / 052</span>
+              <span class="tool-category">SUMMARY</span>
+            </div>
+            <h3 class="tool-title">Offline Summarizer</h3>
+            <p class="tool-desc">Condense long articles into key sentences via pure term-frequency scoring.</p>
+          </div>
+          <div class="tool-card-bottom">
+            <span>LAUNCH</span>
+            <span class="tool-arrow">→</span>
+          </div>
+        </a>
+
+        <a href="anagram-solver.html" class="tool-card">
+          <div>
+            <div class="tool-card-top">
+              <span class="tool-number">TOOL / 053</span>
+              <span class="tool-category">WORDS</span>
+            </div>
+            <h3 class="tool-title">Anagram Solver</h3>
+            <p class="tool-desc">Unscramble letter tiles into exact anagrams and sub-words offline.</p>
+          </div>
+          <div class="tool-card-bottom">
+            <span>LAUNCH</span>
+            <span class="tool-arrow">→</span>
+          </div>
+        </a>
+
+        <a href="script-formatter.html" class="tool-card">
+          <div>
+            <div class="tool-card-top">
+              <span class="tool-number">TOOL / 054</span>
+              <span class="tool-category">SCREENPLAY</span>
+            </div>
+            <h3 class="tool-title">Script Formatter</h3>
+            <p class="tool-desc">Format rough character dialogue notes into screenplay layout and PDF print.</p>
+          </div>
+          <div class="tool-card-bottom">
+            <span>LAUNCH</span>
+            <span class="tool-arrow">→</span>
+          </div>
+        </a>
+
+        <a href="confusable-words.html" class="tool-card">
+          <div>
+            <div class="tool-card-top">
+              <span class="tool-number">TOOL / 055</span>
+              <span class="tool-category">PROOFREAD</span>
+            </div>
+            <h3 class="tool-title">Confusable Words</h3>
+            <p class="tool-desc">Highlight tricky homophones like affect/effect and their/there in prose.</p>
           </div>
           <div class="tool-card-bottom">
             <span>LAUNCH</span>
@@ -1361,7 +1664,7 @@
           <h2 class="group-title">Developer &amp; Code</h2>
           <span class="group-subtitle">Data serialization, markup escaping, and binary encoding</span>
         </div>
-        <span class="group-count">12 TOOLS</span>
+        <span class="group-count">14 TOOLS</span>
       </div>
 
       <div class="tools-grid">
@@ -1544,6 +1847,36 @@
             <span class="tool-arrow">→</span>
           </div>
         </a>
+
+        <a href="git-commit.html" class="tool-card">
+          <div>
+            <div class="tool-card-top">
+              <span class="tool-number">TOOL / 061</span>
+              <span class="tool-category">GIT</span>
+            </div>
+            <h3 class="tool-title">Git Commit Builder</h3>
+            <p class="tool-desc">Format Conventional Commits with scopes, breaking flags, and CLI copy.</p>
+          </div>
+          <div class="tool-card-bottom">
+            <span>LAUNCH</span>
+            <span class="tool-arrow">→</span>
+          </div>
+        </a>
+
+        <a href="robots-gitignore.html" class="tool-card">
+          <div>
+            <div class="tool-card-top">
+              <span class="tool-number">TOOL / 062</span>
+              <span class="tool-category">CONFIG</span>
+            </div>
+            <h3 class="tool-title">robots.txt &amp; .gitignore</h3>
+            <p class="tool-desc">Build search crawler rules and multi-stack .gitignore files in seconds.</p>
+          </div>
+          <div class="tool-card-bottom">
+            <span>LAUNCH</span>
+            <span class="tool-arrow">→</span>
+          </div>
+        </a>
       </div>
     </section>
 
@@ -1557,7 +1890,7 @@
           <h2 class="group-title">Design &amp; Color</h2>
           <span class="group-subtitle">Palettes, eyedropping, CSS shadows, and site icons</span>
         </div>
-        <span class="group-count">07 TOOLS</span>
+        <span class="group-count">12 TOOLS</span>
       </div>
 
       <div class="tools-grid">
@@ -1665,6 +1998,81 @@
             <span class="tool-arrow">→</span>
           </div>
         </a>
+
+        <a href="css-gradient.html" class="tool-card">
+          <div>
+            <div class="tool-card-top">
+              <span class="tool-number">TOOL / 056</span>
+              <span class="tool-category">GRADIENT</span>
+            </div>
+            <h3 class="tool-title">CSS Gradient Studio</h3>
+            <p class="tool-desc">Craft linear, radial, and conic CSS gradients with multi-stop presets.</p>
+          </div>
+          <div class="tool-card-bottom">
+            <span>LAUNCH</span>
+            <span class="tool-arrow">→</span>
+          </div>
+        </a>
+
+        <a href="flexbox-playground.html" class="tool-card">
+          <div>
+            <div class="tool-card-top">
+              <span class="tool-number">TOOL / 057</span>
+              <span class="tool-category">LAYOUT</span>
+            </div>
+            <h3 class="tool-title">Flexbox Playground</h3>
+            <p class="tool-desc">Experiment with flex alignment, wrapping, direction, and gap visually.</p>
+          </div>
+          <div class="tool-card-bottom">
+            <span>LAUNCH</span>
+            <span class="tool-arrow">→</span>
+          </div>
+        </a>
+
+        <a href="css-grid.html" class="tool-card">
+          <div>
+            <div class="tool-card-top">
+              <span class="tool-number">TOOL / 058</span>
+              <span class="tool-category">LAYOUT</span>
+            </div>
+            <h3 class="tool-title">CSS Grid Builder</h3>
+            <p class="tool-desc">Build CSS Grid tracks, custom spans, and responsive gap templates.</p>
+          </div>
+          <div class="tool-card-bottom">
+            <span>LAUNCH</span>
+            <span class="tool-arrow">→</span>
+          </div>
+        </a>
+
+        <a href="easing-visualizer.html" class="tool-card">
+          <div>
+            <div class="tool-card-top">
+              <span class="tool-number">TOOL / 059</span>
+              <span class="tool-category">MOTION</span>
+            </div>
+            <h3 class="tool-title">Easing Curve Visualizer</h3>
+            <p class="tool-desc">Drag cubic-bezier handles and compare custom timing curves live.</p>
+          </div>
+          <div class="tool-card-bottom">
+            <span>LAUNCH</span>
+            <span class="tool-arrow">→</span>
+          </div>
+        </a>
+
+        <a href="svg-wave-blob.html" class="tool-card">
+          <div>
+            <div class="tool-card-top">
+              <span class="tool-number">TOOL / 060</span>
+              <span class="tool-category">VECTOR</span>
+            </div>
+            <h3 class="tool-title">SVG Wave &amp; Blob</h3>
+            <p class="tool-desc">Generate organic SVG section waves and blobs with .svg file download.</p>
+          </div>
+          <div class="tool-card-bottom">
+            <span>LAUNCH</span>
+            <span class="tool-arrow">→</span>
+          </div>
+        </a>
       </div>
     </section>
 
@@ -1678,7 +2086,7 @@
           <h2 class="group-title">Image, Audio &amp; PDF</h2>
           <span class="group-subtitle">QR generation, image payloads, voice synthesis, and print export</span>
         </div>
-        <span class="group-count">06 TOOLS</span>
+        <span class="group-count">07 TOOLS</span>
       </div>
 
       <div class="tools-grid">
@@ -1771,6 +2179,21 @@
             <span class="tool-arrow">→</span>
           </div>
         </a>
+
+        <a href="canvas-image-studio.html" class="tool-card">
+          <div>
+            <div class="tool-card-top">
+              <span class="tool-number">TOOL / 063</span>
+              <span class="tool-category">CANVAS</span>
+            </div>
+            <h3 class="tool-title">Canvas Image Studio</h3>
+            <p class="tool-desc">Caption memes, pixelate sensitive regions, or draw pixel art locally.</p>
+          </div>
+          <div class="tool-card-bottom">
+            <span>LAUNCH</span>
+            <span class="tool-arrow">→</span>
+          </div>
+        </a>
       </div>
     </section>
 
@@ -1784,7 +2207,7 @@
           <h2 class="group-title">Security &amp; Everyday</h2>
           <span class="group-subtitle">Passwords, cryptographic randomness, typing speed, and grades</span>
         </div>
-        <span class="group-count">09 TOOLS</span>
+        <span class="group-count">10 TOOLS</span>
       </div>
 
       <div class="tools-grid">
@@ -1922,6 +2345,21 @@
             <span class="tool-arrow">→</span>
           </div>
         </a>
+
+        <a href="notes-builder.html" class="tool-card">
+          <div>
+            <div class="tool-card-top">
+              <span class="tool-number">TOOL / 064</span>
+              <span class="tool-category">STUDY &amp; DOCS</span>
+            </div>
+            <h3 class="tool-title">Cornell &amp; Meeting Notes</h3>
+            <p class="tool-desc">Print-ready Cornell study templates and structured meeting agendas.</p>
+          </div>
+          <div class="tool-card-bottom">
+            <span>LAUNCH</span>
+            <span class="tool-arrow">→</span>
+          </div>
+        </a>
       </div>
     </section>
 
@@ -1929,7 +2367,7 @@
     <div class="specs-strip">
       <div class="spec-item">
         <span class="spec-label">SUITE CAPACITY</span>
-        <span class="spec-val">50 Focused Tools</span>
+        <span class="spec-val">64 Focused Tools</span>
       </div>
       <div class="spec-item">
         <span class="spec-label">EXECUTION ENGINE</span>
@@ -1954,6 +2392,7 @@
       <a href="index.html">UTILITIES</a>
       <a href="about.html">ABOUT</a>
       <a href="privacy.html">PRIVACY POLICY</a>
+      <a href="settings.html">SETTINGS</a>
     </div>
     <span class="footer-copy">ALL UTILITIES RUN LOCALLY IN YOUR BROWSER &copy; 2026</span>
   </footer>
@@ -2034,7 +2473,21 @@
         'UUID V4 GENERATOR',
         'TIP & SPLIT CALCULATOR',
         'WORLD TIMEZONE CONVERTER',
-        'CSV ↔ JSON CONVERTER'
+        'CSV ↔ JSON CONVERTER',
+        'READING LEVEL ANALYZER',
+        'OFFLINE EXTRACTIVE SUMMARIZER',
+        'ANAGRAM SOLVER',
+        'SCRIPT DIALOGUE FORMATTER',
+        'CONFUSABLE WORD HIGHLIGHTER',
+        'CSS GRADIENT STUDIO',
+        'FLEXBOX PLAYGROUND',
+        'CSS GRID BUILDER',
+        'EASING CURVE VISUALIZER',
+        'SVG WAVE & BLOB GENERATOR',
+        'GIT COMMIT BUILDER',
+        'ROBOTS.TXT & .GITIGNORE BUILDER',
+        'CANVAS IMAGE STUDIO',
+        'CORNELL & MEETING NOTES'
       ];
 
       const circumference = 2 * Math.PI * 152;
@@ -2094,7 +2547,7 @@
 
         const toolIdx = Math.min(utilities.length - 1, Math.floor(eased * utilities.length));
         if (tickerEl) tickerEl.textContent = utilities[toolIdx];
-        if (countEl) countEl.textContent = String(toolIdx + 1).padStart(2, '0') + ' / 50';
+        if (countEl) countEl.textContent = String(toolIdx + 1).padStart(2, '0') + ' / 64';
 
         for (let i = 0; i < ticks.length; i++) {
           if (ticks[i] && pct >= (i + 1) * 25) {
@@ -2114,6 +2567,149 @@
       }
 
       rafId = requestAnimationFrame(renderFrame);
+    })();
+
+    // Instant Home Page Search & Header Ctrl+K Binding
+    (function () {
+      var input = document.getElementById('home-instant-search');
+      var clearBtn = document.getElementById('home-search-clear');
+      var paletteBtn = document.getElementById('home-search-palette-btn');
+      var headerTrigger = document.getElementById('header-cmd-trigger');
+      var headerKbd = document.getElementById('header-cmd-kbd');
+      var statusEl = document.getElementById('home-search-status');
+      var sectionCountEl = document.getElementById('home-section-count');
+      var emptyBox = document.getElementById('home-search-empty');
+      var resetBtn = document.getElementById('home-search-reset');
+      var jumpbar = document.querySelector('.category-jumpbar');
+
+      var isMac = /mac|iphone|ipad/i.test(navigator.platform || navigator.userAgent || '');
+      if (isMac) {
+        if (paletteBtn) paletteBtn.textContent = '⌘ + K';
+        if (headerKbd) headerKbd.textContent = '⌘K';
+      }
+
+      function openPalette() {
+        if (window.CodathodeShell && window.CodathodeShell.openCommandPalette) {
+          window.CodathodeShell.openCommandPalette(input ? input.value : '');
+        }
+      }
+
+      if (paletteBtn) paletteBtn.addEventListener('click', openPalette);
+      if (headerTrigger) headerTrigger.addEventListener('click', openPalette);
+
+      var groups = Array.prototype.slice.call(document.querySelectorAll('.tool-group'));
+      var keywordMap = {};
+
+      function hydrateKeywords() {
+        if (!window.CodathodeShell || !window.CodathodeShell.searchItems) return;
+        var items = window.CodathodeShell.searchItems;
+        for (var i = 0; i < items.length; i++) {
+          keywordMap[items[i].href] = items[i].searchBlob;
+        }
+      }
+
+      function applyFilter() {
+        hydrateKeywords();
+        var q = (input ? input.value : '').trim().toLowerCase();
+        var terms = q ? q.split(/\s+/) : [];
+        var totalVisible = 0;
+        var visibleGroups = 0;
+        var firstVisibleCard = null;
+
+        if (clearBtn) clearBtn.classList.toggle('is-visible', q.length > 0);
+        if (jumpbar) jumpbar.style.display = q.length > 0 ? 'none' : '';
+
+        for (var g = 0; g < groups.length; g++) {
+          var group = groups[g];
+          var groupTitle = (group.querySelector('.group-title') || {}).textContent || '';
+          var groupSub = (group.querySelector('.group-subtitle') || {}).textContent || '';
+          var cards = group.querySelectorAll('.tool-card');
+          var countEl = group.querySelector('.group-count');
+          if (!group.getAttribute('data-orig-count') && countEl) {
+            group.setAttribute('data-orig-count', countEl.textContent);
+          }
+
+          var groupMatches = 0;
+          for (var c = 0; c < cards.length; c++) {
+            var card = cards[c];
+            var href = card.getAttribute('href') || '';
+            var hay = card.getAttribute('data-haystack');
+            if (!hay) {
+              hay = (card.textContent + ' ' + groupTitle + ' ' + groupSub + ' ' + (keywordMap[href] || '')).toLowerCase();
+              if (keywordMap[href]) card.setAttribute('data-haystack', hay);
+            } else if (keywordMap[href] && hay.indexOf(keywordMap[href]) === -1) {
+              hay = hay + ' ' + keywordMap[href];
+              card.setAttribute('data-haystack', hay);
+            }
+
+            var match = true;
+            for (var t = 0; t < terms.length; t++) {
+              if (hay.indexOf(terms[t]) === -1) {
+                match = false;
+                break;
+              }
+            }
+
+            card.style.display = match ? 'flex' : 'none';
+            if (match) {
+              groupMatches++;
+              totalVisible++;
+              if (!firstVisibleCard) firstVisibleCard = card;
+            }
+          }
+
+          group.style.display = groupMatches > 0 ? '' : 'none';
+          if (groupMatches > 0) visibleGroups++;
+          if (countEl) {
+            countEl.textContent = q
+              ? groupMatches + (groupMatches === 1 ? ' MATCH' : ' MATCHES')
+              : (group.getAttribute('data-orig-count') || '');
+          }
+        }
+
+        if (statusEl) {
+          statusEl.textContent = q
+            ? 'SHOWING ' + totalVisible + ' OF 64 UTILITIES'
+            : 'SHOWING ALL 64 UTILITIES';
+        }
+        if (sectionCountEl) {
+          sectionCountEl.textContent = q
+            ? visibleGroups + ' CATEGORIES · ' + totalVisible + ' MATCHES'
+            : '6 CATEGORIES · 64 TOOLS';
+        }
+        if (emptyBox) {
+          emptyBox.classList.toggle('is-visible', totalVisible === 0);
+        }
+
+        return firstVisibleCard;
+      }
+
+      function clearFilter() {
+        if (!input) return;
+        input.value = '';
+        applyFilter();
+        input.focus();
+      }
+
+      if (input) {
+        input.addEventListener('input', applyFilter);
+        input.addEventListener('keydown', function (e) {
+          if (e.key === 'Enter') {
+            var first = applyFilter();
+            if (first && input.value.trim().length > 0) {
+              e.preventDefault();
+              window.location.href = first.getAttribute('href');
+            }
+          } else if (e.key === 'Escape' && input.value.length > 0) {
+            e.preventDefault();
+            clearFilter();
+          }
+        });
+      }
+      if (clearBtn) clearBtn.addEventListener('click', clearFilter);
+      if (resetBtn) resetBtn.addEventListener('click', clearFilter);
+
+      window.addEventListener('DOMContentLoaded', hydrateKeywords);
     })();
   </script>
 </body>

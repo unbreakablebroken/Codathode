@@ -5,7 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Settings &amp; Themes — CODATHODE.</title>
   <link rel="icon" type="image/png" sizes="32x32" href="favicon.png" />
-  <link rel="apple-touch-icon" href="favicon.png" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <meta name="theme-color" content="#041E1D" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Codathode" />
+  <link rel="icon" type="image/svg+xml" href="/icon.svg" />
   <meta name="description" content="Customize your Codathode appearance across Green, Dark (Black), and Light themes plus collapsible sidebar preferences." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -452,6 +458,34 @@
       border-color: var(--ct-border-hover, rgba(216, 242, 222, 0.45));
     }
 
+    .btn-primary {
+      background-color: var(--ct-accent, #165448);
+      color: var(--ct-on-accent, #D8F2DE);
+      border: 1px solid var(--ct-border-strong, rgba(216, 242, 222, 0.28));
+      border-radius: 4px;
+      padding: 11px 18px;
+      font-family: inherit;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-primary:hover {
+      background-color: var(--ct-accent-hover, #1C6859);
+      border-color: var(--ct-border-hover, rgba(216, 242, 222, 0.45));
+    }
+
+    .btn-primary[disabled] {
+      opacity: 0.55;
+      cursor: default;
+    }
+
     .privacy-note {
       font-size: 0.8125rem;
       color: var(--ct-muted, #86A99A);
@@ -527,7 +561,7 @@
       <a href="about.html">ABOUT</a>
       <a href="privacy.html">PRIVACY</a>
       <a href="settings.html" class="active">SETTINGS</a>
-      <span class="header-badge">50 TOOLS</span>
+      <span class="header-badge">64 TOOLS</span>
     </nav>
   </header>
 
@@ -674,8 +708,35 @@
       </div>
 
       <div class="privacy-note">
-        <span>ZERO TELEMETRY: Theme and sidebar settings persist solely in local browser storage across all 50 utilities.</span>
-        <a href="index.html" style="color:var(--ct-text, #D8F2DE);font-weight:700;text-decoration:none;">← RETURN TO ALL 50 UTILITIES</a>
+        <span>ZERO TELEMETRY: Theme and sidebar settings persist solely in local browser storage across all 64 utilities.</span>
+        <a href="index.html" style="color:var(--ct-text, #D8F2DE);font-weight:700;text-decoration:none;">← RETURN TO ALL 64 UTILITIES</a>
+      </div>
+    </section>
+
+    <section class="settings-section" aria-labelledby="pwa-heading">
+      <div class="section-head">
+        <div>
+          <span class="section-kicker">03 / PROGRESSIVE WEB APP</span>
+          <h2 class="section-title" id="pwa-heading">Offline App Installation</h2>
+        </div>
+        <span class="section-status" id="pwa-status-badge">OFFLINE READY</span>
+      </div>
+
+      <div class="pref-row">
+        <div>
+          <div class="pref-title">Install Codathode on Your Device</div>
+          <div class="pref-desc" id="pwa-install-desc">
+            Install Codathode as a standalone desktop or mobile app to run all 64 utilities 100% offline with zero internet connection.
+          </div>
+        </div>
+        <button type="button" id="pwaInstallPageBtn" class="btn-primary">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="7 10 12 15 17 10"></polyline>
+            <line x1="12" y1="15" x2="12" y2="3"></line>
+          </svg>
+          <span id="pwaInstallPageLabel">INSTALL APP</span>
+        </button>
       </div>
     </section>
   </main>
@@ -775,10 +836,61 @@
         });
       }
 
+      var pwaBtn = document.getElementById('pwaInstallPageBtn');
+      var pwaLabel = document.getElementById('pwaInstallPageLabel');
+      var pwaDesc = document.getElementById('pwaInstallPageDesc') || document.getElementById('pwa-install-desc');
+      var pwaBadge = document.getElementById('pwa-status-badge');
+
+      function syncPWA() {
+        if (!pwaBtn) return;
+        var pwa = window.CodathodeShell && window.CodathodeShell.pwa;
+        var installed = pwa && pwa.isInstalled();
+        var installable = pwa && pwa.isInstallable();
+        var ios = pwa && pwa.isIOS();
+
+        if (installed) {
+          pwaBtn.style.display = 'none';
+          if (pwaBadge) pwaBadge.textContent = 'INSTALLED';
+          if (pwaDesc) pwaDesc.textContent = 'Codathode is currently running as an installed standalone app with full offline support.';
+        } else if (installable) {
+          pwaBtn.style.display = 'inline-flex';
+          pwaBtn.disabled = false;
+          if (pwaLabel) pwaLabel.textContent = 'INSTALL APP';
+          if (pwaBadge) pwaBadge.textContent = 'INSTALLABLE';
+        } else if (ios) {
+          pwaBtn.style.display = 'inline-flex';
+          pwaBtn.disabled = false;
+          if (pwaLabel) pwaLabel.textContent = 'INSTALL ON iOS';
+          if (pwaBadge) pwaBadge.textContent = 'SAFARI GUIDE';
+        } else {
+          pwaBtn.style.display = 'inline-flex';
+          pwaBtn.disabled = false;
+          if (pwaLabel) pwaLabel.textContent = 'BROWSER INSTALL';
+          if (pwaBadge) pwaBadge.textContent = 'OFFLINE READY';
+        }
+      }
+
+      if (pwaBtn) {
+        pwaBtn.addEventListener('click', function () {
+          var pwa = window.CodathodeShell && window.CodathodeShell.pwa;
+          if (!pwa) return;
+          if (pwa.isInstallable() || pwa.isIOS()) {
+            pwa.install();
+          } else if (pwaDesc) {
+            pwaDesc.textContent = 'Use your browser address bar install icon (Chrome / Edge) or open this app outside an embedded preview to install directly.';
+          }
+        });
+      }
+
       window.addEventListener('codathode:themechange', syncUI);
       window.addEventListener('codathode:sidebarchange', syncUI);
-      window.addEventListener('DOMContentLoaded', syncUI);
+      window.addEventListener('codathode:pwastatechange', syncPWA);
+      window.addEventListener('DOMContentLoaded', function () {
+        syncUI();
+        syncPWA();
+      });
       syncUI();
+      syncPWA();
     })();
   </script>
 </body>

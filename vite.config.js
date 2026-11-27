@@ -1,10 +1,98 @@
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { defineConfig } from 'vite';
+import { VitePWA } from 'vite-plugin-pwa';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export default defineConfig({
+  plugins: [
+    VitePWA({
+      registerType: 'autoUpdate',
+      injectRegister: 'script-defer',
+      includeAssets: [
+        'favicon.png',
+        'icon.svg',
+        'apple-touch-icon.png',
+        'pwa-192x192.png',
+        'pwa-512x512.png',
+        'pwa-maskable-512x512.png',
+        'codathode-shell.css',
+        'codathode-shell.js',
+      ],
+      manifest: {
+        id: '/',
+        name: 'Codathode — Offline Digital Utilities',
+        short_name: 'Codathode',
+        description:
+          'Sixty-four private, zero-telemetry client-side web utilities engineered for 100% offline browser execution.',
+        theme_color: '#041E1D',
+        background_color: '#041E1D',
+        display: 'standalone',
+        start_url: '/',
+        scope: '/',
+        icons: [
+          {
+            src: '/pwa-192x192.png',
+            sizes: '192x192',
+            type: 'image/png',
+            purpose: 'any',
+          },
+          {
+            src: '/pwa-512x512.png',
+            sizes: '512x512',
+            type: 'image/png',
+            purpose: 'any',
+          },
+          {
+            src: '/pwa-maskable-512x512.png',
+            sizes: '512x512',
+            type: 'image/png',
+            purpose: 'maskable',
+          },
+        ],
+      },
+      workbox: {
+        globPatterns: ['**/*.{js,css,html,ico,png,svg,woff,woff2}'],
+        maximumFileSizeToCacheInBytes: 5 * 1024 * 1024,
+        navigateFallback: null,
+        runtimeCaching: [
+          {
+            urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'google-fonts-cache',
+              expiration: {
+                maxEntries: 10,
+                maxAgeSeconds: 60 * 60 * 24 * 365,
+              },
+              cacheableResponse: {
+                statuses: [0, 200],
+              },
+            },
+          },
+          {
+            urlPattern: /^https:\/\/fonts\.gstatic\.com\/.*/i,
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'gstatic-fonts-cache',
+              expiration: {
+                maxEntries: 10,
+                maxAgeSeconds: 60 * 60 * 24 * 365,
+              },
+              cacheableResponse: {
+                statuses: [0, 200],
+              },
+            },
+          },
+        ],
+      },
+      devOptions: {
+        enabled: true,
+        type: 'classic',
+      },
+    }),
+  ],
   build: {
     rollupOptions: {
       input: {
@@ -62,6 +150,20 @@ export default defineConfig({
         tipCalculator: path.resolve(__dirname, 'tip-calculator.html'),
         timezoneConverter: path.resolve(__dirname, 'timezone-converter.html'),
         csvJson: path.resolve(__dirname, 'csv-json.html'),
+        readingLevel: path.resolve(__dirname, 'reading-level.html'),
+        extractiveSummarizer: path.resolve(__dirname, 'extractive-summarizer.html'),
+        anagramSolver: path.resolve(__dirname, 'anagram-solver.html'),
+        scriptFormatter: path.resolve(__dirname, 'script-formatter.html'),
+        confusableWords: path.resolve(__dirname, 'confusable-words.html'),
+        cssGradient: path.resolve(__dirname, 'css-gradient.html'),
+        flexboxPlayground: path.resolve(__dirname, 'flexbox-playground.html'),
+        cssGrid: path.resolve(__dirname, 'css-grid.html'),
+        easingVisualizer: path.resolve(__dirname, 'easing-visualizer.html'),
+        svgWaveBlob: path.resolve(__dirname, 'svg-wave-blob.html'),
+        gitCommit: path.resolve(__dirname, 'git-commit.html'),
+        robotsGitignore: path.resolve(__dirname, 'robots-gitignore.html'),
+        canvasImageStudio: path.resolve(__dirname, 'canvas-image-studio.html'),
+        notesBuilder: path.resolve(__dirname, 'notes-builder.html'),
       },
     },
   },

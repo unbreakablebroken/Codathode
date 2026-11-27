@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SVG Wave &amp; Blob Generator — CODATHODE.</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon.png" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <meta name="theme-color" content="#041E1D" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Codathode" />
+  <link rel="icon" type="image/svg+xml" href="/icon.svg" />
+  <meta name="description" content="Generate smooth organic SVG waves and blobs with complexity, amplitude, and seed randomization plus SVG copy/download." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <script>
+    (function(){try{var t=localStorage.getItem('codathode_theme');document.documentElement.setAttribute('data-theme',(t==='dark'||t==='light'||t==='green')?t:'green');if(localStorage.getItem('codathode_sidebar_collapsed')==='1')document.documentElement.setAttribute('data-sidebar','collapsed');}catch(e){}})();
+  </script>
+  <link rel="stylesheet" href="codathode-shell.css" />
+  <script src="codathode-shell.js" defer></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background-color: var(--ct-bg, #041E1D); color: var(--ct-text, #D8F2DE); font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; min-height: 100vh; display: flex; flex-direction: column; -webkit-font-smoothing: antialiased; line-height: 1.5; }
+    header { width: 100%; border-bottom: 1px solid var(--ct-border, rgba(216,242,222,0.13)); padding: 24px 48px; display: flex; align-items: center; justify-content: space-between; background-color: var(--ct-bg, #041E1D); position: sticky; top: 0; z-index: 50; }
+    .brand { font-size: 1.125rem; font-weight: 800; letter-spacing: -0.02em; text-decoration: none; color: var(--ct-text, #D8F2DE); display: inline-flex; align-items: center; }
+    .brand .faded { color: var(--ct-muted, #86A99A); font-weight: 700; }
+    .header-meta { display: flex; align-items: center; gap: 24px; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.14em; color: var(--ct-muted, #86A99A); text-transform: uppercase; }
+    main { flex: 1; max-width: 1200px; width: 100%; margin: 0 auto; padding: 56px 48px 80px 48px; }
+    .hero-kicker { font-size: 0.75rem; font-weight: 600; letter-spacing: 0.16em; color: var(--ct-muted, #86A99A); text-transform: uppercase; margin-bottom: 20px; display: flex; align-items: center; gap: 12px; }
+    .hero-kicker a { color: var(--ct-muted, #86A99A); text-decoration: none; }
+    .hero-kicker a:hover { color: var(--ct-text, #D8F2DE); }
+    .hero-kicker span.sep { opacity: 0.4; }
+    .hero-split { display: flex; justify-content: space-between; align-items: flex-end; gap: 40px; margin-bottom: 48px; flex-wrap: wrap; }
+    .hero-heading { font-size: clamp(2.5rem, 6vw, 4.75rem); font-weight: 900; line-height: 0.92; letter-spacing: -0.05em; color: var(--ct-text, #D8F2DE); text-transform: uppercase; }
+    .hero-sub { color: var(--ct-muted, #86A99A); font-size: 1rem; line-height: 1.6; max-width: 390px; }
+    .tool-canvas { background-color: var(--ct-card, #0C2D24); border: 1px solid var(--ct-border, rgba(216,242,222,0.13)); border-radius: 6px; padding: 36px; display: flex; flex-direction: column; gap: 24px; }
+    .studio-grid { display: grid; grid-template-columns: 330px 1fr; gap: 24px; }
+    .panel { background-color: var(--ct-bg, #041E1D); border: 1px solid var(--ct-border, rgba(216,242,222,0.13)); border-radius: 5px; padding: 20px; display: flex; flex-direction: column; gap: 16px; }
+    .mode-toggle { display: inline-flex; background-color: var(--ct-card, #0C2D24); border: 1px solid var(--ct-border, rgba(216,242,222,0.13)); border-radius: 4px; padding: 4px; gap: 4px; }
+    .mode-btn { flex: 1; background: transparent; border: none; color: var(--ct-muted, #86A99A); font-family: inherit; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 10px; border-radius: 3px; cursor: pointer; }
+    .mode-btn.active { background-color: var(--ct-accent, #165448); color: var(--ct-on-accent, #D8F2DE); }
+    .ctrl-label { font-size: 0.6875rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ct-muted, #86A99A); display: flex; justify-content: space-between; }
+    .range-input { width: 100%; accent-color: var(--ct-accent, #165448); cursor: pointer; }
+    .preview-stage { min-height: 280px; background-color: var(--ct-bg, #041E1D); border: 1px solid var(--ct-border, rgba(216,242,222,0.13)); border-radius: 5px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+    .preview-stage svg { width: 100%; height: 280px; display: block; }
+    .code-box { background-color: var(--ct-bg, #041E1D); border: 1px solid var(--ct-border, rgba(216,242,222,0.13)); border-radius: 4px; padding: 14px 16px; font-family: 'SFMono-Regular', Consolas, monospace; font-size: 0.78rem; color: var(--ct-text, #D8F2DE); max-height: 140px; overflow-y: auto; word-break: break-all; }
+    .btn-row { display: flex; gap: 10px; flex-wrap: wrap; }
+    .btn-primary { background-color: var(--ct-accent, #165448); color: var(--ct-on-accent, #D8F2DE); border: 1px solid var(--ct-border-medium, rgba(216,242,222,0.2)); border-radius: 4px; padding: 11px 18px; font-family: inherit; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; cursor: pointer; }
+    .btn-primary:hover { background-color: var(--ct-accent-hover, #1C6859); }
+    .btn-secondary { background-color: transparent; color: var(--ct-text, #D8F2DE); border: 1px solid var(--ct-border-strong, rgba(216,242,222,0.28)); border-radius: 4px; padding: 10px 14px; font-family: inherit; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; }
+    .btn-secondary:hover { background-color: var(--ct-surface-hover, rgba(216,242,222,0.09)); }
+    footer { border-top: 1px solid var(--ct-border, rgba(216,242,222,0.13)); padding: 28px 48px; display: flex; align-items: center; justify-content: space-between; color: var(--ct-muted, #86A99A); font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; flex-wrap: wrap; gap: 20px; }
+    .footer-brand { color: var(--ct-text, #D8F2DE); font-weight: 800; text-decoration: none; }
+    .footer-brand .faded { color: var(--ct-muted, #86A99A); }
+    .footer-links { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; }
+    .footer-links a { color: var(--ct-muted, #86A99A); text-decoration: none; }
+    .footer-links a:hover { color: var(--ct-text, #D8F2DE); }
+    @media (max-width: 900px) { .studio-grid { grid-template-columns: 1fr; } .tool-canvas { padding: 24px; } }
+    @media (max-width: 640px) { header { padding: 20px 24px; } main { padding: 40px 24px 64px 24px; } .hero-heading { letter-spacing: -0.035em; line-height: 0.98; } footer { padding: 24px; flex-direction: column; align-items: flex-start; } }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="index.html" class="brand">CODA<span class="faded">THODE.</span></a>
+    <div class="header-meta">
+      <span>WEB UTILITIES</span>
+      <span>060 / 064</span>
+    </div>
+  </header>
+
+  <main>
+    <div class="hero-kicker">
+      <a href="index.html">DIGITAL UTILITIES</a>
+      <span class="sep">/</span>
+      <span>TOOL 060</span>
+    </div>
+
+    <div class="hero-split">
+      <h1 class="hero-heading">SVG WAVE &amp;<br />BLOB GENERATOR.</h1>
+      <p class="hero-sub">
+        Generate smooth section divider waves or organic SVG blobs with custom complexity, fill colors, and instant `.svg` export.
+      </p>
+    </div>
+
+    <div class="tool-canvas">
+      <div class="studio-grid">
+        <div class="panel">
+          <div class="mode-toggle">
+            <button type="button" class="mode-btn active" data-shape="wave">SECTION WAVE</button>
+            <button type="button" class="mode-btn" data-shape="blob">ORGANIC BLOB</button>
+          </div>
+
+          <div>
+            <div class="ctrl-label"><span>COMPLEXITY / NODES</span><span id="nodesVal">5</span></div>
+            <input id="nodesRange" class="range-input" type="range" min="3" max="12" value="5" />
+          </div>
+
+          <div>
+            <div class="ctrl-label"><span>VARIATION / AMPLITUDE</span><span id="ampVal">45%</span></div>
+            <input id="ampRange" class="range-input" type="range" min="10" max="90" value="45" />
+          </div>
+
+          <div style="display:flex;align-items:center;justify-content:space-between;">
+            <span class="ctrl-label">FILL COLOR</span>
+            <input id="fillPicker" type="color" value="#165448" style="width:52px;height:34px;border:1px solid var(--ct-border-strong);border-radius:4px;background:transparent;cursor:pointer;" />
+          </div>
+
+          <div class="btn-row">
+            <button type="button" id="seedBtn" class="btn-secondary" style="flex:1;">NEW SEED ↻</button>
+            <button type="button" id="dlBtn" class="btn-primary" style="flex:1;">DOWNLOAD .SVG</button>
+          </div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:14px;">
+          <div id="previewStage" class="preview-stage"></div>
+          <pre id="svgOut" class="code-box"></pre>
+          <div class="btn-row">
+            <button type="button" id="copyBtn" class="btn-primary">COPY SVG CODE</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <a href="index.html" class="footer-brand">CODA<span class="faded">THODE.</span></a>
+    <div class="footer-links">
+      <a href="index.html">UTILITIES</a>
+      <a href="about.html">ABOUT</a>
+      <a href="privacy.html">PRIVACY POLICY</a>
+      <a href="settings.html">SETTINGS</a>
+    </div>
+    <span class="footer-copy">ALL UTILITIES RUN LOCALLY IN YOUR BROWSER &copy; 2026</span>
+  </footer>
+
+  <script>
+    (function () {
+      var shape = 'wave';
+      var seed = 42;
+      var nodesRange = document.getElementById('nodesRange');
+      var ampRange = document.getElementById('ampRange');
+      var nodesVal = document.getElementById('nodesVal');
+      var ampVal = document.getElementById('ampVal');
+      var fillPicker = document.getElementById('fillPicker');
+      var previewStage = document.getElementById('previewStage');
+      var svgOut = document.getElementById('svgOut');
+      var copyBtn = document.getElementById('copyBtn');
+
+      function rand(i) {
+        var x = Math.sin(seed * 97 + i * 31.7) * 10000;
+        return x - Math.floor(x);
+      }
+
+      function catmullToBezier(pts, closed) {
+        var d = 'M ' + pts[0][0].toFixed(1) + ' ' + pts[0][1].toFixed(1);
+        var len = pts.length;
+        var limit = closed ? len : len - 1;
+        for (var i = 0; i < limit; i++) {
+          var p0 = pts[(i - 1 + len) % len];
+          var p1 = pts[i % len];
+          var p2 = pts[(i + 1) % len];
+          var p3 = pts[(i + 2) % len];
+          if (!closed) {
+            p0 = i === 0 ? p1 : pts[i - 1];
+            p3 = i + 2 >= len ? p2 : pts[i + 2];
+          }
+          var cp1x = p1[0] + (p2[0] - p0[0]) / 6;
+          var cp1y = p1[1] + (p2[1] - p0[1]) / 6;
+          var cp2x = p2[0] - (p3[0] - p1[0]) / 6;
+          var cp2y = p2[1] - (p3[1] - p1[1]) / 6;
+          d += ' C ' + cp1x.toFixed(1) + ' ' + cp1y.toFixed(1) + ', ' + cp2x.toFixed(1) + ' ' + cp2y.toFixed(1) + ', ' + p2[0].toFixed(1) + ' ' + p2[1].toFixed(1);
+        }
+        return d;
+      }
+
+      function buildSVG() {
+        var nodes = parseInt(nodesRange.value, 10);
+        var amp = parseInt(ampRange.value, 10);
+        var fill = fillPicker.value;
+        nodesVal.textContent = nodes;
+        ampVal.textContent = amp + '%';
+
+        if (shape === 'wave') {
+          var w = 1200, h = 280;
+          var pts = [];
+          for (var i = 0; i <= nodes; i++) {
+            var x = (w / nodes) * i;
+            var offset = (rand(i) - 0.5) * (amp * 1.9);
+            pts.push([x, 140 + offset]);
+          }
+          var curve = catmullToBezier(pts, false) + ' L ' + w + ' ' + h + ' L 0 ' + h + ' Z';
+          return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ' + w + ' ' + h + '" preserveAspectRatio="none"><path d="' + curve + '" fill="' + fill + '" /></svg>';
+        } else {
+          var cx = 200, cy = 200, baseR = 120;
+          var bPts = [];
+          for (var j = 0; j < nodes; j++) {
+            var ang = (Math.PI * 2 / nodes) * j;
+            var r = baseR + (rand(j) - 0.5) * (amp * 1.15);
+            bPts.push([cx + Math.cos(ang) * r, cy + Math.sin(ang) * r]);
+          }
+          var blobPath = catmullToBezier(bPts, true) + ' Z';
+          return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400"><path d="' + blobPath + '" fill="' + fill + '" /></svg>';
+        }
+      }
+
+      function render() {
+        var code = buildSVG();
+        previewStage.innerHTML = code;
+        svgOut.textContent = code;
+      }
+
+      document.querySelectorAll('.mode-btn').forEach(function (b) {
+        b.addEventListener('click', function () {
+          document.querySelectorAll('.mode-btn').forEach(function (x) { x.classList.remove('active'); });
+          b.classList.add('active');
+          shape = b.getAttribute('data-shape');
+          render();
+        });
+      });
+
+      [nodesRange, ampRange, fillPicker].forEach(function (el) {
+        el.addEventListener('input', render);
+      });
+
+      document.getElementById('seedBtn').addEventListener('click', function () {
+        seed = Math.floor(Math.random() * 10000);
+        render();
+      });
+
+      copyBtn.addEventListener('click', function () {
+        navigator.clipboard.writeText(svgOut.textContent).then(function () {
+          copyBtn.textContent = 'COPIED SVG!';
+          setTimeout(function () { copyBtn.textContent = 'COPY SVG CODE'; }, 1400);
+        });
+      });
+
+      document.getElementById('dlBtn').addEventListener('click', function () {
+        var blob = new Blob([svgOut.textContent], { type: 'image/svg+xml' });
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        a.href = url;
+        a.download = 'codathode-' + shape + '.svg';
+        a.click();
+        URL.revokeObjectURL(url);
+      });
+
+      render();
+    })();
+  </script>
+</body>
+</html>
